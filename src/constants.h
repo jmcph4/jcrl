@@ -1,0 +1,12 @@
+#ifndef CONSTANTS_H_
+#define CONSTANTS_H_
+
+// Status codes
+#define JCRL_ERR_OK 0
+#define JCRL_ERR_NULL_PARAM 1
+#define JCRL_ERR_IMPOSSIBLE 2
+#define JCRL_ERR_SYS_MEM_ALLOC 3
+#define JCRL_ERR_UNINITIALISED 4
+#define JCRL_ERR_OUT_OF_BOUNDS 5
+
+#endif // CONSTANTS_H_
