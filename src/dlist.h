@@ -26,4 +26,8 @@ unsigned int dlist_insert(void* data, unsigned int pos, DList* list);
 unsigned int dlist_remove(unsigned int pos, DList* list);
 unsigned int dlist_traverse(unsigned int reverse, void (*callback)(void*, unsigned int), DList* list);
 
+// Access
+unsigned int dlist_get(void** data, unsigned int pos, DList* list);
+unsigned int dlist_set(void* data, unsigned int pos, DList* list);
+
 #endif // DLIST_H_

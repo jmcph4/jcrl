@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <errno.h>
 
 #include "constants.h"
 #include "slist.h"
@@ -152,5 +151,66 @@ unsigned int slist_traverse(void (*callback)(void*, unsigned int), SList* list)
 	i++;
   }
   
+  return JCRL_ERR_OK;
+}
+
+unsigned int slist_get(void** data, unsigned int pos, SList* list)
+{
+  if(data == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+
+  if(list == NULL)
+  {
+    return JCRL_ERR_OK;
+  }
+  
+  if(pos >= list->length)
+  {
+    return JCRL_ERR_OUT_OF_BOUNDS;
+  }
+  
+  unsigned int i = 0;
+  struct _SNode* ptr = list->head;
+  
+  for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+  {
+    if(i == pos)
+	{
+	  *data = ptr->data;
+	}
+	
+    i++;
+  }
+
+  return JCRL_ERR_OK;
+}
+
+unsigned int slist_set(void* data, unsigned int pos, SList* list)
+{
+  if(list == NULL)
+  {
+    return JCRL_ERR_OK;
+  }
+  
+  if(pos >= list->length)
+  {
+    return JCRL_ERR_OUT_OF_BOUNDS;
+  }
+  
+  unsigned int i = 0;
+  struct _SNode* ptr = list->head;
+  
+  for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+  {
+    if(i == pos)
+	{
+	  ptr->data = data;
+	}
+	
+    i++;
+  }
+
   return JCRL_ERR_OK;
 }

@@ -24,4 +24,8 @@ unsigned int slist_insert(void* data, unsigned int pos, SList* list);
 unsigned int slist_remove(unsigned int pos, SList* list);
 unsigned int slist_traverse(void (*callback)(void*, unsigned int), SList* list);
 
+// Access
+unsigned int slist_get(void** data, unsigned int pos, SList* list);
+unsigned int slist_set(void* data, unsigned int pos, SList* list);
+
 #endif // SLIST_H_

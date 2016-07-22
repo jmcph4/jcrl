@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <errno.h>
+#include <string.h>
 
 #include "constants.h"
 #include "dlist.h"
@@ -202,5 +202,66 @@ unsigned int dlist_traverse(unsigned int reverse, void (*callback)(void*, unsign
 	}
   }
   
+  return JCRL_ERR_OK;
+}
+
+unsigned int dlist_get(void** data, unsigned int pos, DList* list)
+{
+  if(data == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+
+  if(list == NULL)
+  {
+    return JCRL_ERR_OK;
+  }
+  
+  if(pos >= list->length)
+  {
+    return JCRL_ERR_OUT_OF_BOUNDS;
+  }
+  
+  unsigned int i = 0;
+  struct _DNode* ptr = list->head;
+  
+  for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+  {
+    if(i == pos)
+	{
+	  *data = ptr->data;
+	}
+	
+    i++;
+  }
+
+  return JCRL_ERR_OK;
+}
+
+unsigned int dlist_set(void* data, unsigned int pos, DList* list)
+{
+  if(list == NULL)
+  {
+    return JCRL_ERR_OK;
+  }
+  
+  if(pos >= list->length)
+  {
+    return JCRL_ERR_OUT_OF_BOUNDS;
+  }
+  
+  unsigned int i = 0;
+  struct _DNode* ptr = list->head;
+  
+  for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+  {
+    if(i == pos)
+	{
+	  ptr->data = data;
+	}
+	
+    i++;
+  }
+
   return JCRL_ERR_OK;
 }
