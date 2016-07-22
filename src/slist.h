@@ -28,4 +28,6 @@ unsigned int slist_traverse(void (*callback)(void*, unsigned int), SList* list);
 unsigned int slist_get(void** data, unsigned int pos, SList* list);
 unsigned int slist_set(void* data, unsigned int pos, SList* list);
 
+unsigned int slist_length(unsigned int* length, SList* list);
+
 #endif // SLIST_H_

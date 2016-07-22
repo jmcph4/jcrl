@@ -30,4 +30,6 @@ unsigned int dlist_traverse(unsigned int reverse, void (*callback)(void*, unsign
 unsigned int dlist_get(void** data, unsigned int pos, DList* list);
 unsigned int dlist_set(void* data, unsigned int pos, DList* list);
 
+unsigned int dlist_length(unsigned int* length, DList* list);
+
 #endif // DLIST_H_

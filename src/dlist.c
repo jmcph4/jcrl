@@ -265,3 +265,20 @@ unsigned int dlist_set(void* data, unsigned int pos, DList* list)
 
   return JCRL_ERR_OK;
 }
+
+unsigned int dlist_length(unsigned int* length, DList* list)
+{
+  if(length == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+  
+  if(list == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+  
+  *length = list->length;
+  
+  return JCRL_ERR_OK;
+}
