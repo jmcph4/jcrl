@@ -32,4 +32,7 @@ unsigned int dlist_set(void* data, unsigned int pos, DList* list);
 
 unsigned int dlist_length(unsigned int* length, DList* list);
 
+// Utilities
+unsigned int dlist_concatenate(DList* a, DList* b, DList* c);
+
 #endif // DLIST_H_

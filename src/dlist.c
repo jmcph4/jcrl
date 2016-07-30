@@ -305,3 +305,54 @@ unsigned int dlist_length(unsigned int* length, DList* list)
   
   return JCRL_ERR_OK;
 }
+
+unsigned int dlist_concatenate(DList* a, DList* b, DList* c)
+{
+  if(a == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+  
+  if(b == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+  
+  if(c == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+  
+  unsigned int i = 0;
+  unsigned int res = 0;
+  
+  struct _DNode* ptr = a->head;
+  
+  for(ptr=a->head;ptr!=NULL;ptr=ptr->next)
+  {
+    res = dlist_insert(ptr->data, i, c);
+	
+	if(res != JCRL_ERR_OK)
+	{
+	  return res;
+	}
+	
+	i++;
+  }
+  
+  ptr = b->head;
+  
+  for(ptr=b->head;ptr!=NULL;ptr=ptr->next)
+  {
+    res = dlist_insert(ptr->data, i, c);
+	
+	if(res != JCRL_ERR_OK)
+	{
+	  return res;
+	}
+	
+	i++;
+  }
+  
+  return JCRL_ERR_OK;
+}

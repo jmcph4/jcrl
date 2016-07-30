@@ -231,3 +231,54 @@ unsigned int slist_length(unsigned int* length, SList* list)
   
   return JCRL_ERR_OK;
 }
+
+unsigned int slist_concatenate(SList* a, SList* b, SList* c)
+{
+  if(a == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+  
+  if(b == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+  
+  if(c == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+  
+  unsigned int i = 0;
+  unsigned int res = 0;
+  
+  struct _SNode* ptr = a->head;
+  
+  for(ptr=a->head;ptr!=NULL;ptr=ptr->next)
+  {
+    res = slist_insert(ptr->data, i, c);
+	
+	if(res != JCRL_ERR_OK)
+	{
+	  return res;
+	}
+	
+	i++;
+  }
+  
+  ptr = b->head;
+  
+  for(ptr=b->head;ptr!=NULL;ptr=ptr->next)
+  {
+    res = slist_insert(ptr->data, i, c);
+	
+	if(res != JCRL_ERR_OK)
+	{
+	  return res;
+	}
+	
+	i++;
+  }
+  
+  return JCRL_ERR_OK;
+}

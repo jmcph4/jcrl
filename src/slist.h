@@ -30,4 +30,7 @@ unsigned int slist_set(void* data, unsigned int pos, SList* list);
 
 unsigned int slist_length(unsigned int* length, SList* list);
 
+// Utilities
+unsigned int slist_concatenate(SList* a, SList* b, SList* c);
+
 #endif // SLIST_H_
