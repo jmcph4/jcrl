@@ -26,10 +26,10 @@ unsigned int dlist_free(DList* list)
   for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
   {
     if(ptr != list->head)
-	{
-	  free(prev);
-	  prev = ptr;
-	}
+    {
+      free(prev);
+      prev = ptr;
+    }
   }
   
   free(list->head);
@@ -70,47 +70,51 @@ unsigned int dlist_insert(void* data, unsigned int pos, DList* list)
   if(list->length == 0)
   {
     list->head = new_node;
-	list->tail = new_node;
+    list->tail = new_node;
+    
+    list->length++;
+    
+    return JCRL_ERR_OK;
   }
-  else
+
+  if(pos == 0) // inserting new head
   {
-    if(pos == 0) // inserting new head
-    {
-      new_node->next = list->head;
-  
-      if(list->head->next != NULL)
-	  {
-	    list->head->next->prev = new_node;
-	  }
+    new_node->next = list->head;
 	
-	  list->head = new_node;
-    }
-    else
+    if(list->head->next != NULL)
     {
-      for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
-      {
-        if(i + 1 == pos)
-	    {
-	      new_node->next = ptr->next;
-	      new_node->prev = ptr;
-	  
-	      if(ptr->next != NULL)
-	      {
-	        ptr->next->prev = new_node;
-	      }
-		  else
-		  {
-		    list->tail = new_node;
-		  }
-	  
-	      ptr->next = new_node;
-	  
-	      break;
-	    }
-  
-        i++;
-      }
+      list->head->next->prev = new_node;
     }
+    
+    list->head = new_node;
+    
+    list->length++;
+        
+    return JCRL_ERR_OK;
+  }
+    
+  for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+  {
+    if(i + 1 == pos)
+    {
+      new_node->next = ptr->next;
+      new_node->prev = ptr;
+    
+      if(ptr->next != NULL)
+      {
+        ptr->next->prev = new_node;
+      }
+      else
+      {
+        list->tail = new_node;
+      }
+      
+      ptr->next = new_node;
+      
+      break;
+    }
+  
+    i++;
   }
   
   list->length++;
@@ -137,31 +141,48 @@ unsigned int dlist_remove(unsigned int pos, DList* list)
   if(pos == 0) // removing head
   {
     tmp = list->head;
+	
+	if(list->head->next != NULL)
+	{
+	  list->head->next->prev = NULL;
+	}
+	
     list->head = list->head->next;
-  }
-  else if(pos == list->length - 1) // removing tail
-  {
-    tmp = list->tail;
-	list->tail = list->tail->prev;
   }
   else
   {
     for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
-	{
-	  if(i + 1 == pos)
-	  {
-	    tmp = ptr->next;
-	    ptr->next = ptr->next->next;
-		ptr->next->next->prev = ptr; // check
+    {
+      if(i + 1 == pos)
+      {
+        tmp = ptr->next;
+        
+		if(ptr->next->next != NULL)
+		{
+		  ptr->next->next->prev = ptr;
+		}
+		else
+		{
+		  list->tail = ptr;
+		}
+		
+		ptr->next = ptr->next->next;
+		
 		break;
-	  }
-	
-	  i++;
-	}
+      }
+    
+      i++;
+    }
   }
   
   free(tmp);
   list->length--;
+  
+  if(list->length == 0)
+  {
+    list->head = NULL;
+    list->tail = NULL;
+  }
 
   return JCRL_ERR_OK;
 }
@@ -188,18 +209,18 @@ unsigned int dlist_traverse(unsigned int reverse, void (*callback)(void*, unsign
     for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
     {
       callback(ptr->data, i);
-	  i++;
+      i++;
     }
   }
   else if(reverse == 1)
   {
     ptr = list->tail;
-	
-	for(ptr=list->tail;ptr!=NULL;ptr=ptr->prev)
-	{
-	  callback(ptr->data, i);
-	  i++;
-	}
+    
+    for(ptr=list->tail;ptr!=NULL;ptr=ptr->prev)
+    {
+      callback(ptr->data, i);
+      i++;
+    }
   }
   
   return JCRL_ERR_OK;
@@ -228,10 +249,12 @@ unsigned int dlist_get(void** data, unsigned int pos, DList* list)
   for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
   {
     if(i == pos)
-	{
-	  *data = ptr->data;
-	}
-	
+    {
+      *data = ptr->data;
+      
+      break;
+    }
+    
     i++;
   }
 
@@ -256,10 +279,10 @@ unsigned int dlist_set(void* data, unsigned int pos, DList* list)
   for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
   {
     if(i == pos)
-	{
-	  ptr->data = data;
-	}
-	
+    {
+      ptr->data = data;
+    }
+    
     i++;
   }
 
