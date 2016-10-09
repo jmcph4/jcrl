@@ -75,12 +75,7 @@ unsigned int queue_push(void* data, Queue* queue)
 
 unsigned int queue_pop(void** data, Queue* queue)
 {
-  if(data == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-
-  if(queue == NULL)
+  if(data == NULL || queue == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }
@@ -128,12 +123,7 @@ unsigned int queue_pop(void** data, Queue* queue)
 
 unsigned int queue_length(unsigned int* length, Queue* queue)
 {
-  if(length == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(queue == NULL)
+  if(length == NULL || queue == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }

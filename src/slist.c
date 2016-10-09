@@ -132,12 +132,7 @@ unsigned int slist_remove(unsigned int pos, SList* list)
 
 unsigned int slist_traverse(void (*callback)(void*, unsigned int), SList* list)
 {
-  if(callback == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(list == NULL)
+  if(callback == NULL || list == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }
@@ -156,14 +151,9 @@ unsigned int slist_traverse(void (*callback)(void*, unsigned int), SList* list)
 
 unsigned int slist_get(void** data, unsigned int pos, SList* list)
 {
-  if(data == NULL)
+  if(data == NULL || list == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
-  }
-
-  if(list == NULL)
-  {
-    return JCRL_ERR_OK;
   }
   
   if(pos >= list->length)
@@ -217,12 +207,7 @@ unsigned int slist_set(void* data, unsigned int pos, SList* list)
 
 unsigned int slist_length(unsigned int* length, SList* list)
 {
-  if(length == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(list == NULL)
+  if(length == NULL || list == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }
@@ -234,17 +219,7 @@ unsigned int slist_length(unsigned int* length, SList* list)
 
 unsigned int slist_concatenate(SList* a, SList* b, SList* c)
 {
-  if(a == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(b == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(c == NULL)
+  if(a == NULL || b == NULL || c == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }

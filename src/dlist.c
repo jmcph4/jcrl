@@ -189,12 +189,7 @@ unsigned int dlist_remove(unsigned int pos, DList* list)
 
 unsigned int dlist_traverse(unsigned int reverse, void (*callback)(void*, unsigned int), DList* list)
 {
-  if(callback == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(list == NULL)
+  if(callback == NULL || list == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }
@@ -228,14 +223,9 @@ unsigned int dlist_traverse(unsigned int reverse, void (*callback)(void*, unsign
 
 unsigned int dlist_get(void** data, unsigned int pos, DList* list)
 {
-  if(data == NULL)
+  if(data == NULL || list == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
-  }
-
-  if(list == NULL)
-  {
-    return JCRL_ERR_OK;
   }
   
   if(pos >= list->length)
@@ -291,12 +281,7 @@ unsigned int dlist_set(void* data, unsigned int pos, DList* list)
 
 unsigned int dlist_length(unsigned int* length, DList* list)
 {
-  if(length == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(list == NULL)
+  if(length == NULL || list == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }
@@ -308,17 +293,7 @@ unsigned int dlist_length(unsigned int* length, DList* list)
 
 unsigned int dlist_concatenate(DList* a, DList* b, DList* c)
 {
-  if(a == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(b == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(c == NULL)
+  if(a == NULL || b == NULL || c == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }

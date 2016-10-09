@@ -72,12 +72,7 @@ unsigned int stack_push(void* data, Stack* stack)
 
 unsigned int stack_pop(void* data, Stack* stack)
 {
-  if(data == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(stack == NULL)
+  if(data == NULL || stack == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }
@@ -111,12 +106,7 @@ unsigned int stack_pop(void* data, Stack* stack)
 
 unsigned int stack_depth(unsigned int* depth, Stack* stack)
 {
-  if(depth == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  if(stack == NULL)
+  if(depth == NULL || stack == NULL)
   {
     return JCRL_ERR_NULL_PARAM;
   }
