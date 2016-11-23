@@ -262,7 +262,7 @@ unsigned int slist_append(void* data, SList* list)
     return res;
 }
 
-unsigned int slist_concatenate(SList* a, SList* b, SList* c)
+unsigned int slist_concatenate(SList* a, SList* b)
 {
     if(a == NULL || b == NULL)
     {
