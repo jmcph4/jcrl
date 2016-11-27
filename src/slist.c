@@ -19,6 +19,11 @@ unsigned int slist_init(SList* list)
 
 unsigned int slist_free(SList* list)
 {
+    if(list == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
     struct _SNode* ptr = list->head;
     struct _SNode* prev = NULL;
   
@@ -96,7 +101,7 @@ unsigned int slist_remove(unsigned int pos, SList* list)
         return JCRL_ERR_NULL_PARAM;
     }
   
-    if(pos > list->length)
+    if(pos >= list->length)
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
@@ -105,7 +110,7 @@ unsigned int slist_remove(unsigned int pos, SList* list)
     struct _SNode* tmp = NULL;
     struct _SNode* ptr = list->head;
   
-    if(pos == 0) // removing head
+    if(pos == 0) /* removing head */
     {
         tmp = list->head;
         list->head = list->head->next;
@@ -182,7 +187,7 @@ unsigned int slist_set(void* data, unsigned int pos, SList* list)
 {
     if(list == NULL)
     {
-        return JCRL_ERR_OK;
+        return JCRL_ERR_NULL_PARAM;
     }
   
     if(pos >= list->length)
