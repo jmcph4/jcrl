@@ -21,6 +21,11 @@ unsigned int dlist_init(DList* list)
 
 unsigned int dlist_free(DList* list)
 {
+    if(list == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
     struct _DNode* ptr = list->head;
     struct _DNode* prev = NULL;
   
@@ -129,7 +134,7 @@ unsigned int dlist_remove(unsigned int pos, DList* list)
         return JCRL_ERR_NULL_PARAM;
     }
     
-    if(pos > list->length)
+    if(pos >= list->length)
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
@@ -257,7 +262,7 @@ unsigned int dlist_set(void* data, unsigned int pos, DList* list)
 {
     if(list == NULL)
     {
-        return JCRL_ERR_OK;
+        return JCRL_ERR_NULL_PARAM;
     }
     
     if(pos >= list->length)
