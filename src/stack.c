@@ -4,6 +4,7 @@
 #include "stack.h"
 #include "dlist.h"
 
+/* Initialisation */
 unsigned int stack_init(Stack* stack)
 {
   if(stack == NULL)
@@ -51,6 +52,83 @@ unsigned int stack_free(Stack* stack)
   return JCRL_ERR_OK;
 }
 
+/* Equality */
+unsigned int stack_equal(bool* equal, Stack* a, Stack* b)
+{
+    if(equal == NULL || a == NULL || b == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    unsigned int depth_a = 0;
+    unsigned int depth_b = 0;
+    
+    unsigned int res = stack_depth(&depth_a, a);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    res = stack_depth(&depth_b, b);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    bool lists_equal = false;
+        
+    res = dlist_equal(&lists_equal, a->list, b->list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    if(depth_a == depth_b && lists_equal)
+    {
+        *equal = true;
+    }
+    else
+    {
+        *equal = false;
+    }
+    
+    return JCRL_ERR_OK;
+}
+
+/* Access */
+unsigned int stack_peek(void* data, Stack* stack)
+{
+    if(data == NULL || stack == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    unsigned int res = dlist_get(data, 0, stack->list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    return JCRL_ERR_OK;
+}
+
+unsigned int stack_depth(unsigned int* depth, Stack* stack)
+{
+  if(depth == NULL || stack == NULL)
+  {
+    return JCRL_ERR_NULL_PARAM;
+  }
+  
+  *depth = stack->depth;
+  
+  return JCRL_ERR_OK;
+}
+
+/* Operations */
 unsigned int stack_push(void* data, Stack* stack)
 {
   if(stack == NULL)
@@ -82,10 +160,7 @@ unsigned int stack_pop(void* data, Stack* stack)
     return JCRL_ERR_OUT_OF_BOUNDS;
   }
   
-  unsigned int res = 0;
-  
-  //data = stack->list->head->data;
-  res = dlist_get(data, 0, stack->list);
+  unsigned int res = dlist_get(data, 0, stack->list);
   
   if(res != JCRL_ERR_OK)
   {
@@ -100,18 +175,6 @@ unsigned int stack_pop(void* data, Stack* stack)
   }
   
   stack->depth--;
-  
-  return JCRL_ERR_OK;
-}
-
-unsigned int stack_depth(unsigned int* depth, Stack* stack)
-{
-  if(depth == NULL || stack == NULL)
-  {
-    return JCRL_ERR_NULL_PARAM;
-  }
-  
-  *depth = stack->depth;
   
   return JCRL_ERR_OK;
 }

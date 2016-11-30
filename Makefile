@@ -22,6 +22,12 @@ test_executables:= $(patsubst $(TEST_DIR)/%.c, $(BUILD_DIR)/%, $(test_sources))
 tests:
 	# singly-linked list
 	$(CC) $(TEST_DIR)/unit_slist.c $(TEST_DIR)/test_slist.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_slist
+    
+    # singly-linked list
+	$(CC) $(TEST_DIR)/unit_dlist.c $(TEST_DIR)/test_dlist.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_dlist
+    
+    # stack
+	$(CC) $(TEST_DIR)/unit_stack.c $(TEST_DIR)/test_stack.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_stack
 
 .PHONY: clean
 clean:
