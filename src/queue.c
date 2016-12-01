@@ -100,6 +100,32 @@ unsigned int queue_equal(bool* equal, Queue* a, Queue* b)
 }
 
 /* Access */
+unsigned int queue_peek(void** data, Queue* queue)
+{
+    if(data == NULL || queue == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    unsigned int length = 0;
+    
+    unsigned int res = queue_length(&length, queue);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    res = dlist_get(data, length, queue->list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    return JCRL_ERR_OK;
+}
+
 unsigned int queue_length(unsigned int* length, Queue* queue)
 {
     if(length == NULL || queue == NULL)

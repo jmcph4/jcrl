@@ -21,6 +21,7 @@ unsigned int queue_free(Queue* queue);
 unsigned int queue_equal(bool* equal, Queue* a, Queue* b);
 
 /* Access */
+unsigned int queue_peek(void** data, Queue* queue);
 unsigned int queue_length(unsigned int* length, Queue* queue);
 
 /* Operations */
