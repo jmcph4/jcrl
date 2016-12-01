@@ -53,6 +53,52 @@ unsigned int queue_free(Queue* queue)
     return JCRL_ERR_OK;
 }
 
+/* Equality */
+unsigned int queue_equal(bool* equal, Queue* a, Queue* b)
+{
+    if(equal == NULL || a == NULL || b == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    *equal = false;
+    
+    unsigned int length_a = 0;
+    unsigned int length_b = 0;
+    
+    unsigned int res = queue_length(&length_a, a);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    res = queue_length(&length_b, b);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    if(length_a == length_b)
+    {
+        bool lists_equal = false;
+        res = dlist_equal(&lists_equal, a->list, b->list);
+        
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+        
+        if(lists_equal)
+        {
+            *equal = true;
+        }
+    }
+    
+    return JCRL_ERR_OK;
+}
+
 /* Access */
 unsigned int queue_length(unsigned int* length, Queue* queue)
 {
