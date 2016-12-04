@@ -100,7 +100,7 @@ unsigned int queue_equal(bool* equal, Queue* a, Queue* b)
 }
 
 /* Access */
-unsigned int queue_peek(void** data, Queue* queue)
+unsigned int queue_peek(void* data, Queue* queue)
 {
     if(data == NULL || queue == NULL)
     {
@@ -116,7 +116,7 @@ unsigned int queue_peek(void** data, Queue* queue)
         return res;
     }
     
-    res = dlist_get(data, length, queue->list);
+    res = dlist_get(data, length - 1, queue->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -160,7 +160,7 @@ unsigned int queue_push(void* data, Queue* queue)
     return JCRL_ERR_OK;
 }
 
-unsigned int queue_pop(void** data, Queue* queue)
+unsigned int queue_pop(void* data, Queue* queue)
 {
     if(data == NULL || queue == NULL)
     {

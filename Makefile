@@ -28,6 +28,9 @@ tests:
     
     # stack
 	$(CC) $(TEST_DIR)/unit_stack.c $(TEST_DIR)/test_stack.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_stack
+    
+    # queue
+	$(CC) $(TEST_DIR)/unit_queue.c $(TEST_DIR)/test_queue.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_queue
 
 .PHONY: clean
 clean:
