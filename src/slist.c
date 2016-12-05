@@ -289,3 +289,71 @@ unsigned int slist_concatenate(SList* a, SList* b)
   
     return JCRL_ERR_OK;
 }
+
+unsigned int slist_swap(unsigned int a, unsigned int b, SList* list)
+{
+    if(list == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    if(a == b) /* trivial case, nothing to do */
+    {
+        return JCRL_ERR_OK;
+    }
+    
+    void** temp_a = calloc(1, sizeof(void*));
+    
+    if(temp_a == NULL)
+    {
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+    
+    void** temp_b = calloc(1, sizeof(void*));
+    
+    if(temp_b == NULL)
+    {
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+    
+    unsigned int res = slist_get(temp_a, a, list);
+            
+    if(res != JCRL_ERR_OK)
+    {
+        free(temp_a);
+        free(temp_b);
+        return res;
+    }
+    
+    res = slist_get(temp_b, b, list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        free(temp_a);
+        free(temp_b);
+        return res;
+    }
+    
+    res = slist_set(*temp_a, b, list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        free(temp_a);
+        free(temp_b);
+        return res;
+    }
+    
+    res = slist_set(*temp_b, a, list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        free(temp_a);
+        free(temp_b);
+        return res;
+    }
+    
+    free(temp_a);
+    free(temp_b);
+    
+    return JCRL_ERR_OK;
+}

@@ -1157,3 +1157,140 @@ bool test_slist_concatenate_right_empty_list(void)
     
     return pass;
 }
+
+bool test_slist_swap_normal(void)
+{
+    bool pass = false;
+    
+    SList list;
+    slist_init(&list);
+    
+    SList expected_list;
+    slist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 3;
+    
+    slist_append((void*)a, &list);
+    slist_append((void*)b, &list);
+    slist_append((void*)b, &list);
+    slist_append((void*)a, &list);
+    
+    /* expected list */
+    slist_append((void*)a, &expected_list);
+    slist_append((void*)b, &expected_list);
+    slist_append((void*)a, &expected_list);
+    slist_append((void*)b, &expected_list);
+    
+    unsigned int res = slist_swap(2, 3, &list);
+    
+    bool equal = false;
+    slist_equal(&equal, &list, &expected_list);
+    
+    slist_free(&list);
+    slist_free(&expected_list);
+    
+    if(res == JCRL_ERR_OK && equal)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_slist_swap_null_params(void)
+{
+    bool pass = false;
+    
+    unsigned int res = slist_swap(0, 1, NULL);
+    
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_slist_swap_out_of_bounds(void)
+{
+    bool pass = false;
+    
+    SList list;
+    slist_init(&list);
+    
+    SList expected_list;
+    slist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 3;
+    
+    slist_append((void*)a, &list);
+    slist_append((void*)b, &list);
+    slist_append((void*)b, &list);
+    slist_append((void*)a, &list);
+    
+    /* expected list */
+    slist_append((void*)a, &expected_list);
+    slist_append((void*)b, &expected_list);
+    slist_append((void*)a, &expected_list);
+    slist_append((void*)b, &expected_list);
+    
+    unsigned int res = slist_swap(4, 5, &list);
+    
+    bool equal = false;
+    slist_equal(&equal, &list, &expected_list);
+    
+    slist_free(&list);
+    slist_free(&expected_list);
+    
+    if(res == JCRL_ERR_OUT_OF_BOUNDS && !equal)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_slist_swap_same_index(void)
+{
+    bool pass = false;
+    
+    SList list;
+    slist_init(&list);
+    
+    SList expected_list;
+    slist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 3;
+    
+    slist_append((void*)a, &list);
+    slist_append((void*)b, &list);
+    slist_append((void*)b, &list);
+    slist_append((void*)a, &list);
+    
+    /* expected list */
+    slist_append((void*)a, &expected_list);
+    slist_append((void*)b, &expected_list);
+    slist_append((void*)b, &expected_list);
+    slist_append((void*)a, &expected_list);
+    
+    unsigned int res = slist_swap(0, 0, &list);
+    
+    bool equal = false;
+    slist_equal(&equal, &list, &expected_list);
+    
+    slist_free(&list);
+    slist_free(&expected_list);
+    
+    if(res == JCRL_ERR_OK && equal)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}

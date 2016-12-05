@@ -6,7 +6,7 @@
 */
 #include "slist.h"
 
-#define UNIT_SLIST_NUM_TESTS 40
+#define UNIT_SLIST_NUM_TESTS 44
 
 /* Initialisation */
 bool test_slist_init_normal(void);
@@ -63,3 +63,8 @@ bool test_slist_concatenate_null_params(void);
 bool test_slist_concatenate_empty_lists(void);
 bool test_slist_concatenate_left_empty_list(void);
 bool test_slist_concatenate_right_empty_list(void);
+
+bool test_slist_swap_normal(void);
+bool test_slist_swap_null_params(void);
+bool test_slist_swap_out_of_bounds(void);
+bool test_slist_swap_same_index(void);

@@ -37,5 +37,6 @@ unsigned int slist_traverse(void (*callback)(void*, unsigned int), SList* list);
 /* Utilities */
 unsigned int slist_append(void* data, SList* list);
 unsigned int slist_concatenate(SList* a, SList* b);
+unsigned int slist_swap(unsigned int a, unsigned int b, SList* list);
 
 #endif // SLIST_H_
