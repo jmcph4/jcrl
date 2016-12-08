@@ -6,7 +6,7 @@
 */
 #include "dlist.h"
 
-#define UNIT_DLIST_NUM_TESTS 41
+#define UNIT_DLIST_NUM_TESTS 45
 
 /* Initialisation */
 bool test_dlist_init_normal(void);
@@ -64,3 +64,8 @@ bool test_dlist_concatenate_null_params(void);
 bool test_dlist_concatenate_empty_lists(void);
 bool test_dlist_concatenate_left_empty_list(void);
 bool test_dlist_concatenate_right_empty_list(void);
+
+bool test_dlist_swap_normal(void);
+bool test_dlist_swap_null_params(void);
+bool test_dlist_swap_out_of_bounds(void);
+bool test_dlist_swap_same_index(void);

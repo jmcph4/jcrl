@@ -365,3 +365,71 @@ unsigned int dlist_concatenate(DList* a, DList* b)
     
     return JCRL_ERR_OK;
 }
+
+unsigned int dlist_swap(unsigned int a, unsigned int b, DList* list)
+{
+    if(list == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    if(a == b) /* trivial case, nothing to do */
+    {
+        return JCRL_ERR_OK;
+    }
+    
+    void** temp_a = calloc(1, sizeof(void*));
+    
+    if(temp_a == NULL)
+    {
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+    
+    void** temp_b = calloc(1, sizeof(void*));
+    
+    if(temp_b == NULL)
+    {
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+    
+    unsigned int res = dlist_get(temp_a, a, list);
+            
+    if(res != JCRL_ERR_OK)
+    {
+        free(temp_a);
+        free(temp_b);
+        return res;
+    }
+    
+    res = dlist_get(temp_b, b, list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        free(temp_a);
+        free(temp_b);
+        return res;
+    }
+    
+    res = dlist_set(*temp_a, b, list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        free(temp_a);
+        free(temp_b);
+        return res;
+    }
+    
+    res = dlist_set(*temp_b, a, list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        free(temp_a);
+        free(temp_b);
+        return res;
+    }
+    
+    free(temp_a);
+    free(temp_b);
+    
+    return JCRL_ERR_OK;
+}

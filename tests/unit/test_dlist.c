@@ -52,7 +52,11 @@ const char* tests[UNIT_DLIST_NUM_TESTS] = {
                                     "test_dlist_concatenate_null_params",
                                     "test_dlist_concatenate_empty_lists",
                                     "test_dlist_concatenate_left_empty_list",
-                                    "test_dlist_concatenate_right_empty_list"
+                                    "test_dlist_concatenate_right_empty_list",
+                                    "test_dlist_swap_normal",
+                                    "test_dlist_swap_null_params",
+                                    "test_dlist_swap_out_of_bounds",
+                                    "test_dlist_swap_same_index"
                                     };
 
 int main(void)
@@ -157,6 +161,15 @@ int main(void)
     results[t] = test_dlist_concatenate_left_empty_list();
     t++;
     results[t] = test_dlist_concatenate_right_empty_list();
+    t++;
+    
+    results[t] = test_dlist_swap_normal();
+    t++;
+    results[t] = test_dlist_swap_null_params();
+    t++;
+    results[t] = test_dlist_swap_out_of_bounds();
+    t++;
+    results[t] = test_dlist_swap_same_index();
     t++;
     
     /* check for test failure */

@@ -1192,3 +1192,140 @@ bool test_dlist_concatenate_right_empty_list(void)
     
     return pass;
 }
+
+bool test_dlist_swap_normal(void)
+{
+    bool pass = false;
+    
+    DList list;
+    dlist_init(&list);
+    
+    DList expected_list;
+    dlist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 3;
+    
+    dlist_append((void*)a, &list);
+    dlist_append((void*)b, &list);
+    dlist_append((void*)b, &list);
+    dlist_append((void*)a, &list);
+    
+    /* expected list */
+    dlist_append((void*)a, &expected_list);
+    dlist_append((void*)b, &expected_list);
+    dlist_append((void*)a, &expected_list);
+    dlist_append((void*)b, &expected_list);
+    
+    unsigned int res = dlist_swap(2, 3, &list);
+    
+    bool equal = false;
+    dlist_equal(&equal, &list, &expected_list);
+    
+    dlist_free(&list);
+    dlist_free(&expected_list);
+    
+    if(res == JCRL_ERR_OK && equal)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_dlist_swap_null_params(void)
+{
+    bool pass = false;
+    
+    unsigned int res = dlist_swap(0, 1, NULL);
+    
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_dlist_swap_out_of_bounds(void)
+{
+    bool pass = false;
+    
+    DList list;
+    dlist_init(&list);
+    
+    DList expected_list;
+    dlist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 3;
+    
+    dlist_append((void*)a, &list);
+    dlist_append((void*)b, &list);
+    dlist_append((void*)b, &list);
+    dlist_append((void*)a, &list);
+    
+    /* expected list */
+    dlist_append((void*)a, &expected_list);
+    dlist_append((void*)b, &expected_list);
+    dlist_append((void*)a, &expected_list);
+    dlist_append((void*)b, &expected_list);
+    
+    unsigned int res = dlist_swap(4, 5, &list);
+    
+    bool equal = false;
+    dlist_equal(&equal, &list, &expected_list);
+    
+    dlist_free(&list);
+    dlist_free(&expected_list);
+    
+    if(res == JCRL_ERR_OUT_OF_BOUNDS && !equal)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_dlist_swap_same_index(void)
+{
+    bool pass = false;
+    
+    DList list;
+    dlist_init(&list);
+    
+    DList expected_list;
+    dlist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 3;
+    
+    dlist_append((void*)a, &list);
+    dlist_append((void*)b, &list);
+    dlist_append((void*)b, &list);
+    dlist_append((void*)a, &list);
+    
+    /* expected list */
+    dlist_append((void*)a, &expected_list);
+    dlist_append((void*)b, &expected_list);
+    dlist_append((void*)b, &expected_list);
+    dlist_append((void*)a, &expected_list);
+    
+    unsigned int res = dlist_swap(0, 0, &list);
+    
+    bool equal = false;
+    dlist_equal(&equal, &list, &expected_list);
+    
+    dlist_free(&list);
+    dlist_free(&expected_list);
+    
+    if(res == JCRL_ERR_OK && equal)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
