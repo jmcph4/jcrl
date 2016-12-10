@@ -23,14 +23,17 @@ tests:
 	# singly-linked list
 	$(CC) $(TEST_DIR)/unit_slist.c $(TEST_DIR)/test_slist.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_slist
     
-    # singly-linked list
+    	# singly-linked list
 	$(CC) $(TEST_DIR)/unit_dlist.c $(TEST_DIR)/test_dlist.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_dlist
     
-    # stack
+    	# stack
 	$(CC) $(TEST_DIR)/unit_stack.c $(TEST_DIR)/test_stack.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_stack
     
-    # queue
+    	# queue
 	$(CC) $(TEST_DIR)/unit_queue.c $(TEST_DIR)/test_queue.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_queue
+
+	# bubblesort
+	$(CC) $(TEST_DIR)/unit_bubblesort.c $(TEST_DIR)/test_bubblesort.c $(CFLAGS) -g -I$(SRC_DIR) -L $(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_bubblesort
 
 .PHONY: clean
 clean:
