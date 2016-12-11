@@ -19,7 +19,7 @@ typedef struct _SList SList;
 
 /* Initialisation */
 unsigned int slist_init(SList* list);
-unsigned int slist_free(SList* list);
+unsigned int slist_free(void (handle_free)(void*), SList* list);
 
 /* Equality */
 unsigned int slist_equal(bool* equal, SList* a, SList* b);

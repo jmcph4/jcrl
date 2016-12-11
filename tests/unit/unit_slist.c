@@ -36,7 +36,7 @@ bool test_slist_init_normal(void)
     
     slist_equal(&equal, &list, &expected_list); /* test equality */
     
-    slist_free(&list);
+    slist_free(NULL, &list);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -72,7 +72,7 @@ bool test_slist_free_normal(void)
     slist_append((void*)a, &list);
     slist_append((void*)a, &list);
     
-    unsigned int res = slist_free(&list);
+    unsigned int res = slist_free(NULL, &list);
     
     if(res == JCRL_ERR_OK)
     {
@@ -86,7 +86,7 @@ bool test_slist_free_null_params(void)
 {
     bool pass = false;
     
-    unsigned int res = slist_free(NULL);
+    unsigned int res = slist_free(NULL, NULL);
     
     if(res == JCRL_ERR_NULL_PARAM)
     {
@@ -103,7 +103,7 @@ bool test_slist_free_empty_list(void)
     SList list;
     slist_init(&list);
     
-    unsigned int res = slist_free(&list);
+    unsigned int res = slist_free(NULL, &list);
     
     if(res == JCRL_ERR_OK)
     {
@@ -142,8 +142,8 @@ bool test_slist_equal_normal(void)
     
     unsigned int res = slist_equal(&equal, &list_a, &list_b);
     
-    slist_free(&list_a);
-    slist_free(&list_b);
+    slist_free(NULL, &list_a);
+    slist_free(NULL, &list_b);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -195,8 +195,8 @@ bool test_slist_equal_unequal_lists(void)
     
     unsigned int res = slist_equal(&equal, &list_a, &list_b);
     
-    slist_free(&list_a);
-    slist_free(&list_b);
+    slist_free(NULL, &list_a);
+    slist_free(NULL, &list_b);
     
     if(res == JCRL_ERR_OK && !equal)
     {
@@ -226,7 +226,7 @@ bool test_slist_equal_same_lists(void)
     
     unsigned int res = slist_equal(&equal, &list_a, &list_a);
     
-    slist_free(&list_a);
+    slist_free(NULL, &list_a);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -263,8 +263,8 @@ bool test_slist_in_normal(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal && in)
     {
@@ -306,8 +306,8 @@ bool test_slist_in_empty_list(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal && !in)
     {
@@ -333,7 +333,7 @@ bool test_slist_get_normal(void)
     
     unsigned int res = slist_get((void*)&val, 0, &list);
     
-    slist_free(&list);
+    slist_free(NULL, &list);
     
     if(res == JCRL_ERR_OK && (unsigned int)val == a)
     {
@@ -374,7 +374,7 @@ bool test_slist_get_out_of_bounds(void)
     
     unsigned int res = slist_get((void*)&val, 1, &list);
     
-    slist_free(&list);
+    slist_free(NULL, &list);
     
     if(res == JCRL_ERR_OUT_OF_BOUNDS)
     {
@@ -422,7 +422,7 @@ bool test_slist_set_normal(void)
         pass = true;
     }
     
-    slist_free(&list);
+    slist_free(NULL, &list);
     
     return pass;
 }
@@ -477,7 +477,7 @@ bool test_slist_set_out_of_bounds(void)
         pass = true;
     }
     
-    slist_free(&list);
+    slist_free(NULL, &list);
     
     return pass;
 }
@@ -499,7 +499,7 @@ bool test_slist_length_normal(void)
     
     unsigned int res = slist_length(&len, &list);
     
-    slist_free(&list);
+    slist_free(NULL, &list);
     
     if(res == JCRL_ERR_OK && len == 3)
     {
@@ -534,7 +534,7 @@ bool test_slist_length_empty_list(void)
     
     unsigned int res = slist_length(&len, &list);
     
-    slist_free(&list);
+    slist_free(NULL, &list);
     
     if(res == JCRL_ERR_OK && len == 0)
     {
@@ -900,8 +900,8 @@ bool test_slist_traverse_normal(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -940,8 +940,8 @@ bool test_slist_traverse_empty_list(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -974,8 +974,8 @@ bool test_slist_append_normal(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -1018,8 +1018,8 @@ bool test_slist_append_empty_list(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -1074,10 +1074,10 @@ bool test_slist_concatenate_normal(void)
     bool equal_b = false;
     slist_equal(&equal_b, &list_b, &expected_list_b);
     
-    slist_free(&list_a);
-    slist_free(&list_b);
-    slist_free(&expected_list_concat);
-    slist_free(&expected_list_b);
+    slist_free(NULL, &list_a);
+    slist_free(NULL, &list_b);
+    slist_free(NULL, &expected_list_concat);
+    slist_free(NULL, &expected_list_b);
     
     if(res == JCRL_ERR_OK && equal_a && equal_b)
     {
@@ -1124,9 +1124,9 @@ bool test_slist_concatenate_empty_lists(void)
     bool equal_b = false;
     slist_equal(&equal_b, &list_b, &expected_list);
     
-    slist_free(&list_a);
-    slist_free(&list_b);
-    slist_free(&expected_list);
+    slist_free(NULL, &list_a);
+    slist_free(NULL, &list_b);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal_a && equal_b)
     {
@@ -1176,10 +1176,10 @@ bool test_slist_concatenate_left_empty_list(void)
     bool equal_b = false;
     slist_equal(&equal_b, &list_b, &expected_list_b);
     
-    slist_free(&list_a);
-    slist_free(&list_b);
-    slist_free(&expected_list_concat);
-    slist_free(&expected_list_b);
+    slist_free(NULL, &list_a);
+    slist_free(NULL, &list_b);
+    slist_free(NULL, &expected_list_concat);
+    slist_free(NULL, &expected_list_b);
     
     if(res == JCRL_ERR_OK && equal_a && equal_b)
     {
@@ -1226,10 +1226,10 @@ bool test_slist_concatenate_right_empty_list(void)
     bool equal_b = false;
     slist_equal(&equal_b, &list_b, &expected_list_b);
     
-    slist_free(&list_a);
-    slist_free(&list_b);
-    slist_free(&expected_list_concat);
-    slist_free(&expected_list_b);
+    slist_free(NULL, &list_a);
+    slist_free(NULL, &list_b);
+    slist_free(NULL, &expected_list_concat);
+    slist_free(NULL, &expected_list_b);
     
     if(res == JCRL_ERR_OK && equal_a && equal_b)
     {
@@ -1269,8 +1269,8 @@ bool test_slist_swap_normal(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -1324,8 +1324,8 @@ bool test_slist_swap_out_of_bounds(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OUT_OF_BOUNDS && !equal)
     {
@@ -1365,8 +1365,8 @@ bool test_slist_swap_same_index(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {

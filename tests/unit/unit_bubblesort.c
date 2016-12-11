@@ -54,8 +54,8 @@ bool test_bubblesort_slist_normal(void)
     bool equal = false;
     slist_equal(&equal, &list, &expected_list);
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -99,8 +99,8 @@ bool test_bubblesort_slist_empty_list(void)
         pass = true;
     }
     
-    slist_free(&list);
-    slist_free(&expected_list);
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
     
     return pass;
 }

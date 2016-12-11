@@ -17,7 +17,7 @@ unsigned int slist_init(SList* list)
     return JCRL_ERR_OK;
 }
 
-unsigned int slist_free(SList* list)
+unsigned int slist_free(void (handle_free)(void*), SList* list)
 {
     if(list == NULL)
     {
@@ -31,11 +31,21 @@ unsigned int slist_free(SList* list)
     {
         if(ptr != list->head)
         {
+            if(handle_free != NULL)
+            {
+                handle_free(prev->data);
+            }   
+            
             free(prev);
             prev = ptr;
         }
     }
   
+    if(handle_free != NULL)
+    {
+        handle_free(list->head->data);
+    }
+    
     free(list->head);
     list->length = 0;
 
