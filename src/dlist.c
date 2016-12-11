@@ -471,3 +471,44 @@ unsigned int dlist_swap(unsigned int a, unsigned int b, DList* list)
     
     return JCRL_ERR_OK;
 }
+
+unsigned int dlist_find(unsigned int* pos, void* data, DList* list)
+{
+    if(pos == NULL || list == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    bool in = false;
+    
+    unsigned int res = dlist_in(&in, data, list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    if(in)
+    {
+        unsigned int i = 0;
+        
+        struct _DNode* ptr = list->head;
+        
+        for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+        {
+            if(ptr->data == data)
+            {
+                *pos = i;
+                break;
+            }
+            
+            i++;
+        }
+    }
+    else
+    {
+        return JCRL_ERR_NOT_FOUND;
+    }
+    
+    return JCRL_ERR_OK;
+}

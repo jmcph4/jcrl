@@ -45,5 +45,6 @@ unsigned int dlist_length(unsigned int* length, DList* list);
 unsigned int dlist_append(void* data, DList* list);
 unsigned int dlist_concatenate(DList* a, DList* b);
 unsigned int dlist_swap(unsigned int a, unsigned int b, DList* list);
+unsigned int dlist_find(unsigned int* pos, void* data, DList* list);
 
 #endif /* DLIST_H_ */
