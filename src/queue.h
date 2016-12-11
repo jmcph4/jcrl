@@ -15,7 +15,7 @@ typedef struct _Queue Queue;
 
 /* Initialisation */
 unsigned int queue_init(Queue* queue);
-unsigned int queue_free(Queue* queue);
+unsigned int queue_free(void (handle_free)(void*), Queue* queue);
 
 /* Equality */
 unsigned int queue_equal(bool* equal, Queue* a, Queue* b);

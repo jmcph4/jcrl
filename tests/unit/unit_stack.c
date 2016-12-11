@@ -20,7 +20,7 @@ bool test_stack_init_normal(void)
     
     unsigned int res = stack_init(&stack);
     
-    stack_free(&stack);
+    stack_free(NULL, &stack);
     
     if(res == JCRL_ERR_OK)
     {
@@ -51,7 +51,7 @@ bool test_stack_free_normal(void)
     Stack stack;
     stack_init(&stack);
     
-    unsigned int res = stack_free(&stack);
+    unsigned int res = stack_free(NULL, &stack);
     
     if(res == JCRL_ERR_OK)
     {
@@ -65,7 +65,7 @@ bool test_stack_free_null_params(void)
 {
     bool pass = false;
     
-    unsigned int res = stack_free(NULL);
+    unsigned int res = stack_free(NULL, NULL);
     
     if(res == JCRL_ERR_NULL_PARAM)
     {
@@ -93,8 +93,8 @@ bool test_stack_equal_normal(void)
     bool equal = false;
     unsigned int res = stack_equal(&equal, &stack_a, &stack_b);
     
-    stack_free(&stack_a);
-    stack_free(&stack_b);
+    stack_free(NULL, &stack_a);
+    stack_free(NULL, &stack_b);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -138,8 +138,8 @@ bool test_stack_equal_unequal_stacks(void)
     bool equal = false;
     unsigned int res = stack_equal(&equal, &stack_a, &stack_b);
     
-    stack_free(&stack_a);
-    stack_free(&stack_b);
+    stack_free(NULL, &stack_a);
+    stack_free(NULL, &stack_b);
     
     if(res == JCRL_ERR_OK && !equal)
     {
@@ -163,7 +163,7 @@ bool test_stack_equal_same_stacks(void)
     bool equal = false;
     unsigned int res = stack_equal(&equal, &stack_a, &stack_a);
     
-    stack_free(&stack_a);
+    stack_free(NULL, &stack_a);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -189,7 +189,7 @@ bool test_stack_peek_normal(void)
     
     unsigned int res = stack_peek((void*)&peek, &stack);
     
-    stack_free(&stack);
+    stack_free(NULL, &stack);
     
     if(res == JCRL_ERR_OK && peek == a)
     {
@@ -223,7 +223,7 @@ bool test_stack_peek_empty_stack(void)
     unsigned int peek = 0;
     unsigned int res = stack_peek((void*)&peek, &stack);
     
-    stack_free(&stack);
+    stack_free(NULL, &stack);
     
     if(res == JCRL_ERR_OUT_OF_BOUNDS && peek == 0)
     {
@@ -249,7 +249,7 @@ bool test_stack_depth_normal(void)
     unsigned int depth = 0;
     unsigned int res = stack_depth(&depth, &stack);
     
-    stack_free(&stack);
+    stack_free(NULL, &stack);
     
     if(res == JCRL_ERR_OK && depth == 3)
     {
@@ -283,7 +283,7 @@ bool test_stack_depth_empty_stack(void)
     unsigned int depth = 0;
     unsigned int res = stack_depth(&depth, &stack);
     
-    stack_free(&stack);
+    stack_free(NULL, &stack);
     
     if(res == JCRL_ERR_OK && depth == 0)
     {
@@ -318,8 +318,8 @@ bool test_stack_push_normal(void)
     bool equal = false;
     stack_equal(&equal, &stack, &expected_stack);
     
-    stack_free(&stack);
-    stack_free(&expected_stack);
+    stack_free(NULL, &stack);
+    stack_free(NULL, &expected_stack);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -362,8 +362,8 @@ bool test_stack_push_empty_stack(void)
     bool equal = false;
     stack_equal(&equal, &stack, &expected_stack);
     
-    stack_free(&stack);
-    stack_free(&expected_stack);
+    stack_free(NULL, &stack);
+    stack_free(NULL, &expected_stack);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -400,8 +400,8 @@ bool test_stack_pop_normal(void)
     bool equal = false;
     stack_equal(&equal, &stack, &expected_stack);
     
-    stack_free(&stack);
-    stack_free(&expected_stack);
+    stack_free(NULL, &stack);
+    stack_free(NULL, &expected_stack);
     
     if(res == JCRL_ERR_OK && equal && value == b)
     {
@@ -441,8 +441,8 @@ bool test_stack_pop_empty_stack(void)
     bool equal = false;
     stack_equal(&equal, &stack, &expected_stack);
     
-    stack_free(&stack);
-    stack_free(&expected_stack);
+    stack_free(NULL, &stack);
+    stack_free(NULL, &expected_stack);
     
     if(res == JCRL_ERR_OUT_OF_BOUNDS && equal && value == 0)
     {

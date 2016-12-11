@@ -13,7 +13,7 @@ typedef struct _Stack Stack;
 
 /* Initialisation */
 unsigned int stack_init(Stack* stack);
-unsigned int stack_free(Stack* stack);
+unsigned int stack_free(void (handle_free)(void*), Stack* stack);
 
 /* Equality */
 unsigned int stack_equal(bool* equal, Stack* a, Stack* b);

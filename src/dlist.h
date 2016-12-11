@@ -21,7 +21,7 @@ typedef struct _DList DList;
 
 /* Initialisation */
 unsigned int dlist_init(DList* list);
-unsigned int dlist_free(DList* list);
+unsigned int dlist_free(void (handle_free)(void*), DList* list);
 
 /* Equality */
 unsigned int dlist_equal(bool* equal, DList* a, DList* b);

@@ -19,7 +19,7 @@ unsigned int dlist_init(DList* list)
     return JCRL_ERR_OK;
 }
 
-unsigned int dlist_free(DList* list)
+unsigned int dlist_free(void (handle_free)(void*), DList* list)
 {
     if(list == NULL)
     {
@@ -33,9 +33,19 @@ unsigned int dlist_free(DList* list)
     {
         if(ptr != list->head)
         {
-        free(prev);
-        prev = ptr;
+            if(handle_free != NULL)
+            {
+                handle_free(ptr->data);
+            }
+            
+            free(prev);
+            prev = ptr;
         }
+    }
+    
+    if(handle_free != NULL)
+    {
+        handle_free(list->head->data);
     }
     
     free(list->head);

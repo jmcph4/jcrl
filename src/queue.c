@@ -32,7 +32,7 @@ unsigned int queue_init(Queue* queue)
     return JCRL_ERR_OK;
 }
 
-unsigned int queue_free(Queue* queue)
+unsigned int queue_free(void (handle_free)(void*), Queue* queue)
 {
     if(queue == NULL)
     {
@@ -43,7 +43,7 @@ unsigned int queue_free(Queue* queue)
     
     queue->length = 0;
     
-    res = dlist_free(queue->list);
+    res = dlist_free(handle_free, queue->list);
     
     if(res != JCRL_ERR_OK)
     {

@@ -136,8 +136,8 @@ bool test_bubblesort_dlist_normal(void)
     bool equal = false;
     dlist_equal(&equal, &list, &expected_list);
     
-    dlist_free(&list);
-    dlist_free(&expected_list);
+    dlist_free(NULL, &list);
+    dlist_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -181,8 +181,8 @@ bool test_bubblesort_dlist_empty_list(void)
         pass = true;
     }
     
-    dlist_free(&list);
-    dlist_free(&expected_list);
+    dlist_free(NULL, &list);
+    dlist_free(NULL, &expected_list);
     
     return pass;
 }
