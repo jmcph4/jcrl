@@ -26,6 +26,9 @@ unsigned int dlist_free(DList* list);
 /* Equality */
 unsigned int dlist_equal(bool* equal, DList* a, DList* b);
 
+/* Membership */
+unsigned int dlist_in(bool* in, void* data, DList* list);
+
 /* Operations */
 unsigned int dlist_insert(void* data, unsigned int pos, DList* list);
 unsigned int dlist_remove(unsigned int pos, DList* list);

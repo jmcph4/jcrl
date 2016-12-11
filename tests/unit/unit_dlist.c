@@ -236,6 +236,87 @@ bool test_dlist_equal_same_lists(void)
     return pass;
 }
 
+/* Membership */
+bool test_dlist_in_normal(void)
+{
+    bool pass = false;
+    
+    DList list;
+    dlist_init(&list);
+    
+    DList expected_list;
+    dlist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    
+    dlist_append((void*)a, &list);
+    dlist_append((void*)b, &list);
+    
+    dlist_append((void*)a, &expected_list);
+    dlist_append((void*)b, &expected_list);
+    
+    bool in = false;
+    unsigned int res = dlist_in(&in, (void*)a, &list);
+    
+    bool equal = false;
+    dlist_equal(&equal, &list, &expected_list);
+    
+    dlist_free(&list);
+    dlist_free(&expected_list);
+    
+    if(res == JCRL_ERR_OK && equal && in)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_dlist_in_null_params(void)
+{
+    bool pass = false;
+    
+    unsigned int res = dlist_in(NULL, NULL, NULL);
+    
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_dlist_in_empty_list(void)
+{
+    bool pass = false;
+    
+    DList list;
+    dlist_init(&list);
+    
+    DList expected_list;
+    dlist_init(&expected_list);
+    
+    unsigned int a = 12; /* arbitrary value to insert */
+    
+    bool in = false;
+    unsigned int res = dlist_in(&in, (void*)a, &list);
+    
+    bool equal = false;
+    dlist_equal(&equal, &list, &expected_list);
+    
+    dlist_free(&list);
+    dlist_free(&expected_list);
+    
+    if(res == JCRL_ERR_OK && equal && !in)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
 /* Access */
 bool test_dlist_get_normal(void)
 {

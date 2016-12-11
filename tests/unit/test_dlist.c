@@ -21,6 +21,9 @@ const char* tests[UNIT_DLIST_NUM_TESTS] = {
                                     "test_dlist_equal_null_params",
                                     "test_dlist_equal_unequal_lists",
                                     "test_dlist_equal_same_lists",
+                                    "test_dlist_in_normal",
+                                    "test_dlist_in_null_params",
+                                    "test_dlist_in_empty_list",
                                     "test_dlist_get_normal",
                                     "test_dlist_get_null_params",
                                     "test_dlist_get_out_of_bounds",
@@ -86,6 +89,14 @@ int main(void)
     results[t] = test_dlist_equal_unequal_lists();
     t++;
     results[t] = test_dlist_equal_same_lists();
+    t++;
+    
+    /* Membership */
+    results[t] = test_dlist_in_normal();
+    t++;
+    results[t] = test_dlist_in_null_params();
+    t++;
+    results[t] = test_dlist_in_empty_list();
     t++;
     
     /* Access */

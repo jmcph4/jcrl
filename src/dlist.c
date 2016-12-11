@@ -330,6 +330,34 @@ unsigned int dlist_equal(bool* equal, DList* a, DList* b)
     return JCRL_ERR_OK;
 }
 
+unsigned int dlist_in(bool* in, void* data, DList* list)
+{
+    if(in == NULL || list == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    *in = false;
+    
+    if(list->length == 0) /* trivial case */
+    {
+        return JCRL_ERR_OK;
+    }
+    
+    struct _DNode* ptr = list->head;
+    
+    for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+    {
+        if(ptr->data == data)
+        {
+            *in = true;
+            break;
+        }
+    }
+    
+    return JCRL_ERR_OK;
+}
+
 unsigned int dlist_append(void* data, DList* list)
 {
     if(data == NULL || list == NULL)

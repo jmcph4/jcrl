@@ -6,7 +6,7 @@
 */
 #include "dlist.h"
 
-#define UNIT_DLIST_NUM_TESTS 45
+#define UNIT_DLIST_NUM_TESTS 48
 
 /* Initialisation */
 bool test_dlist_init_normal(void);
@@ -21,6 +21,11 @@ bool test_dlist_equal_normal(void);
 bool test_dlist_equal_null_params(void);
 bool test_dlist_equal_unequal_lists(void);
 bool test_dlist_equal_same_lists(void);
+
+/* Membership */
+bool test_dlist_in_normal(void);
+bool test_dlist_in_null_params(void);
+bool test_dlist_in_empty_list(void);
 
 /* Access */
 bool test_dlist_get_normal(void);
