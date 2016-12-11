@@ -1375,3 +1375,167 @@ bool test_slist_swap_same_index(void)
     
     return pass;
 }
+
+bool test_slist_find_normal(void)
+{
+    bool pass = false;
+    
+    SList list;
+    slist_init(&list);
+    
+    SList expected_list;
+    slist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 3;
+    
+    slist_append((void*)a, &list);
+    slist_append((void*)b, &list);
+    slist_append((void*)c, &list);
+    
+    slist_append((void*)a, &expected_list);
+    slist_append((void*)b, &expected_list);
+    slist_append((void*)c, &expected_list);
+    
+    unsigned int pos = 0;
+    
+    unsigned int res = slist_find(&pos, (void*)b, &list);
+    
+    bool equal = false;
+    slist_equal(&equal, &list, &expected_list);
+    
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
+    
+    if(res == JCRL_ERR_OK && equal && pos == 1)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_slist_find_null_params(void)
+{
+    bool pass = false;
+    
+    unsigned int res = slist_find(NULL, NULL, NULL);
+    
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_slist_find_not_found(void)
+{
+    bool pass = false;
+    
+    SList list;
+    slist_init(&list);
+    
+    SList expected_list;
+    slist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 3;
+    
+    slist_append((void*)a, &list);
+    slist_append((void*)b, &list);
+    
+    slist_append((void*)a, &expected_list);
+    slist_append((void*)b, &expected_list);
+    
+    unsigned int pos = 0;
+    
+    unsigned int res = slist_find(&pos, (void*)c, &list);
+    
+    bool equal = false;
+    slist_equal(&equal, &list, &expected_list);
+    
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
+    
+    if(res == JCRL_ERR_NOT_FOUND && equal && pos == 0)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_slist_find_empty_list(void)
+{
+    bool pass = false;
+    
+    SList list;
+    slist_init(&list);
+    
+    SList expected_list;
+    slist_init(&expected_list);
+    
+    unsigned int pos = 0;
+    
+    unsigned int a = 12; /* arbitrary value to insert */
+    
+    unsigned int res = slist_find(&pos, (void*)a, &list);
+    
+    bool equal = false;
+    slist_equal(&equal, &list, &expected_list);
+    
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
+    
+    if(res == JCRL_ERR_NOT_FOUND && equal && pos == 0)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_slist_find_duplicates(void)
+{
+    bool pass = false;
+    
+    SList list;
+    slist_init(&list);
+    
+    SList expected_list;
+    slist_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    
+    slist_append((void*)a, &list);
+    slist_append((void*)b, &list);
+    slist_append((void*)b, &list);
+    
+    slist_append((void*)a, &expected_list);
+    slist_append((void*)b, &expected_list);
+    slist_append((void*)b, &expected_list);
+    
+    unsigned int pos = 0;
+    
+    unsigned int res = slist_find(&pos, (void*)b, &list);
+    
+    bool equal = false;
+    slist_equal(&equal, &list, &expected_list);
+    
+    slist_free(NULL, &list);
+    slist_free(NULL, &expected_list);
+    
+    if(res == JCRL_ERR_OK && equal && pos == 1)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}

@@ -395,3 +395,44 @@ unsigned int slist_swap(unsigned int a, unsigned int b, SList* list)
     
     return JCRL_ERR_OK;
 }
+
+unsigned int slist_find(unsigned int* pos, void* data, SList* list)
+{
+    if(pos == NULL || list == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    bool in = false;
+    
+    unsigned int res = slist_in(&in, data, list);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    if(in)
+    {
+        unsigned int i = 0;
+        
+        struct _SNode* ptr = list->head;
+        
+        for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+        {
+            if(ptr->data == data)
+            {
+                *pos = i;
+                break;
+            }
+            
+            i++;
+        }
+    }
+    else
+    {
+        return JCRL_ERR_NOT_FOUND;
+    }
+    
+    return JCRL_ERR_OK;
+}

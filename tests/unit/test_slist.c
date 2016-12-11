@@ -58,7 +58,12 @@ const char* tests[UNIT_SLIST_NUM_TESTS] = {
                                     "test_slist_swap_normal",
                                     "test_slist_swap_null_params",
                                     "test_slist_swap_out_of_bounds",
-                                    "test_slist_swap_same_index"
+                                    "test_slist_swap_same_index",
+                                    "test_slist_find_normal",
+                                    "test_slist_find_null_params",
+                                    "test_slist_find_not_found",
+                                    "test_slist_find_empty_list",
+                                    "test_slist_find_duplicates"
                                     };
 
 int main(void)
@@ -178,6 +183,17 @@ int main(void)
     results[t] = test_slist_swap_out_of_bounds();
     t++;
     results[t] = test_slist_swap_same_index();
+    t++;
+    
+    results[t] = test_slist_find_normal();
+    t++;
+    results[t] = test_slist_find_null_params();
+    t++;
+    results[t] = test_slist_find_not_found();
+    t++;
+    results[t] = test_slist_find_empty_list();
+    t++;
+    results[t] = test_slist_find_duplicates();
     t++;
     
     /* check for test failure */
