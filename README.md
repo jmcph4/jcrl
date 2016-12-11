@@ -10,6 +10,7 @@ Currently, JCRL implements:
   - double
  - stacks
  - queues
+ - bubblesort
 
 Obviously, many more are on the way.
 
