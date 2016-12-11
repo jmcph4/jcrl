@@ -6,7 +6,7 @@
 */
 #include "slist.h"
 
-#define UNIT_SLIST_NUM_TESTS 44
+#define UNIT_SLIST_NUM_TESTS 47
 
 /* Initialisation */
 bool test_slist_init_normal(void);
@@ -21,6 +21,11 @@ bool test_slist_equal_normal(void);
 bool test_slist_equal_null_params(void);
 bool test_slist_equal_unequal_lists(void);
 bool test_slist_equal_same_lists(void);
+
+/* Membership */
+bool test_slist_in_normal(void);
+bool test_slist_in_null_params(void);
+bool test_slist_in_empty_list(void);
 
 /* Access */
 bool test_slist_get_normal(void);

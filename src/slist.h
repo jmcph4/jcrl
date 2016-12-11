@@ -24,6 +24,9 @@ unsigned int slist_free(SList* list);
 /* Equality */
 unsigned int slist_equal(bool* equal, SList* a, SList* b);
 
+/* Membership */
+unsigned int slist_in(bool* in, void* data, SList* list);
+
 /* Access */
 unsigned int slist_get(void** data, unsigned int pos, SList* list);
 unsigned int slist_set(void* data, unsigned int pos, SList* list);

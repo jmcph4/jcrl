@@ -255,6 +255,34 @@ unsigned int slist_equal(bool* equal, SList* a, SList* b)
     return JCRL_ERR_OK;
 }
 
+unsigned int slist_in(bool* in, void* data, SList* list)
+{
+    if(in == NULL || list == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    *in = false;
+    
+    if(list->length == 0) /* trivial case */
+    {
+        return JCRL_ERR_OK;
+    }
+    
+    struct _SNode* ptr = list->head;
+    
+    for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+    {
+        if(ptr->data == data)
+        {
+            *in = true;
+            break;
+        }
+    }
+    
+    return JCRL_ERR_OK;
+}
+
 unsigned int slist_append(void* data, SList* list)
 {
     if(data == NULL || list == NULL)
