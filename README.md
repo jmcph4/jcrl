@@ -11,6 +11,7 @@ Currently, JCRL implements:
  - stacks
  - queues
  - bubblesort
+ - sets
 
 Obviously, many more are on the way.
 

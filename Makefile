@@ -33,7 +33,10 @@ tests:
 	$(CC) $(TEST_DIR)/unit_queue.c $(TEST_DIR)/test_queue.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_queue
 
 	# bubblesort
-	$(CC) $(TEST_DIR)/unit_bubblesort.c $(TEST_DIR)/test_bubblesort.c $(CFLAGS) -g -I$(SRC_DIR) -L $(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_bubblesort
+	$(CC) $(TEST_DIR)/unit_bubblesort.c $(TEST_DIR)/test_bubblesort.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_bubblesort
+
+	# set
+	$(CC) $(TEST_DIR)/unit_set.c $(TEST_DIR)/test_set.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_set
 
 .PHONY: clean
 clean:
