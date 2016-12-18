@@ -295,7 +295,7 @@ unsigned int slist_in(bool* in, void* data, SList* list)
 
 unsigned int slist_append(void* data, SList* list)
 {
-    if(data == NULL || list == NULL)
+    if(list == NULL)
     {
         return JCRL_ERR_NULL_PARAM;
     }

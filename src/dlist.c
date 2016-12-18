@@ -370,7 +370,7 @@ unsigned int dlist_in(bool* in, void* data, DList* list)
 
 unsigned int dlist_append(void* data, DList* list)
 {
-    if(data == NULL || list == NULL)
+    if(list == NULL)
     {
         return JCRL_ERR_NULL_PARAM;
     }
