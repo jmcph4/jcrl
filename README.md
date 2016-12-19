@@ -12,6 +12,7 @@ Currently, JCRL implements:
  - queues
  - bubblesort
  - sets
+ - insertion sort
 
 Obviously, many more are on the way.
 
