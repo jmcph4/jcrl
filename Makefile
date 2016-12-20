@@ -41,6 +41,9 @@ tests:
 	# insertion sort
 	$(CC) $(TEST_DIR)/unit_isort.c $(TEST_DIR)/test_isort.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_isort
 
+	# vertex
+	$(CC) $(TEST_DIR)/unit_vertex.c $(TEST_DIR)/test_vertex.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_vertex
+
 .PHONY: clean
 clean:
 	rm $(BUILD_DIR)/* -r

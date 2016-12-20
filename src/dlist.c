@@ -257,9 +257,9 @@ unsigned int dlist_get(void** data, unsigned int pos, DList* list)
     {
         if(i == pos)
         {
-        *data = ptr->data;
+            *data = ptr->data;
         
-        break;
+            break;
         }
         
         i++;
