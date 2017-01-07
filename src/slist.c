@@ -4,6 +4,12 @@
 #include "constants.h"
 #include "slist.h"
 
+struct _SNode
+{
+  void* data;
+  struct _SNode* next;
+};
+
 unsigned int slist_init(SList* list)
 {
     if(list == NULL)

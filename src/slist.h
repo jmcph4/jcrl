@@ -3,11 +3,7 @@
 
 #include <stdbool.h>
 
-struct _SNode
-{
-  void* data;
-  struct _SNode* next;
-};
+struct _SNode;
 
 struct _SList
 {
