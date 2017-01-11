@@ -1,5 +1,5 @@
-#ifndef DLIST_H_
-#define DLIST_H_
+#ifndef LIST_H_
+#define LIST_H_
 
 #include <stdbool.h>
 
@@ -47,4 +47,4 @@ unsigned int list_concatenate(List* a, List* b);
 unsigned int list_swap(unsigned int a, unsigned int b, List* list);
 unsigned int list_find(unsigned int* pos, void* data, List* list);
 
-#endif /* DLIST_H_ */
+#endif /* LIST_H_ */
