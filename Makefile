@@ -20,11 +20,8 @@ test_executables:= $(patsubst $(TEST_DIR)/%.c, $(BUILD_DIR)/%, $(test_sources))
 .PHONY: tests
 #tests: $(test_executables)
 tests:
-	# singly-linked list
-	$(CC) $(TEST_DIR)/unit_slist.c $(TEST_DIR)/test_slist.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_slist
-    
-    	# singly-linked list
-	$(CC) $(TEST_DIR)/unit_dlist.c $(TEST_DIR)/test_dlist.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_dlist
+    	# list
+	$(CC) $(TEST_DIR)/unit_list.c $(TEST_DIR)/test_list.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_list
     
     	# stack
 	$(CC) $(TEST_DIR)/unit_stack.c $(TEST_DIR)/test_stack.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_stack

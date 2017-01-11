@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 #include "constants.h"
-#include "dlist.h"
+#include "list.h"
 #include "unit_vertex.h"
 
 /* Initialisation */
@@ -368,7 +368,7 @@ bool test_vertex_add_neighbour_normal(void)
     vertex_set((void*)a, &expected_vertex_a);
     vertex_set((void*)b, &expected_vertex_b);
     
-    dlist_append(&vertex_b, expected_vertex_a.neighbours); /* cheap hack */
+    list_append(&vertex_b, expected_vertex_a.neighbours); /* cheap hack */
     
     unsigned int res = vertex_add_neighbour(&vertex_b, &vertex_a);
     

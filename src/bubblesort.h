@@ -3,10 +3,8 @@
 
 #include <stdbool.h>
 
-#include "slist.h"
-#include "dlist.h"
+#include "list.h"
 
-unsigned int bubblesort_slist(bool (comparison)(void*, void*), SList* list);
-unsigned int bubblesort_dlist(bool (comparison)(void*, void*), DList* list);
+unsigned int bubblesort(bool (comparison)(void*, void*), List* list);
 
 #endif /* BUBBLESORT_H_ */

@@ -6,12 +6,8 @@
 */
 #include "bubblesort.h"
 
-#define UNIT_BUBBLESORT_NUM_TESTS 6
+#define UNIT_BUBBLESORT_NUM_TESTS 3
 
-bool test_bubblesort_slist_normal(void);
-bool test_bubblesort_slist_null_params(void);
-bool test_bubblesort_slist_empty_list(void);
-
-bool test_bubblesort_dlist_normal(void);
-bool test_bubblesort_dlist_null_params(void);
-bool test_bubblesort_dlist_empty_list(void);
+bool test_bubblesort_normal(void);
+bool test_bubblesort_null_params(void);
+bool test_bubblesort_empty_list(void);

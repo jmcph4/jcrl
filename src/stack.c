@@ -2,7 +2,7 @@
 
 #include "constants.h"
 #include "stack.h"
-#include "dlist.h"
+#include "list.h"
 
 /* Initialisation */
 unsigned int stack_init(Stack* stack)
@@ -13,14 +13,14 @@ unsigned int stack_init(Stack* stack)
     }
   
     stack->depth = 0;
-    stack->list = calloc(1, sizeof(DList));
+    stack->list = calloc(1, sizeof(List));
   
     if(stack->list == NULL)
     {
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
   
-    unsigned int res = dlist_init(stack->list);
+    unsigned int res = list_init(stack->list);
   
     if(res != JCRL_ERR_OK)
     {
@@ -37,7 +37,7 @@ unsigned int stack_free(void (handle_free)(void*), Stack* stack)
         return JCRL_ERR_NULL_PARAM;
     }
     
-    unsigned int res = dlist_free(handle_free, stack->list);
+    unsigned int res = list_free(handle_free, stack->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -79,7 +79,7 @@ unsigned int stack_equal(bool* equal, Stack* a, Stack* b)
     
     bool lists_equal = false;
         
-    res = dlist_equal(&lists_equal, a->list, b->list);
+    res = list_equal(&lists_equal, a->list, b->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -106,7 +106,7 @@ unsigned int stack_peek(void* data, Stack* stack)
         return JCRL_ERR_NULL_PARAM;
     }
     
-    unsigned int res = dlist_get(data, 0, stack->list);
+    unsigned int res = list_get(data, 0, stack->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -136,7 +136,7 @@ unsigned int stack_push(void* data, Stack* stack)
         return JCRL_ERR_NULL_PARAM;
     }
     
-    unsigned int res = dlist_insert(data, 0, stack->list);
+    unsigned int res = list_insert(data, 0, stack->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -160,14 +160,14 @@ unsigned int stack_pop(void* data, Stack* stack)
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
     
-    unsigned int res = dlist_get(data, 0, stack->list);
+    unsigned int res = list_get(data, 0, stack->list);
     
     if(res != JCRL_ERR_OK)
     {
         return res;
     }
     
-    res = dlist_remove(0, stack->list);
+    res = list_remove(0, stack->list);
     
     if(res != JCRL_ERR_OK)
     {

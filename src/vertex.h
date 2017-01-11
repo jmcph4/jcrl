@@ -3,12 +3,12 @@
 
 #include <stdbool.h>
 
-#include "dlist.h"
+#include "list.h"
 
 struct _Vertex
 {
     void* data;
-    DList* neighbours;
+    List* neighbours;
 };
 
 typedef struct _Vertex Vertex;

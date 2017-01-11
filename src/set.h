@@ -3,12 +3,12 @@
 
 #include <stdbool.h>
 
-#include "dlist.h"
+#include "list.h"
 
 struct _Set
 {
     unsigned int size;
-    DList* list;
+    List* list;
 };
 
 typedef struct _Set Set;
@@ -34,6 +34,6 @@ unsigned int set_intersection(Set* a, Set* b, Set* i);
 unsigned int set_difference(Set* a, Set* b, Set* d);
 
 /* Utilities */
-unsigned int set_enumerate(DList* list, Set* set);
+unsigned int set_enumerate(List* list, Set* set);
 
 #endif /* SET_H_ */

@@ -11,7 +11,7 @@
 
 #include "constants.h"
 #include "set.h"
-#include "dlist.h"
+#include "list.h"
 #include "unit_set.h"
 
 /* Initialisation */
@@ -1737,11 +1737,11 @@ bool test_set_enumerate_normal(void)
     Set expected_set;
     set_init(&expected_set);
     
-    DList list;
-    dlist_init(&list);
+    List list;
+    list_init(&list);
     
-    DList expected_list;
-    dlist_init(&expected_list);
+    List expected_list;
+    list_init(&expected_list);
     
     /* arbitrary values to insert */
     unsigned int a = 12;
@@ -1756,9 +1756,9 @@ bool test_set_enumerate_normal(void)
     set_insert((void*)b, &expected_set);
     set_insert((void*)c, &expected_set);
     
-    dlist_append((void*)a, &expected_list);
-    dlist_append((void*)b, &expected_list);
-    dlist_append((void*)c, &expected_list);
+    list_append((void*)a, &expected_list);
+    list_append((void*)b, &expected_list);
+    list_append((void*)c, &expected_list);
     
     unsigned int res = set_enumerate(&list, &set);
     
@@ -1766,10 +1766,10 @@ bool test_set_enumerate_normal(void)
     set_equal(&equal_set, &set, &expected_set);
     
     bool equal_list = false;
-    dlist_equal(&equal_list, &list, &expected_list);
+    list_equal(&equal_list, &list, &expected_list);
     
-    dlist_free(NULL, &list);
-    dlist_free(NULL, &expected_list);
+    list_free(NULL, &list);
+    list_free(NULL, &expected_list);
     
     set_free(NULL, &set);
     set_free(NULL, &expected_set);
@@ -1806,11 +1806,11 @@ bool test_set_enumerate_empty_set(void)
     Set expected_set;
     set_init(&expected_set);
     
-    DList list;
-    dlist_init(&list);
+    List list;
+    list_init(&list);
     
-    DList expected_list;
-    dlist_init(&expected_list);
+    List expected_list;
+    list_init(&expected_list);
     
     unsigned int res = set_enumerate(&list, &set);
     
@@ -1818,10 +1818,10 @@ bool test_set_enumerate_empty_set(void)
     set_equal(&equal_set, &set, &expected_set);
     
     bool equal_list = false;
-    dlist_equal(&equal_list, &list, &expected_list);
+    list_equal(&equal_list, &list, &expected_list);
     
-    dlist_free(NULL, &list);
-    dlist_free(NULL, &expected_list);
+    list_free(NULL, &list);
+    list_free(NULL, &expected_list);
     
     set_free(NULL, &set);
     set_free(NULL, &expected_set);

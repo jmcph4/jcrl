@@ -12,12 +12,9 @@
 
 /* test names */
 const char* tests[UNIT_BUBBLESORT_NUM_TESTS] = {
-                                    "test_bubblesort_slist_normal",
-                                    "test_bubblesort_slist_null_params",
-                                    "test_bubblesort_slist_empty_list",
-                                    "test_bubblesort_dlist_normal",
-                                    "test_bubblesort_dlist_null_params",
-                                    "test_bubblesort_dlist_empty_list"
+                                    "test_bubblesort_normal",
+                                    "test_bubblesort_null_params",
+                                    "test_bubblesort_empty_list"
                                     };
 
 int main(void)
@@ -26,18 +23,11 @@ int main(void)
     bool results[UNIT_BUBBLESORT_NUM_TESTS];
     memset(results, 0, sizeof(bool) * UNIT_BUBBLESORT_NUM_TESTS);
     
-    results[t] = test_bubblesort_slist_normal();
+    results[t] = test_bubblesort_normal();
     t++;
-    results[t] = test_bubblesort_slist_null_params();
+    results[t] = test_bubblesort_null_params();
     t++;
-    results[t] = test_bubblesort_slist_empty_list();
-    t++;
-    
-    results[t] = test_bubblesort_dlist_normal();
-    t++;
-    results[t] = test_bubblesort_dlist_null_params();
-    t++;
-    results[t] = test_bubblesort_dlist_empty_list();
+    results[t] = test_bubblesort_empty_list();
     t++;
     
     /* check for test failure */

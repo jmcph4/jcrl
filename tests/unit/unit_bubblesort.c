@@ -23,15 +23,15 @@ bool cmp_clbk(void* a, void* b)
     }
 }
 
-bool test_bubblesort_slist_normal(void)
+bool test_bubblesort_normal(void)
 {
     bool pass = false;
     
-    SList list;
-    slist_init(&list);
+    List list;
+    list_init(&list);
     
-    SList expected_list;
-    slist_init(&expected_list);
+    List expected_list;
+    list_init(&expected_list);
     
     /* arbitrary values to insert */
     unsigned int a = 1;
@@ -39,23 +39,23 @@ bool test_bubblesort_slist_normal(void)
     unsigned int c = 3;
     unsigned int d = 4;
     
-    slist_append((void*)b, &list);
-    slist_append((void*)a, &list);
-    slist_append((void*)d, &list);
-    slist_append((void*)c, &list);
+    list_append((void*)b, &list);
+    list_append((void*)a, &list);
+    list_append((void*)d, &list);
+    list_append((void*)c, &list);
     
-    slist_append((void*)a, &expected_list);
-    slist_append((void*)b, &expected_list);
-    slist_append((void*)c, &expected_list);
-    slist_append((void*)d, &expected_list);
+    list_append((void*)a, &expected_list);
+    list_append((void*)b, &expected_list);
+    list_append((void*)c, &expected_list);
+    list_append((void*)d, &expected_list);
     
-    unsigned int res = bubblesort_slist(&cmp_clbk, &list);
+    unsigned int res = bubblesort(&cmp_clbk, &list);
     
     bool equal = false;
-    slist_equal(&equal, &list, &expected_list);
+    list_equal(&equal, &list, &expected_list);
     
-    slist_free(NULL, &list);
-    slist_free(NULL, &expected_list);
+    list_free(NULL, &list);
+    list_free(NULL, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {
@@ -65,11 +65,11 @@ bool test_bubblesort_slist_normal(void)
     return pass;
 }
 
-bool test_bubblesort_slist_null_params(void)
+bool test_bubblesort_null_params(void)
 {
     bool pass = false;
     
-    unsigned int res = bubblesort_slist(NULL, NULL);
+    unsigned int res = bubblesort(NULL, NULL);
     
     if(res == JCRL_ERR_NULL_PARAM)
     {
@@ -79,110 +79,28 @@ bool test_bubblesort_slist_null_params(void)
     return pass;
 }
 
-bool test_bubblesort_slist_empty_list(void)
+bool test_bubblesort_empty_list(void)
 {
     bool pass = false;
     
-    SList list;
-    slist_init(&list);
+    List list;
+    list_init(&list);
     
-    SList expected_list;
-    slist_init(&expected_list);
+    List expected_list;
+    list_init(&expected_list);
     
-    unsigned int res = bubblesort_slist(&cmp_clbk, &list);
+    unsigned int res = bubblesort(&cmp_clbk, &list);
     
     bool equal = false;
-    slist_equal(&equal, &list, &expected_list);
+    list_equal(&equal, &list, &expected_list);
     
     if(res == JCRL_ERR_OK && equal)
     {
         pass = true;
     }
     
-    slist_free(NULL, &list);
-    slist_free(NULL, &expected_list);
-    
-    return pass;
-}
-
-bool test_bubblesort_dlist_normal(void)
-{
-    bool pass = false;
-    
-    DList list;
-    dlist_init(&list);
-    
-    DList expected_list;
-    dlist_init(&expected_list);
-    
-    /* arbitrary values to insert */
-    unsigned int a = 1;
-    unsigned int b = 2;
-    unsigned int c = 3;
-    unsigned int d = 4;
-    
-    dlist_append((void*)b, &list);
-    dlist_append((void*)a, &list);
-    dlist_append((void*)d, &list);
-    dlist_append((void*)c, &list);
-    
-    dlist_append((void*)a, &expected_list);
-    dlist_append((void*)b, &expected_list);
-    dlist_append((void*)c, &expected_list);
-    dlist_append((void*)d, &expected_list);
-    
-    unsigned int res = bubblesort_dlist(&cmp_clbk, &list);
-    
-    bool equal = false;
-    dlist_equal(&equal, &list, &expected_list);
-    
-    dlist_free(NULL, &list);
-    dlist_free(NULL, &expected_list);
-    
-    if(res == JCRL_ERR_OK && equal)
-    {
-        pass = true;
-    }
-    
-    return pass;
-}
-
-bool test_bubblesort_dlist_null_params(void)
-{
-    bool pass = false;
-    
-    unsigned int res = bubblesort_dlist(NULL, NULL);
-    
-    if(res == JCRL_ERR_NULL_PARAM)
-    {
-        pass = true;
-    }
-    
-    return pass;
-}
-
-bool test_bubblesort_dlist_empty_list(void)
-{
-    bool pass = false;
-    
-    DList list;
-    dlist_init(&list);
-    
-    DList expected_list;
-    dlist_init(&expected_list);
-    
-    unsigned int res = bubblesort_dlist(&cmp_clbk, &list);
-    
-    bool equal = false;
-    dlist_equal(&equal, &list, &expected_list);
-    
-    if(res == JCRL_ERR_OK && equal)
-    {
-        pass = true;
-    }
-    
-    dlist_free(NULL, &list);
-    dlist_free(NULL, &expected_list);
+    list_free(NULL, &list);
+    list_free(NULL, &expected_list);
     
     return pass;
 }

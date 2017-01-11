@@ -3,12 +3,12 @@
 
 #include <stdbool.h>
 
-#include "dlist.h"
+#include "list.h"
 
 struct _Queue
 {
     unsigned int length;
-    DList* list;
+    List* list;
 };
 
 typedef struct _Queue Queue;

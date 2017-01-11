@@ -2,7 +2,7 @@
 #include <stdbool.h>
 
 #include "constants.h"
-#include "dlist.h"
+#include "list.h"
 #include "set.h"
 
 /* Initialisation */
@@ -15,14 +15,14 @@ unsigned int set_init(Set* set)
     
     set->size = 0;
     
-    set->list = calloc(1, sizeof(DList));
+    set->list = calloc(1, sizeof(List));
     
     if(set->list == NULL)
     {
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
     
-    unsigned int res = dlist_init(set->list);
+    unsigned int res = list_init(set->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -40,7 +40,7 @@ unsigned int set_free(void (handle_free)(void*), Set* set)
         return JCRL_ERR_NULL_PARAM;
     }
     
-    unsigned int res = dlist_free(handle_free, set->list);
+    unsigned int res = list_free(handle_free, set->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -95,7 +95,7 @@ unsigned int set_in(bool* in, void* data, Set* set)
         return JCRL_ERR_NULL_PARAM;
     }
     
-    unsigned int res = dlist_in(in, data, set->list);
+    unsigned int res = list_in(in, data, set->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -120,7 +120,7 @@ unsigned int set_subset(bool* subset, Set* a, Set* b)
     }
     
     unsigned int match = 0;
-    struct _DNode* ptr = b->list->head;
+    struct _LNode* ptr = b->list->head;
     
     for(ptr=b->list->head;ptr!=NULL;ptr=ptr->next)
     {
@@ -183,7 +183,7 @@ unsigned int set_insert(void* data, Set* set)
     
     bool in = false;
     
-    unsigned int res = dlist_in(&in, data, set->list);
+    unsigned int res = list_in(&in, data, set->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -192,7 +192,7 @@ unsigned int set_insert(void* data, Set* set)
     
     if(!in)
     {
-        res = dlist_append(data, set->list);
+        res = list_append(data, set->list);
         
         if(res != JCRL_ERR_OK)
         {
@@ -223,14 +223,14 @@ unsigned int set_remove(void* data, Set* set)
     
     unsigned int pos = 0;
     
-    unsigned int res = dlist_find(&pos, data, set->list);
+    unsigned int res = list_find(&pos, data, set->list);
     
     if(res != JCRL_ERR_OK)
     {
         return res;
     }
     
-    res = dlist_remove(pos, set->list);
+    res = list_remove(pos, set->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -251,7 +251,7 @@ unsigned int set_union(Set* a, Set* b, Set* c)
     
     unsigned int res = 0;
     
-    struct _DNode* ptr = a->list->head;
+    struct _LNode* ptr = a->list->head;
     
     for(ptr=a->list->head;ptr!=NULL;ptr=ptr->next)
     {
@@ -285,13 +285,13 @@ unsigned int set_intersection(Set* a, Set* b, Set* c)
         return JCRL_ERR_NULL_PARAM;
     }
     
-    struct _DNode* ptr = a->list->head;
+    struct _LNode* ptr = a->list->head;
     
     for(ptr=a->list->head;ptr!=NULL;ptr=ptr->next)
     {
         bool in = false;
         
-        unsigned int res = dlist_in(&in, ptr->data, b->list);
+        unsigned int res = list_in(&in, ptr->data, b->list);
         
         if(in)
         {
@@ -314,13 +314,13 @@ unsigned int set_difference(Set* a, Set* b, Set* c)
         return JCRL_ERR_NULL_PARAM;
     }
     
-    struct _DNode* ptr = a->list->head;
+    struct _LNode* ptr = a->list->head;
     
     for(ptr=a->list->head;ptr!=NULL;ptr=ptr->next)
     {
         bool in = false;
         
-        unsigned int res = dlist_in(&in, ptr->data, b->list);
+        unsigned int res = list_in(&in, ptr->data, b->list);
         
         if(!in)
         {
@@ -336,18 +336,18 @@ unsigned int set_difference(Set* a, Set* b, Set* c)
     return JCRL_ERR_OK;
 }
 
-unsigned int set_enumerate(DList* list, Set* set)
+unsigned int set_enumerate(List* list, Set* set)
 {
     if(list == NULL || set == NULL)
     {
         return JCRL_ERR_NULL_PARAM;
     }
     
-    struct _DNode* ptr = set->list->head;
+    struct _LNode* ptr = set->list->head;
     
     for(ptr=set->list->head;ptr!=NULL;ptr=ptr->next)
     {
-        unsigned int res = dlist_append(ptr->data, list);
+        unsigned int res = list_append(ptr->data, list);
         
         if(res != JCRL_ERR_OK)
         {

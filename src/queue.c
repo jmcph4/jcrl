@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "constants.h"
-#include "dlist.h"
+#include "list.h"
 #include "queue.h"
 
 /* Initialisation */
@@ -15,14 +15,14 @@ unsigned int queue_init(Queue* queue)
     unsigned int res = 0;
   
     queue->length = 0;
-    queue->list = calloc(1, sizeof(DList));
+    queue->list = calloc(1, sizeof(List));
   
     if(queue->list == NULL)
     {
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
   
-    res = dlist_init(queue->list);
+    res = list_init(queue->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -43,7 +43,7 @@ unsigned int queue_free(void (handle_free)(void*), Queue* queue)
     
     queue->length = 0;
     
-    res = dlist_free(handle_free, queue->list);
+    res = list_free(handle_free, queue->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -83,7 +83,7 @@ unsigned int queue_equal(bool* equal, Queue* a, Queue* b)
     if(length_a == length_b)
     {
         bool lists_equal = false;
-        res = dlist_equal(&lists_equal, a->list, b->list);
+        res = list_equal(&lists_equal, a->list, b->list);
         
         if(res != JCRL_ERR_OK)
         {
@@ -116,7 +116,7 @@ unsigned int queue_peek(void* data, Queue* queue)
         return res;
     }
     
-    res = dlist_get(data, length - 1, queue->list);
+    res = list_get(data, length - 1, queue->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -148,7 +148,7 @@ unsigned int queue_push(void* data, Queue* queue)
     
     unsigned int res = 0;
     
-    res = dlist_insert(data, 0, queue->list);
+    res = list_insert(data, 0, queue->list);
     
     if(res != JCRL_ERR_OK)
     {
@@ -180,21 +180,21 @@ unsigned int queue_pop(void* data, Queue* queue)
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
     
-    res = dlist_length(len, queue->list);
+    res = list_length(len, queue->list);
     
     if(res != JCRL_ERR_OK)
     {
         return res;
     }
     
-    res = dlist_get(data, *len-1, queue->list);
+    res = list_get(data, *len-1, queue->list);
     
     if(res != JCRL_ERR_OK)
     {
         return res;
     }
     
-    res = dlist_remove(*len-1, queue->list);
+    res = list_remove(*len-1, queue->list);
     
     if(res != JCRL_ERR_OK)
     {

@@ -1,12 +1,12 @@
 #ifndef STACK_H_
 #define STACK_H_
 
-#include "dlist.h"
+#include "list.h"
 
 struct _Stack
 {
   unsigned int depth;
-  DList* list;
+  List* list;
 };
 
 typedef struct _Stack Stack;

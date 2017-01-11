@@ -1,10 +1,8 @@
 #ifndef ISORT_H_
 #define ISORT_H_
 
-#include "slist.h"
-#include "dlist.h"
+#include "list.h"
 
-unsigned int isort_slist(bool (comparison)(void*, void*), SList* list);
-unsigned int isort_dlist(bool (comparison)(void*, void*), DList* list);
+unsigned int isort(bool (comparison)(void*, void*), List* list);
 
-#endif /* INSERTIONSORT_H_ */
+#endif /* ISORT_H_ */
