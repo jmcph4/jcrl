@@ -1574,3 +1574,95 @@ bool test_list_find_duplicates(void)
     
     return pass;
 }
+
+bool test_list_count_normal(void)
+{
+    bool pass = false;
+    
+    List list;
+    list_init(&list);
+    
+    List expected_list;
+    list_init(&expected_list);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    unsigned int d = 3;
+    
+    list_append((void*)a, &list);
+    list_append((void*)a, &list);
+    list_append((void*)b, &list);
+    list_append((void*)c, &list);
+    list_append((void*)b, &list);
+    list_append((void*)d, &list);
+    
+    list_append((void*)a, &expected_list);
+    list_append((void*)a, &expected_list);
+    list_append((void*)b, &expected_list);
+    list_append((void*)c, &expected_list);
+    list_append((void*)b, &expected_list);
+    list_append((void*)d, &expected_list);
+    
+    unsigned int count = 0;
+    
+    unsigned int res = list_count(&count, (void*)a, &list);
+    
+    bool equal = false;
+    list_equal(&equal, &list, &expected_list);
+    
+    list_free(NULL, &list);
+    list_free(NULL, &expected_list);
+    
+    if(res == JCRL_ERR_OK && equal && count == 2)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_list_count_null_params(void)
+{
+    bool pass = false;
+    
+    unsigned int res = list_count(NULL, NULL, NULL);
+    
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_list_count_not_found(void)
+{
+    bool pass = false;
+    
+    List list;
+    list_init(&list);
+    
+    List expected_list;
+    list_init(&expected_list);
+    
+    unsigned int a = 12; /* arbitrary value */
+    
+    unsigned int count = 0;
+    
+    unsigned int res = list_count(&count, (void*)a, &list);
+    
+    bool equal = false;
+    list_equal(&equal, &list, &expected_list);
+    
+    list_free(NULL, &list);
+    list_free(NULL, &expected_list);
+    
+    if(res == JCRL_ERR_OK && equal && count == 0)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}

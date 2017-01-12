@@ -1,12 +1,12 @@
 /*
  * unit_list.h
  *
- * Declarations of unit tests for the singly-linked lists
- * implementation. For unit test definitions, see unit_list.c.
+ * Declarations of unit tests for list implementation. For unit test 
+ * definitions, see unit_list.c.
 */
 #include "list.h"
 
-#define UNIT_LIST_NUM_TESTS 53
+#define UNIT_LIST_NUM_TESTS 56
 
 /* Initialisation */
 bool test_list_init_normal(void);
@@ -80,3 +80,7 @@ bool test_list_find_null_params(void);
 bool test_list_find_not_found(void);
 bool test_list_find_empty_list(void);
 bool test_list_find_duplicates(void);
+
+bool test_list_count_normal(void);
+bool test_list_count_null_params(void);
+bool test_list_count_not_found(void);

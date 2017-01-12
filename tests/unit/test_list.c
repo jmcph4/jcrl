@@ -64,7 +64,10 @@ const char* tests[UNIT_LIST_NUM_TESTS] = {
                                     "test_list_find_null_params",
                                     "test_list_find_not_found",
                                     "test_list_find_empty_list",
-                                    "test_list_find_duplicates"
+                                    "test_list_find_duplicates",
+                                    "test_list_count_normal",
+                                    "test_list_count_null_params",
+                                    "test_list_count_not_found"
                                     };
 
 int main(void)
@@ -197,6 +200,13 @@ int main(void)
     results[t] = test_list_find_empty_list();
     t++;
     results[t] = test_list_find_duplicates();
+    t++;
+    
+    results[t] = test_list_count_normal();
+    t++;
+    results[t] = test_list_count_null_params();
+    t++;
+    results[t] = test_list_count_not_found();
     t++;
     
     /* check for test failure */

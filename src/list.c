@@ -512,3 +512,27 @@ unsigned int list_find(unsigned int* pos, void* data, List* list)
     
     return JCRL_ERR_OK;
 }
+
+unsigned int list_count(unsigned int* count, void* data, List* list)
+{
+    if(count == NULL || list == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    unsigned int num = 0;
+    
+    struct _LNode* ptr = list->head;
+    
+    for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+    {
+        if(ptr->data == data)
+        {
+            num++;
+        }
+    }
+    
+    *count = num;
+    
+    return JCRL_ERR_OK;
+}
