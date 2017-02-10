@@ -41,6 +41,9 @@ tests:
 	# vertex
 	$(CC) $(TEST_DIR)/unit_vertex.c $(TEST_DIR)/test_vertex.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_vertex
 
+	# multiset
+	$(CC) $(TEST_DIR)/unit_multiset.c $(TEST_DIR)/test_multiset.c $(CFLAGS) -g -I$(SRC_DIR) -L$(BUILD_DIR) -ljcrl -o $(BUILD_DIR)/test_multiset
+
 .PHONY: clean
 clean:
 	rm $(BUILD_DIR)/* -r
