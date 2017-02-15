@@ -2477,6 +2477,669 @@ bool test_multiset_in_not_found(void)
     return pass;
 }
 
+bool test_multiset_subset_normal(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    
+    multiset_add((void*)a, &multiset_a);
+    multiset_add((void*)a, &multiset_a);
+    multiset_add((void*)b, &multiset_a);
+    multiset_add((void*)c, &multiset_a);
+    multiset_add((void*)c, &multiset_a);
+    multiset_add((void*)c, &multiset_a);
+    
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)b, &multiset_b);
+    
+    multiset_add((void*)a, &expected_multiset_a);
+    multiset_add((void*)a, &expected_multiset_a);
+    multiset_add((void*)b, &expected_multiset_a);
+    multiset_add((void*)c, &expected_multiset_a);
+    multiset_add((void*)c, &expected_multiset_a);
+    multiset_add((void*)c, &expected_multiset_a);
+    
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)b, &expected_multiset_b);
+    
+    bool subset = false;
+    
+    /* is b a subset of a? */
+    unsigned int res = multiset_subset(&subset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && subset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_subset_null_params(void)
+{
+    bool pass = false;
+    
+    unsigned int res = multiset_subset(NULL, NULL, NULL);
+    
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_subset_improper_subset(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    
+    multiset_add((void*)a, &multiset_a);
+    multiset_add((void*)a, &multiset_a);
+    multiset_add((void*)b, &multiset_a);
+    multiset_add((void*)c, &multiset_a);
+    multiset_add((void*)c, &multiset_a);
+    
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)b, &multiset_b);
+    multiset_add((void*)c, &multiset_b);
+    multiset_add((void*)c, &multiset_b);
+    
+    multiset_add((void*)a, &expected_multiset_a);
+    multiset_add((void*)a, &expected_multiset_a);
+    multiset_add((void*)b, &expected_multiset_a);
+    multiset_add((void*)c, &expected_multiset_a);
+    multiset_add((void*)c, &expected_multiset_a);
+    
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)b, &expected_multiset_b);
+    multiset_add((void*)c, &expected_multiset_b);
+    multiset_add((void*)c, &expected_multiset_b);
+    
+    bool subset = false;
+    
+    /* is b a subset of a? */
+    unsigned int res = multiset_subset(&subset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && subset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_subset_empty_sets(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    bool subset = false;
+    
+    /* is b a subset of a? */
+    unsigned int res = multiset_subset(&subset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && subset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_subset_of_empty_set(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)b, &multiset_b);
+    
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)b, &expected_multiset_b);
+    
+    bool subset = false;
+    
+    /* is b a subset of a? */
+    unsigned int res = multiset_subset(&subset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && !subset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_subset_empty_set_of(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    
+    multiset_add((void*)a, &multiset_a);
+    multiset_add((void*)b, &multiset_a);
+    multiset_add((void*)c, &multiset_a);
+    
+    multiset_add((void*)a, &expected_multiset_a);
+    multiset_add((void*)b, &expected_multiset_a);
+    multiset_add((void*)c, &expected_multiset_a);
+    
+    bool subset = false;
+    
+    /* is b a subset of a? */
+    unsigned int res = multiset_subset(&subset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && subset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_subset_same_set(void)
+{
+    bool pass = false;
+    
+    Multiset multiset;
+    multiset_init(&multiset);
+    
+    Multiset expected_multiset;
+    multiset_init(&expected_multiset);
+
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    
+    multiset_add((void*)a, &multiset);
+    multiset_add((void*)b, &multiset);
+    multiset_add((void*)c, &multiset);
+    
+    multiset_add((void*)a, &expected_multiset);
+    multiset_add((void*)b, &expected_multiset);
+    multiset_add((void*)c, &expected_multiset);
+
+    bool subset = false;
+    
+    /* is multiset a subset of itself? */
+    unsigned int res = multiset_subset(&subset, &multiset, &multiset);
+    
+    bool equal = false;
+    multiset_equal(&equal, &multiset, &expected_multiset);
+    
+    multiset_free(NULL, &multiset);
+    multiset_free(NULL, &expected_multiset);
+    
+    if(res == JCRL_ERR_OK && equal && subset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_superset_normal(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    
+    multiset_add((void*)a, &multiset_a);
+    multiset_add((void*)a, &multiset_a);
+    multiset_add((void*)b, &multiset_a);
+    
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)b, &multiset_b);
+    multiset_add((void*)c, &multiset_b);
+    multiset_add((void*)c, &multiset_b);
+    
+    multiset_add((void*)a, &expected_multiset_a);
+    multiset_add((void*)a, &expected_multiset_a);
+    multiset_add((void*)b, &expected_multiset_a);
+    
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)b, &expected_multiset_b);
+    multiset_add((void*)c, &expected_multiset_b);
+    multiset_add((void*)c, &expected_multiset_b);
+    
+    bool superset = false;
+    
+    /* is b a superset of a? */
+    unsigned int res = multiset_superset(&superset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && superset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_superset_null_params(void)
+{
+    bool pass = false;
+    
+    unsigned int res = multiset_superset(NULL, NULL, NULL);
+    
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_superset_improper_superset(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    
+    multiset_add((void*)a, &multiset_a);
+    multiset_add((void*)b, &multiset_a);
+    multiset_add((void*)c, &multiset_a);
+    
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)b, &multiset_b);
+    multiset_add((void*)c, &multiset_b);
+    
+    multiset_add((void*)a, &expected_multiset_a);
+    multiset_add((void*)b, &expected_multiset_a);
+    multiset_add((void*)c, &expected_multiset_a);
+    
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)b, &expected_multiset_b);
+    multiset_add((void*)c, &expected_multiset_b);
+    
+    bool superset = false;
+    
+    /* is b a superset of a? */
+    unsigned int res = multiset_superset(&superset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && superset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_superset_empty_sets(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    bool superset = false;
+    
+    /* is b a superset of a? */
+    unsigned int res = multiset_superset(&superset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && superset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_superset_of_empty_set(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    
+    multiset_add((void*)a, &multiset_b);
+    multiset_add((void*)b, &multiset_b);
+    
+    multiset_add((void*)a, &expected_multiset_b);
+    multiset_add((void*)b, &expected_multiset_b);
+    
+    bool superset = false;
+    
+    /* is b a superset of a? */
+    unsigned int res = multiset_superset(&superset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && superset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_superset_empty_set_of(void)
+{
+    bool pass = false;
+    
+    Multiset multiset_a;
+    multiset_init(&multiset_a);
+    
+    Multiset multiset_b;
+    multiset_init(&multiset_b);
+    
+    Multiset expected_multiset_a;
+    multiset_init(&expected_multiset_a);
+    
+    Multiset expected_multiset_b;
+    multiset_init(&expected_multiset_b);
+    
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    
+    multiset_add((void*)a, &multiset_a);
+    multiset_add((void*)b, &multiset_a);
+    multiset_add((void*)c, &multiset_a);
+    
+    multiset_add((void*)a, &expected_multiset_a);
+    multiset_add((void*)b, &expected_multiset_a);
+    multiset_add((void*)c, &expected_multiset_a);
+    
+    bool superset = false;
+    
+    /* is b a superset of a? */
+    unsigned int res = multiset_superset(&superset, &multiset_a, &multiset_b);
+    
+    bool equal_a = false;
+    multiset_equal(&equal_a, &multiset_a, &expected_multiset_a);
+    
+    bool equal_b = false;
+    multiset_equal(&equal_b, &multiset_b, &expected_multiset_b);
+    
+    multiset_free(NULL, &multiset_a);
+    multiset_free(NULL, &multiset_b);
+    multiset_free(NULL, &expected_multiset_a);
+    multiset_free(NULL, &expected_multiset_b);
+    
+    if(res == JCRL_ERR_OK && equal_a && equal_b && !superset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_multiset_superset_same_set(void)
+{
+    bool pass = false;
+    
+    Multiset multiset;
+    multiset_init(&multiset);
+    
+    Multiset expected_multiset;
+    multiset_init(&expected_multiset);
+
+    /* arbitrary values to insert */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    
+    multiset_add((void*)a, &multiset);
+    multiset_add((void*)b, &multiset);
+    multiset_add((void*)c, &multiset);
+    
+    multiset_add((void*)a, &expected_multiset);
+    multiset_add((void*)b, &expected_multiset);
+    multiset_add((void*)c, &expected_multiset);
+
+    bool superset = false;
+    
+    /* is multiset a superset of itself? */
+    unsigned int res = multiset_superset(&superset, &multiset, &multiset);
+    
+    bool equal = false;
+    multiset_equal(&equal, &multiset, &expected_multiset);
+    
+    multiset_free(NULL, &multiset);
+    multiset_free(NULL, &expected_multiset);
+    
+    if(res == JCRL_ERR_OK && equal && superset)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
 /* Utilities */
 bool test_multiset_enumerate_normal(void)
 {

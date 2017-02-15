@@ -461,6 +461,103 @@ unsigned int multiset_in(bool* in, void* data, Multiset* multiset)
     return JCRL_ERR_OK;
 }
 
+unsigned int multiset_subset(bool* subset, Multiset* a, Multiset* b)
+{
+    if(subset == NULL || a == NULL || b == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    *subset = false;
+    
+    if(b->size > a->size) /* b is bigger than a, thus cannot be a subset */
+    {
+        return JCRL_ERR_OK;
+    }
+    
+    unsigned int res = 0;
+    
+    unsigned int card_a = 0;
+    unsigned int card_b = 0;
+    
+    res = multiset_cardinality(&card_a, a);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    res = multiset_cardinality(&card_b, b);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    if(card_b > card_a) /* b is once again "bigger" than a */
+    {
+        return JCRL_ERR_OK;
+    }
+    
+    /* check multiplicities of each element in b against those in a */
+    unsigned int mult_a = 0;
+    unsigned int mult_b = 0;
+    unsigned int match = 0;
+    
+    struct _LNode* ptr_b = b->data->head;
+    
+    for(ptr_b=b->data->head;ptr_b!=NULL;ptr_b=ptr_b->next)
+    {
+        res = multiset_multiplicity(&mult_a, ptr_b->data, a);
+        
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+        
+        res = multiset_multiplicity(&mult_b, ptr_b->data, b);
+        
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+        
+        if(mult_b <= mult_a)
+        {
+            match++;
+        }
+    }
+    
+    if(match == card_b)
+    {
+        *subset = true;
+    }
+    
+    return JCRL_ERR_OK;
+}
+
+unsigned int multiset_superset(bool* superset, Multiset* a, Multiset* b)
+{
+    if(superset == NULL || a == NULL || b == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+    
+    bool subset = false;
+    
+    /* is a a subset of b? */
+    unsigned int res = multiset_subset(&subset, b, a);
+    
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    *superset = subset;
+    
+    return JCRL_ERR_OK;
+}
+
 /* Equality */
 unsigned int multiset_equal(bool* equal, Multiset* a, Multiset* b)
 {

@@ -6,7 +6,7 @@
 */
 #include "multiset.h"
 
-#define UNIT_MULTISET_NUM_TESTS 53
+#define UNIT_MULTISET_NUM_TESTS 67
 
 /* Initialisation */
 bool test_multiset_init_normal(void);
@@ -75,6 +75,22 @@ bool test_multiset_equal_same_set(void);
 bool test_multiset_in_normal(void);
 bool test_multiset_in_null_params(void);
 bool test_multiset_in_not_found(void);
+
+bool test_multiset_subset_normal(void);
+bool test_multiset_subset_null_params(void);
+bool test_multiset_subset_improper_subset(void);
+bool test_multiset_subset_empty_sets(void);
+bool test_multiset_subset_of_empty_set(void);
+bool test_multiset_subset_empty_set_of(void);
+bool test_multiset_subset_same_set(void);
+
+bool test_multiset_superset_normal(void);
+bool test_multiset_superset_null_params(void);
+bool test_multiset_superset_improper_superset(void);
+bool test_multiset_superset_empty_sets(void);
+bool test_multiset_superset_of_empty_set(void);
+bool test_multiset_superset_empty_set_of(void);
+bool test_multiset_superset_same_set(void);
 
 /* Utilities */
 bool test_multiset_enumerate_normal(void);

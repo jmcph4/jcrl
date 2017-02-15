@@ -39,6 +39,8 @@ unsigned int multiset_equal(bool* equal, Multiset* a, Multiset* b);
 
 /* Membership */
 unsigned int multiset_in(bool* in, void* data, Multiset* multiset);
+unsigned int multiset_subset(bool* subset, Multiset* a, Multiset* b);
+unsigned int multiset_superset(bool* superset, Multiset* a, Multiset* b);
 
 /* Utilities */
 unsigned int multiset_enumerate(List* list, Multiset* multiset);

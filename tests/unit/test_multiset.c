@@ -62,6 +62,20 @@ const char* tests[UNIT_MULTISET_NUM_TESTS] = {
                                 "test_multiset_in_normal",
                                 "test_multiset_in_null_params",
                                 "test_multiset_in_not_found",
+                                "test_multiset_subset_normal",
+                                "test_multiset_subset_null_params",
+                                "test_multiset_subset_improper_subset",
+                                "test_multiset_subset_empty_sets",
+                                "test_multiset_subset_of_empty_set",
+                                "test_multiset_subset_empty_set_of",
+                                "test_multiset_subset_same_set",
+                                "test_multiset_superset_normal",
+                                "test_multiset_superset_null_params",
+                                "test_multiset_superset_improper_superset",
+                                "test_multiset_superset_empty_sets",
+                                "test_multiset_superset_of_empty_set",
+                                "test_multiset_superset_empty_set_of",
+                                "test_multiset_superset_same_set",
                                 "test_multiset_enumerate_normal",
                                 "test_multiset_enumerate_null_params",
                                 "test_multiset_enumerate_empty_set"
@@ -73,6 +87,7 @@ int main(void)
     bool results[UNIT_MULTISET_NUM_TESTS];
     memset(results, 0, sizeof(bool) * UNIT_MULTISET_NUM_TESTS);
     
+    /* Initialisation */
     results[t] = test_multiset_init_normal();
     t++;
     results[t] = test_multiset_init_null_params();
@@ -88,6 +103,7 @@ int main(void)
     results[t] = test_multiset_init_list_null_params();
     t++;
     
+    /* Operations */
     results[t] = test_multiset_add_normal();
     t++;
     results[t] = test_multiset_add_null_params();
@@ -158,6 +174,7 @@ int main(void)
     results[t] = test_multiset_sum_same_sets();
     t++;
     
+    /* Size */
     results[t] = test_multiset_cardinality_normal();
     t++;
     results[t] = test_multiset_cardinality_null_params();
@@ -178,6 +195,7 @@ int main(void)
     results[t] = test_multiset_equal_same_set();
     t++;
     
+    /* Membership */
     results[t] = test_multiset_in_normal();
     t++;
     results[t] = test_multiset_in_null_params();
@@ -185,6 +203,37 @@ int main(void)
     results[t] = test_multiset_in_not_found();
     t++;
     
+    results[t] = test_multiset_subset_normal();
+    t++;
+    results[t] = test_multiset_subset_null_params();
+    t++;
+    results[t] = test_multiset_subset_improper_subset();
+    t++;
+    results[t] = test_multiset_subset_empty_sets();
+    t++;
+    results[t] = test_multiset_subset_of_empty_set();
+    t++;
+    results[t] = test_multiset_subset_empty_set_of();
+    t++;
+    results[t] = test_multiset_subset_same_set();
+    t++;
+
+    results[t] = test_multiset_superset_normal();
+    t++;
+    results[t] = test_multiset_superset_null_params();
+    t++;
+    results[t] = test_multiset_superset_improper_superset();
+    t++;
+    results[t] = test_multiset_superset_empty_sets();
+    t++;
+    results[t] = test_multiset_superset_of_empty_set();
+    t++;
+    results[t] = test_multiset_superset_empty_set_of();
+    t++;
+    results[t] = test_multiset_superset_same_set();
+    t++;
+
+    /* Utilities */
     results[t] = test_multiset_enumerate_normal();
     t++;
     results[t] = test_multiset_enumerate_null_params();
