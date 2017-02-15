@@ -4,8 +4,6 @@
  * Declarations of unit tests for the set implementation. For unit test
  * definitions, see unit_set.c.
 */
-#include "set.h"
-
 #define UNIT_SET_NUM_TESTS 49
 
 /* Initialisation */
@@ -45,9 +43,9 @@ bool test_set_superset_empty_set_of(void);
 bool test_set_superset_same_set(void);
 
 /* Operations */
-bool test_set_insert_normal(void);
-bool test_set_insert_null_params(void);
-bool test_set_insert_duplicates(void);
+bool test_set_add_normal(void);
+bool test_set_add_null_params(void);
+bool test_set_add_duplicates(void);
 
 bool test_set_remove_normal(void);
 bool test_set_remove_null_params(void);

@@ -4,14 +4,9 @@
 #include <stdbool.h>
 
 #include "list.h"
+#include "multiset.h"
 
-struct _Set
-{
-    unsigned int size;
-    List* list;
-};
-
-typedef struct _Set Set;
+typedef Multiset Set;
 
 /* Initialisation */
 unsigned int set_init(Set* set);
@@ -26,7 +21,7 @@ unsigned int set_subset(bool* subset, Set* a, Set* b);
 unsigned int set_superset(bool* superset, Set* a, Set* b);
 
 /* Operations */
-unsigned int set_insert(void* data, Set* set);
+unsigned int set_add(void* data, Set* set);
 unsigned int set_remove(void* data, Set* set);
 
 unsigned int set_union(Set* a, Set* b, Set* u);
