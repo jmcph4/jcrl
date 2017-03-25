@@ -4,6 +4,8 @@
  * Declarations of unit tests for the set implementation. For unit test
  * definitions, see unit_set.c.
 */
+#include <stdbool.h>
+
 #define UNIT_SET_NUM_TESTS 49
 
 /* Initialisation */
