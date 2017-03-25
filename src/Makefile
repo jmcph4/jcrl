@@ -16,6 +16,7 @@ debug:
 	mv *.o $(BUILD_DIR)
 	ar -cvq $(BUILD_DIR)/lib$(PROJ_NAME).a $(BUILD_DIR)/*.o
 	ar -t $(BUILD_DIR)/lib$(PROJ_NAME).a
+	rm $(BUILD_DIR)/*.o
 
 .PHONY: clean
 clean:
