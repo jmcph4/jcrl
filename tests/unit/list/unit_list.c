@@ -331,11 +331,11 @@ bool test_list_get_normal(void)
     
     unsigned int* val = calloc(1, sizeof(unsigned int)); /* store elem here */
     
-    unsigned int res = list_get((void*)&val, 0, &list);
+    unsigned int res = list_get((void*)val, 0, &list);
     
     list_free(NULL, &list);
     
-    if(res == JCRL_ERR_OK && (unsigned int)val == a)
+    if(res == JCRL_ERR_OK && *val == a)
     {
         pass = true;
     }
