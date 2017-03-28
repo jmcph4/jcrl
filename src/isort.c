@@ -24,14 +24,14 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
         return JCRL_ERR_OK;
     }
     
-    void* previous = calloc(1, sizeof(void*));
+    void** previous = calloc(1, sizeof(void*));
     
     if(previous == NULL)
     {
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
     
-    void* current = calloc(1, sizeof(void*));
+    void** current = calloc(1, sizeof(void*));
     
     if(current == NULL)
     {
@@ -43,7 +43,7 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
     {
         unsigned int j = i;
         
-        res = list_get(&previous, j - 1, list);
+        res = list_get(previous, j - 1, list);
         
         if(res != JCRL_ERR_OK)
         {
@@ -52,7 +52,7 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
             return res;
         }
         
-        res = list_get(&current, j, list);
+        res = list_get(current, j, list);
         
         if(res != JCRL_ERR_OK)
         {
@@ -61,7 +61,7 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
             return res;
         }
         
-        while(j > 0 && comparison(previous, current))
+        while(j > 0 && comparison(*previous, *current))
         {
             res = list_swap(j, j - 1, list);
             
@@ -71,7 +71,7 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
             }
             
             /* update our view of the list */
-            res = list_get(&previous, j - 1, list);
+            res = list_get(previous, j - 1, list);
         
             if(res != JCRL_ERR_OK)
             {
@@ -80,7 +80,7 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
                 return res;
             }
         
-            res = list_get(&current, j, list);
+            res = list_get(current, j, list);
         
             if(res != JCRL_ERR_OK)
             {
