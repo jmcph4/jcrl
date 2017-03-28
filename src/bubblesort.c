@@ -28,14 +28,14 @@ unsigned int bubblesort(bool (comparison(void*, void*)), List* list)
  
     bool swapped = true;
     
-    void* previous = calloc(1, sizeof(void*));
+    void** previous = calloc(1, sizeof(void*));
     
     if(previous == NULL)
     {
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
     
-    void* current = calloc(1, sizeof(void*));
+    void** current = calloc(1, sizeof(void*));
     
     if(current == NULL)
     {
@@ -49,7 +49,7 @@ unsigned int bubblesort(bool (comparison(void*, void*)), List* list)
         
         for(unsigned int i=1;i<length;i++)
         {
-            res = list_get(&current, i, list);
+            res = list_get(current, i, list);
         
             if(res != JCRL_ERR_OK)
             {
@@ -58,7 +58,7 @@ unsigned int bubblesort(bool (comparison(void*, void*)), List* list)
                 return res;
             }
         
-            res = list_get(&previous, i - 1, list);
+            res = list_get(previous, i - 1, list);
         
             if(res != JCRL_ERR_OK)
             {
@@ -67,7 +67,7 @@ unsigned int bubblesort(bool (comparison(void*, void*)), List* list)
                 return res;
             }
         
-            if(comparison(previous, current))
+            if(comparison(*previous, *current))
             {
                 res = list_swap(i - 1, i, list);
             
