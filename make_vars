@@ -11,7 +11,8 @@ CFLAGS = -Wall -Wextra -Wshadow -pedantic-errors -std=c11
 LIB_CFLAGS = $(CFLAGS) -O1
 LIB_DEV_CFLAGS = $(CFLAGS) -g
 
-UNIT_TEST_CFLAGS = $(CFLAGS) -I$(SRC_DIR) -L$(BUILD_DIR) -l$(PROJ_NAME) -lasan -fsanitize=address -fno-omit-frame-pointer
+UNIT_TEST_CFLAGS = $(CFLAGS) -I$(SRC_DIR) -L$(BUILD_DIR) -l$(PROJ_NAME) -lasan \
+-fsanitize=address -fno-omit-frame-pointer
 
 REL_CFLAGS = $(CFLAGS) -O3
 DBG_CFLAGS = $(CFLAGS) -g
