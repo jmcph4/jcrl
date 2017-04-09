@@ -65,7 +65,9 @@ bool test_list_free_normal(void)
     bool pass = false;
     
     /* set up list */
-    unsigned int a = 12; /* arbitrary value */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    *a = 12; /* arbitrary value */
+    
     List list;
     list_init(&list);
     list_append((void*)a, &list);
@@ -79,6 +81,8 @@ bool test_list_free_normal(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -124,9 +128,12 @@ bool test_list_equal_normal(void)
     List list_b;
     list_init(&list_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary numbers to insert */
-    unsigned int a = 0;
-    unsigned int b = 1;
+    *a = 0;
+    *b = 1;
     
     /* set up first list */
     list_append((void*)a, &list_a);
@@ -150,6 +157,9 @@ bool test_list_equal_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -176,10 +186,14 @@ bool test_list_equal_unequal_lists(void)
     
     List list_b;
     list_init(&list_b);
+
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     
     /* arbitrary numbers to insert */
-    unsigned int a = 0;
-    unsigned int b = 1;
+    *a = 0;
+    *b = 1;
     
     /* set up first list */
     list_append((void*)a, &list_a);
@@ -203,6 +217,9 @@ bool test_list_equal_unequal_lists(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -213,9 +230,12 @@ bool test_list_equal_same_lists(void)
     List list_a;
     list_init(&list_a);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary numbers to insert */
-    unsigned int a = 0;
-    unsigned int b = 1;
+    *a = 0;
+    *b = 1;
     
     /* set up test list */
     list_append((void*)a, &list_a);
@@ -233,6 +253,9 @@ bool test_list_equal_same_lists(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -247,9 +270,12 @@ bool test_list_in_normal(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    *a = 12;
+    *b = 33;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -271,6 +297,9 @@ bool test_list_in_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -298,7 +327,9 @@ bool test_list_in_empty_list(void)
     List expected_list;
     list_init(&expected_list);
     
-    unsigned int a = 12; /* arbitrary value to insert */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary value to insert */
     
     bool in = false;
     unsigned int res = list_in(&in, (void*)a, &list);
@@ -314,6 +345,8 @@ bool test_list_in_empty_list(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -325,13 +358,15 @@ bool test_list_get_normal(void)
     List list;
     list_init(&list);
     
-    unsigned int a = 12; /* arbitrary number to insert */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary number to insert */
     
     list_append((void*)a, &list);
     
-    unsigned int* val = calloc(1, sizeof(unsigned int)); /* store elem here */
+    unsigned int** val = calloc(1, sizeof(unsigned int*)); /* store elem here */
     
-    unsigned int res = list_get((void*)val, 0, &list);
+    unsigned int res = list_get((void**)val, 0, &list);
     
     list_free(NULL, &list);
     
@@ -341,7 +376,8 @@ bool test_list_get_normal(void)
     }
     
     free(val);
-    
+    free(a);
+
     return pass;
 }
 
@@ -366,7 +402,9 @@ bool test_list_get_out_of_bounds(void)
     List list;
     list_init(&list);
     
-    unsigned int a = 12; /* arbitrary number to insert */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary number to insert */
     
     list_append((void*)a, &list);
     
@@ -382,6 +420,7 @@ bool test_list_get_out_of_bounds(void)
     }
     
     free(val);
+    free(a);
     
     return pass;
 }
@@ -397,9 +436,12 @@ bool test_list_set_normal(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert into list */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     /* set up first list */
     list_append((void*)a, &list);
@@ -424,6 +466,9 @@ bool test_list_set_normal(void)
     
     list_free(NULL, &list);
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -452,9 +497,12 @@ bool test_list_set_out_of_bounds(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert into list */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     /* set up first list */
     list_append((void*)a, &list);
@@ -479,6 +527,9 @@ bool test_list_set_out_of_bounds(void)
     
     list_free(NULL, &list);
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -489,7 +540,9 @@ bool test_list_length_normal(void)
     List list;
     list_init(&list);
     
-    unsigned int a = 12;
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12;
     
     list_append((void*)a, &list);
     list_append((void*)a, &list);
@@ -506,6 +559,8 @@ bool test_list_length_normal(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -555,10 +610,14 @@ bool test_list_insert_normal(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 3;
+    *c = 1;
     
     list_append((void*)a, &list);
     list_append((void*)c, &list);
@@ -577,6 +636,10 @@ bool test_list_insert_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -604,9 +667,12 @@ bool test_list_insert_out_of_bounds(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -624,6 +690,9 @@ bool test_list_insert_out_of_bounds(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -637,9 +706,12 @@ bool test_list_insert_new_head(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -658,6 +730,9 @@ bool test_list_insert_new_head(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -671,9 +746,12 @@ bool test_list_insert_new_tail(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -692,6 +770,9 @@ bool test_list_insert_new_tail(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -705,7 +786,9 @@ bool test_list_insert_empty_list(void)
     List expected_list;
     list_init(&expected_list);
     
-    unsigned int a = 12; /* arbitrary value to insert */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary value to insert */
     
     list_append((void*)a, &expected_list);
     
@@ -719,6 +802,8 @@ bool test_list_insert_empty_list(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -732,10 +817,14 @@ bool test_list_remove_normal(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 3;
+    *c = 1;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -754,6 +843,10 @@ bool test_list_remove_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -781,9 +874,12 @@ bool test_list_remove_out_of_bounds(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -801,6 +897,9 @@ bool test_list_remove_out_of_bounds(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -814,10 +913,14 @@ bool test_list_remove_new_head(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 3;
+    *c = 1;
     
     list_append((void*)c, &list);
     list_append((void*)a, &list);
@@ -836,6 +939,10 @@ bool test_list_remove_new_head(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -849,10 +956,14 @@ bool test_list_remove_new_tail(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 3;
+    *c = 1;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -870,6 +981,10 @@ bool test_list_remove_new_tail(void)
     {
         pass = true;
     }
+
+    free(a);
+    free(b);
+    free(c);
     
     return pass;
 }
@@ -884,7 +999,9 @@ bool test_list_traverse_normal(void)
     List expected_list;
     list_init(&expected_list);
     
-    unsigned int a = 12; /* arbitrary value */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary value */
     
     list_append((void*)a, &list);
     list_append((void*)a, &list);
@@ -907,6 +1024,8 @@ bool test_list_traverse_normal(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -960,7 +1079,9 @@ bool test_list_traverse_reverse(void)
     List expected_list;
     list_init(&expected_list);
     
-    unsigned int a = 12; /* arbitrary value */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary value */
     
     list_append((void*)a, &list);
     list_append((void*)a, &list);
@@ -983,6 +1104,8 @@ bool test_list_traverse_reverse(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -997,7 +1120,9 @@ bool test_list_append_normal(void)
     List expected_list;
     list_init(&expected_list);
     
-    unsigned int a = 12; /* arbitrary value */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary value */
     
     list_insert((void*)a, 0, &list);
     
@@ -1017,6 +1142,8 @@ bool test_list_append_normal(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -1044,7 +1171,9 @@ bool test_list_append_empty_list(void)
     List expected_list;
     list_init(&expected_list);
     
-    unsigned int a = 12; /* arbitrary value */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary value */
     
     list_insert((void*)a, 0, &expected_list);
     
@@ -1061,6 +1190,8 @@ bool test_list_append_empty_list(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -1082,9 +1213,12 @@ bool test_list_concatenate_normal(void)
     List expected_list_b;
     list_init(&expected_list_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)a, &list_a);
     list_append((void*)b, &list_a);
@@ -1119,6 +1253,9 @@ bool test_list_concatenate_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -1189,9 +1326,12 @@ bool test_list_concatenate_left_empty_list(void)
     List expected_list_b;
     list_init(&expected_list_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)b, &list_b);
     list_append((void*)a, &list_b);
@@ -1220,6 +1360,9 @@ bool test_list_concatenate_left_empty_list(void)
     {
         pass = true;
     }
+
+    free(a);
+    free(b);
     
     return pass;
 }
@@ -1242,9 +1385,12 @@ bool test_list_concatenate_right_empty_list(void)
     List expected_list_b;
     list_init(&expected_list_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)b, &list_a);
     list_append((void*)a, &list_a);
@@ -1271,6 +1417,9 @@ bool test_list_concatenate_right_empty_list(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -1284,9 +1433,12 @@ bool test_list_swap_normal(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -1312,6 +1464,9 @@ bool test_list_swap_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -1339,9 +1494,12 @@ bool test_list_swap_out_of_bounds(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -1367,6 +1525,9 @@ bool test_list_swap_out_of_bounds(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -1380,9 +1541,12 @@ bool test_list_swap_same_index(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -1408,6 +1572,9 @@ bool test_list_swap_same_index(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -1421,10 +1588,14 @@ bool test_list_find_normal(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 3;
+    *a = 12;
+    *b = 33;
+    *c = 3;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -1449,6 +1620,10 @@ bool test_list_find_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -1476,10 +1651,14 @@ bool test_list_find_not_found(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 3;
+    *a = 12;
+    *b = 33;
+    *c = 3;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -1502,6 +1681,10 @@ bool test_list_find_not_found(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -1517,7 +1700,9 @@ bool test_list_find_empty_list(void)
     
     unsigned int pos = 0;
     
-    unsigned int a = 12; /* arbitrary value to insert */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary value to insert */
     
     unsigned int res = list_find(&pos, (void*)a, &list);
     
@@ -1532,6 +1717,8 @@ bool test_list_find_empty_list(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -1545,9 +1732,12 @@ bool test_list_find_duplicates(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    *a = 12;
+    *b = 33;
     
     list_append((void*)a, &list);
     list_append((void*)b, &list);
@@ -1572,6 +1762,9 @@ bool test_list_find_duplicates(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -1585,11 +1778,16 @@ bool test_list_count_normal(void)
     List expected_list;
     list_init(&expected_list);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
-    unsigned int d = 3;
+    *a = 12;
+    *b = 33;
+    *c = 1;
+    *d = 3;
     
     list_append((void*)a, &list);
     list_append((void*)a, &list);
@@ -1620,6 +1818,11 @@ bool test_list_count_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
@@ -1647,7 +1850,9 @@ bool test_list_count_not_found(void)
     List expected_list;
     list_init(&expected_list);
     
-    unsigned int a = 12; /* arbitrary value */
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+
+    *a = 12; /* arbitrary value */
     
     unsigned int count = 0;
     
@@ -1664,5 +1869,7 @@ bool test_list_count_not_found(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
