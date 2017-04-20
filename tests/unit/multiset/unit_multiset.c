@@ -81,10 +81,14 @@ bool test_multiset_init_list_normal(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 3;
+    *c = 1;
     
     list_append((void*)a, &list);
     list_append((void*)a, &list);
@@ -120,6 +124,10 @@ bool test_multiset_init_list_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -147,8 +155,10 @@ bool test_multiset_add_normal(void)
     
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
+
+    unsigned int* a = calloc(1, sizeof(unsigned int));
     
-    unsigned int a = 12; /* arbitrary value to insert */
+    *a = 12; /* arbitrary value to insert */
     
     unsigned int res = multiset_add((void*)a, &multiset);
     
@@ -165,6 +175,8 @@ bool test_multiset_add_normal(void)
         pass = true;
     }
     
+    free(a);
+
     return pass;
 }
 
@@ -192,9 +204,12 @@ bool test_multiset_remove_normal(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)a, &multiset);
@@ -216,6 +231,9 @@ bool test_multiset_remove_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -243,9 +261,12 @@ bool test_multiset_remove_not_found(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
+    *a = 12;
+    *b = 3;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)a, &multiset);
@@ -266,6 +287,9 @@ bool test_multiset_remove_not_found(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -291,12 +315,18 @@ bool test_multiset_union_normal(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -369,6 +399,12 @@ bool test_multiset_union_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -408,11 +444,16 @@ bool test_multiset_union_with_empty_set(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -464,6 +505,11 @@ bool test_multiset_union_with_empty_set(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
@@ -489,11 +535,16 @@ bool test_multiset_union_empty_set_with(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)b, &multiset_b);
     multiset_add((void*)b, &multiset_b);
@@ -545,6 +596,11 @@ bool test_multiset_union_empty_set_with(void)
         pass = true;
     }
     
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -618,12 +674,18 @@ bool test_multiset_union_commutes(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -696,6 +758,9 @@ bool test_multiset_union_commutes(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -715,11 +780,16 @@ bool test_multiset_union_same_sets(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -766,6 +836,11 @@ bool test_multiset_union_same_sets(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
@@ -791,12 +866,18 @@ bool test_multiset_intersection_normal(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -863,6 +944,12 @@ bool test_multiset_intersection_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -902,11 +989,16 @@ bool test_multiset_intersection_with_empty_set(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -949,6 +1041,11 @@ bool test_multiset_intersection_with_empty_set(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
@@ -974,11 +1071,16 @@ bool test_multiset_intersection_empty_set_with(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)b, &multiset_b);
     multiset_add((void*)b, &multiset_b);
@@ -1021,6 +1123,11 @@ bool test_multiset_intersection_empty_set_with(void)
         pass = true;
     }
     
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -1094,12 +1201,18 @@ bool test_multiset_intersection_commutes(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -1166,6 +1279,12 @@ bool test_multiset_intersection_commutes(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -1185,11 +1304,16 @@ bool test_multiset_intersection_same_sets(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -1236,6 +1360,11 @@ bool test_multiset_intersection_same_sets(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
@@ -1261,12 +1390,18 @@ bool test_multiset_difference_normal(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -1331,6 +1466,12 @@ bool test_multiset_difference_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -1370,11 +1511,16 @@ bool test_multiset_difference_with_empty_set(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -1426,6 +1572,11 @@ bool test_multiset_difference_with_empty_set(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
@@ -1451,11 +1602,16 @@ bool test_multiset_difference_empty_set_with(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)b, &multiset_b);
     multiset_add((void*)b, &multiset_b);
@@ -1498,6 +1654,11 @@ bool test_multiset_difference_empty_set_with(void)
         pass = true;
     }
     
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -1565,11 +1726,16 @@ bool test_multiset_difference_same_sets(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -1607,6 +1773,11 @@ bool test_multiset_difference_same_sets(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
@@ -1632,12 +1803,18 @@ bool test_multiset_sum_normal(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -1715,6 +1892,12 @@ bool test_multiset_sum_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -1753,12 +1936,17 @@ bool test_multiset_sum_with_empty_set(void)
     
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
-    
+
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -1810,6 +1998,11 @@ bool test_multiset_sum_with_empty_set(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
@@ -1834,12 +2027,17 @@ bool test_multiset_sum_empty_set_with(void)
     
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
-    
+   
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+     
     /* arbitrary values to insert */
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)b, &multiset_b);
     multiset_add((void*)b, &multiset_b);
@@ -1891,6 +2089,11 @@ bool test_multiset_sum_empty_set_with(void)
         pass = true;
     }
     
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -1964,12 +2167,18 @@ bool test_multiset_sum_commutes(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+    unsigned int* e = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
-    unsigned int e = 512;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
+    *e = 512;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -2047,6 +2256,12 @@ bool test_multiset_sum_commutes(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+    free(e);
+
     return pass;
 }
 
@@ -2066,11 +2281,16 @@ bool test_multiset_sum_same_sets(void)
     Multiset expected_multiset_c;
     multiset_init(&expected_multiset_c);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 3;
-    unsigned int c = 1;
-    unsigned int d = 8;
+    *a = 12;
+    *b = 3;
+    *c = 1;
+    *d = 8;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -2125,6 +2345,11 @@ bool test_multiset_sum_same_sets(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
@@ -2138,9 +2363,12 @@ bool test_multiset_cardinality_normal(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    *a = 12;
+    *b = 33;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)a, &multiset);
@@ -2165,6 +2393,9 @@ bool test_multiset_cardinality_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -2220,9 +2451,12 @@ bool test_multiset_multiplicity_normal(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    *a = 12;
+    *b = 33;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)a, &multiset);
@@ -2247,6 +2481,9 @@ bool test_multiset_multiplicity_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -2274,10 +2511,14 @@ bool test_multiset_multiplicity_not_found(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 33;
+    *c = 1;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)a, &multiset);
@@ -2302,6 +2543,10 @@ bool test_multiset_multiplicity_not_found(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -2315,9 +2560,12 @@ bool test_multiset_equal_normal(void)
     Multiset multiset_b;
     multiset_init(&multiset_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    *a = 12;
+    *b = 33;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -2339,6 +2587,9 @@ bool test_multiset_equal_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -2363,9 +2614,12 @@ bool test_multiset_equal_same_set(void)
     Multiset multiset_a;
     multiset_init(&multiset_a);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    *a = 12;
+    *b = 33;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -2382,6 +2636,9 @@ bool test_multiset_equal_same_set(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -2395,9 +2652,12 @@ bool test_multiset_in_normal(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    *a = 12;
+    *b = 33;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)b, &multiset);
@@ -2422,6 +2682,9 @@ bool test_multiset_in_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -2449,9 +2712,12 @@ bool test_multiset_in_not_found(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    *a = 12;
+    *b = 33;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)a, &multiset);
@@ -2474,6 +2740,9 @@ bool test_multiset_in_not_found(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -2493,10 +2762,14 @@ bool test_multiset_subset_normal(void)
     Multiset expected_multiset_b;
     multiset_init(&expected_multiset_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 33;
+    *c = 1;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -2541,6 +2814,10 @@ bool test_multiset_subset_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -2574,10 +2851,14 @@ bool test_multiset_subset_improper_subset(void)
     Multiset expected_multiset_b;
     multiset_init(&expected_multiset_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 33;
+    *c = 1;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -2624,6 +2905,10 @@ bool test_multiset_subset_improper_subset(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -2683,9 +2968,12 @@ bool test_multiset_subset_of_empty_set(void)
     Multiset expected_multiset_b;
     multiset_init(&expected_multiset_b);
     
-    /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+  
+     /* arbitrary values to insert */
+    *a = 12;
+    *b = 33;
     
     multiset_add((void*)a, &multiset_b);
     multiset_add((void*)b, &multiset_b);
@@ -2714,6 +3002,9 @@ bool test_multiset_subset_of_empty_set(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -2733,10 +3024,14 @@ bool test_multiset_subset_empty_set_of(void)
     Multiset expected_multiset_b;
     multiset_init(&expected_multiset_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 33;
+    *c = 1;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)b, &multiset_a);
@@ -2767,6 +3062,10 @@ bool test_multiset_subset_empty_set_of(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -2780,11 +3079,14 @@ bool test_multiset_subset_same_set(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
 
-    
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));    
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 33;
+    *c = 1;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)b, &multiset);
@@ -2810,6 +3112,10 @@ bool test_multiset_subset_same_set(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -2829,10 +3135,14 @@ bool test_multiset_superset_normal(void)
     Multiset expected_multiset_b;
     multiset_init(&expected_multiset_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 33;
+    *c = 1;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)a, &multiset_a);
@@ -2877,6 +3187,10 @@ bool test_multiset_superset_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -2910,10 +3224,14 @@ bool test_multiset_superset_improper_superset(void)
     Multiset expected_multiset_b;
     multiset_init(&expected_multiset_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 33;
+    *c = 1;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)b, &multiset_a);
@@ -2952,6 +3270,10 @@ bool test_multiset_superset_improper_superset(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -3011,9 +3333,12 @@ bool test_multiset_superset_of_empty_set(void)
     Multiset expected_multiset_b;
     multiset_init(&expected_multiset_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
+    *a = 12;
+    *b = 33;
     
     multiset_add((void*)a, &multiset_b);
     multiset_add((void*)b, &multiset_b);
@@ -3042,6 +3367,9 @@ bool test_multiset_superset_of_empty_set(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+
     return pass;
 }
 
@@ -3061,10 +3389,14 @@ bool test_multiset_superset_empty_set_of(void)
     Multiset expected_multiset_b;
     multiset_init(&expected_multiset_b);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 33;
+    *c = 1;
     
     multiset_add((void*)a, &multiset_a);
     multiset_add((void*)b, &multiset_a);
@@ -3095,6 +3427,10 @@ bool test_multiset_superset_empty_set_of(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -3108,10 +3444,14 @@ bool test_multiset_superset_same_set(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
 
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
+    *a = 12;
+    *b = 33;
+    *c = 1;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)b, &multiset);
@@ -3137,6 +3477,10 @@ bool test_multiset_superset_same_set(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+
     return pass;
 }
 
@@ -3157,11 +3501,16 @@ bool test_multiset_enumerate_normal(void)
     Multiset expected_multiset;
     multiset_init(&expected_multiset);
     
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+    unsigned int* c = calloc(1, sizeof(unsigned int));
+    unsigned int* d = calloc(1, sizeof(unsigned int));
+
     /* arbitrary values to insert */
-    unsigned int a = 12;
-    unsigned int b = 33;
-    unsigned int c = 1;
-    unsigned int d = 8;
+    *a = 12;
+    *b = 33;
+    *c = 1;
+    *d = 8;
     
     multiset_add((void*)a, &multiset);
     multiset_add((void*)b, &multiset);
@@ -3197,6 +3546,11 @@ bool test_multiset_enumerate_normal(void)
         pass = true;
     }
     
+    free(a);
+    free(b);
+    free(c);
+    free(d);
+
     return pass;
 }
 
