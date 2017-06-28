@@ -6,8 +6,10 @@
  */
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "constants.h"
+#include "macros.h"
 #include "stack.h"
 #include "unit_stack.h"
 
@@ -87,8 +89,8 @@ bool test_stack_equal_normal(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    stack_push((void*)a, &stack_a);
-    stack_push((void*)a, &stack_b);
+    stack_push(G_INT(a), &stack_a);
+    stack_push(G_INT(a), &stack_b);
     
     bool equal = false;
     unsigned int res = stack_equal(&equal, &stack_a, &stack_b);
@@ -132,8 +134,8 @@ bool test_stack_equal_unequal_stacks(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    stack_push((void*)a, &stack_a);
-    stack_push((void*)b, &stack_b);
+    stack_push(G_INT(a), &stack_a);
+    stack_push(G_INT(b), &stack_b);
     
     bool equal = false;
     unsigned int res = stack_equal(&equal, &stack_a, &stack_b);
@@ -158,7 +160,7 @@ bool test_stack_equal_same_stacks(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    stack_push((void*)a, &stack_a);
+    stack_push(G_INT(a), &stack_a);
     
     bool equal = false;
     unsigned int res = stack_equal(&equal, &stack_a, &stack_a);
@@ -183,7 +185,7 @@ bool test_stack_peek_normal(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    stack_push((void*)a, &stack);
+    stack_push(G_INT(a), &stack);
     
     unsigned int peek = 0;
     
@@ -242,9 +244,9 @@ bool test_stack_depth_normal(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    stack_push((void*)a, &stack);
-    stack_push((void*)a, &stack);
-    stack_push((void*)a, &stack);
+    stack_push(G_INT(a), &stack);
+    stack_push(G_INT(a), &stack);
+    stack_push(G_INT(a), &stack);
     
     unsigned int depth = 0;
     unsigned int res = stack_depth(&depth, &stack);
@@ -308,12 +310,12 @@ bool test_stack_push_normal(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    stack_push((void*)a, &expected_stack);
-    stack_push((void*)b, &expected_stack);
+    stack_push(G_INT(a), &expected_stack);
+    stack_push(G_INT(b), &expected_stack);
     
-    stack_push((void*)a, &stack);
+    stack_push(G_INT(a), &stack);
     
-    unsigned int res = stack_push((void*)b, &stack);
+    unsigned int res = stack_push(G_INT(b), &stack);
     
     bool equal = false;
     stack_equal(&equal, &stack, &expected_stack);
@@ -355,9 +357,9 @@ bool test_stack_push_empty_stack(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    stack_push((void*)a, &expected_stack);
+    stack_push(G_INT(a), &expected_stack);
     
-    unsigned int res = stack_push((void*)a, &stack);
+    unsigned int res = stack_push(G_INT(a), &stack);
     
     bool equal = false;
     stack_equal(&equal, &stack, &expected_stack);
@@ -387,12 +389,12 @@ bool test_stack_pop_normal(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    stack_push((void*)a, &expected_stack);
-    stack_push((void*)b, &expected_stack);
+    stack_push(G_INT(a), &expected_stack);
+    stack_push(G_INT(b), &expected_stack);
     
-    stack_push((void*)a, &stack);
-    stack_push((void*)b, &stack);
-    stack_push((void*)b, &stack);
+    stack_push(G_INT(a), &stack);
+    stack_push(G_INT(b), &stack);
+    stack_push(G_INT(b), &stack);
     
     unsigned int value = 0;
     unsigned int res = stack_pop((void*)&value, &stack);
