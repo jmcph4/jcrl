@@ -7,8 +7,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "constants.h"
+#include "macros.h"
 #include "set.h"
 #include "list.h"
 
@@ -93,11 +95,11 @@ bool test_set_equal_normal(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
     
-    set_add((void*)b, &set_b);
-    set_add((void*)a, &set_b);
+    set_add(G_INT(b), &set_b);
+    set_add(G_INT(a), &set_b);
     
     bool equal = false;
     unsigned int res = set_equal(&equal, &set_a, &set_b);
@@ -167,11 +169,11 @@ bool test_set_equal_unequal_sets(void)
     unsigned int b = 3;
     unsigned int c = 1;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
     
-    set_add((void*)c, &set_b);
-    set_add((void*)b, &set_b);
+    set_add(G_INT(c), &set_b);
+    set_add(G_INT(b), &set_b);
     
     bool equal = false;
     unsigned int res = set_equal(&equal, &set_a, &set_b);
@@ -198,8 +200,8 @@ bool test_set_equal_same_set(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    set_add((void*)a, &set);
-    set_add((void*)b, &set);
+    set_add(G_INT(a), &set);
+    set_add(G_INT(b), &set);
     
     bool equal = false;
     unsigned int res = set_equal(&equal, &set, &set);
@@ -229,15 +231,15 @@ bool test_set_in_normal(void)
     unsigned int a = 12;
     unsigned int b = 33;
     
-    set_add((void*)a, &set);
-    set_add((void*)b, &set);
+    set_add(G_INT(a), &set);
+    set_add(G_INT(b), &set);
     
-    set_add((void*)a, &expected_set);
-    set_add((void*)b, &expected_set);
+    set_add(G_INT(a), &expected_set);
+    set_add(G_INT(b), &expected_set);
     
     bool in = false;
     
-    unsigned int res = set_in(&in, (void*)a, &set);
+    unsigned int res = set_in(&in, G_INT(a), &set);
     
     bool equal = false;
     set_equal(&equal, &set, &expected_set);
@@ -281,7 +283,7 @@ bool test_set_in_empty_set(void)
     
     bool in = false;
     
-    unsigned int res = set_in(&in, (void*)a, &set);
+    unsigned int res = set_in(&in, G_INT(a), &set);
     
     bool equal = false;
     set_equal(&equal, &set, &expected_set);
@@ -311,12 +313,12 @@ bool test_set_in_not_found(void)
     unsigned int a = 12;
     unsigned int b = 33;
     
-    set_add((void*)a, &set);
-    set_add((void*)a, &expected_set);
+    set_add(G_INT(a), &set);
+    set_add(G_INT(a), &expected_set);
     
     bool in = false;
     
-    unsigned int res = set_in(&in, (void*)b, &set);
+    unsigned int res = set_in(&in, G_INT(b), &set);
     
     bool equal = false;
     set_equal(&equal, &set, &expected_set);
@@ -353,19 +355,19 @@ bool test_set_subset_normal(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
-    set_add((void*)c, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
+    set_add(G_INT(c), &set_a);
     
-    set_add((void*)a, &set_b);
-    set_add((void*)b, &set_b);
+    set_add(G_INT(a), &set_b);
+    set_add(G_INT(b), &set_b);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
-    set_add((void*)c, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
+    set_add(G_INT(c), &expected_set_a);
     
-    set_add((void*)a, &expected_set_b);
-    set_add((void*)b, &expected_set_b);
+    set_add(G_INT(a), &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
     
     bool subset = false;
     
@@ -426,21 +428,21 @@ bool test_set_subset_improper_subset(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
-    set_add((void*)c, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
+    set_add(G_INT(c), &set_a);
     
-    set_add((void*)a, &set_b);
-    set_add((void*)b, &set_b);
-    set_add((void*)c, &set_b);
+    set_add(G_INT(a), &set_b);
+    set_add(G_INT(b), &set_b);
+    set_add(G_INT(c), &set_b);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
-    set_add((void*)c, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
+    set_add(G_INT(c), &expected_set_a);
     
-    set_add((void*)a, &expected_set_b);
-    set_add((void*)b, &expected_set_b);
-    set_add((void*)c, &expected_set_b);
+    set_add(G_INT(a), &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
+    set_add(G_INT(c), &expected_set_b);
     
     bool subset = false;
     
@@ -526,11 +528,11 @@ bool test_set_subset_of_empty_set(void)
     unsigned int a = 12;
     unsigned int b = 33;
     
-    set_add((void*)a, &set_b);
-    set_add((void*)b, &set_b);
+    set_add(G_INT(a), &set_b);
+    set_add(G_INT(b), &set_b);
     
-    set_add((void*)a, &expected_set_b);
-    set_add((void*)b, &expected_set_b);
+    set_add(G_INT(a), &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
     
     bool subset = false;
     
@@ -577,13 +579,13 @@ bool test_set_subset_empty_set_of(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
-    set_add((void*)c, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
+    set_add(G_INT(c), &set_a);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
-    set_add((void*)c, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
+    set_add(G_INT(c), &expected_set_a);
     
     bool subset = false;
     
@@ -625,13 +627,13 @@ bool test_set_subset_same_set(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set);
-    set_add((void*)b, &set);
-    set_add((void*)c, &set);
+    set_add(G_INT(a), &set);
+    set_add(G_INT(b), &set);
+    set_add(G_INT(c), &set);
     
-    set_add((void*)a, &expected_set);
-    set_add((void*)b, &expected_set);
-    set_add((void*)c, &expected_set);
+    set_add(G_INT(a), &expected_set);
+    set_add(G_INT(b), &expected_set);
+    set_add(G_INT(c), &expected_set);
 
     bool subset = false;
     
@@ -673,19 +675,19 @@ bool test_set_superset_normal(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
     
-    set_add((void*)a, &set_b);
-    set_add((void*)b, &set_b);
-    set_add((void*)c, &set_b);
+    set_add(G_INT(a), &set_b);
+    set_add(G_INT(b), &set_b);
+    set_add(G_INT(c), &set_b);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
     
-    set_add((void*)a, &expected_set_b);
-    set_add((void*)b, &expected_set_b);
-    set_add((void*)c, &expected_set_b);
+    set_add(G_INT(a), &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
+    set_add(G_INT(c), &expected_set_b);
     
     bool superset = false;
     
@@ -746,21 +748,21 @@ bool test_set_superset_improper_superset(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
-    set_add((void*)c, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
+    set_add(G_INT(c), &set_a);
     
-    set_add((void*)a, &set_b);
-    set_add((void*)b, &set_b);
-    set_add((void*)c, &set_b);
+    set_add(G_INT(a), &set_b);
+    set_add(G_INT(b), &set_b);
+    set_add(G_INT(c), &set_b);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
-    set_add((void*)c, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
+    set_add(G_INT(c), &expected_set_a);
     
-    set_add((void*)a, &expected_set_b);
-    set_add((void*)b, &expected_set_b);
-    set_add((void*)c, &expected_set_b);
+    set_add(G_INT(a), &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
+    set_add(G_INT(c), &expected_set_b);
     
     bool superset = false;
     
@@ -846,11 +848,11 @@ bool test_set_superset_of_empty_set(void)
     unsigned int a = 12;
     unsigned int b = 33;
     
-    set_add((void*)a, &set_b);
-    set_add((void*)b, &set_b);
+    set_add(G_INT(a), &set_b);
+    set_add(G_INT(b), &set_b);
     
-    set_add((void*)a, &expected_set_b);
-    set_add((void*)b, &expected_set_b);
+    set_add(G_INT(a), &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
     
     bool superset = false;
     
@@ -897,13 +899,13 @@ bool test_set_superset_empty_set_of(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
-    set_add((void*)c, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
+    set_add(G_INT(c), &set_a);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
-    set_add((void*)c, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
+    set_add(G_INT(c), &expected_set_a);
     
     bool superset = false;
     
@@ -944,13 +946,13 @@ bool test_set_superset_same_set(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set);
-    set_add((void*)b, &set);
-    set_add((void*)c, &set);
+    set_add(G_INT(a), &set);
+    set_add(G_INT(b), &set);
+    set_add(G_INT(c), &set);
     
-    set_add((void*)a, &expected_set);
-    set_add((void*)b, &expected_set);
-    set_add((void*)c, &expected_set);
+    set_add(G_INT(a), &expected_set);
+    set_add(G_INT(b), &expected_set);
+    set_add(G_INT(c), &expected_set);
 
     bool superset = false;
     
@@ -984,9 +986,9 @@ bool test_set_add_normal(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    unsigned int res = set_add((void*)a, &set);
+    unsigned int res = set_add(G_INT(a), &set);
     
-    set_add((void*)a, &expected_set);
+    set_add(G_INT(a), &expected_set);
     
     bool equal = false;
     set_equal(&equal, &set, &expected_set);
@@ -1028,11 +1030,11 @@ bool test_set_add_duplicates(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    set_add((void*)a, &set);
+    set_add(G_INT(a), &set);
     
-    unsigned int res = set_add((void*)a, &set);
+    unsigned int res = set_add(G_INT(a), &set);
     
-    set_add((void*)a, &expected_set);
+    set_add(G_INT(a), &expected_set);
     
     bool equal = false;
     set_equal(&equal, &set, &expected_set);
@@ -1062,12 +1064,12 @@ bool test_set_remove_normal(void)
     unsigned int a = 12;
     unsigned int b = 33;
     
-    set_add((void*)a, &set);
-    set_add((void*)b, &set);
+    set_add(G_INT(a), &set);
+    set_add(G_INT(b), &set);
     
-    set_add((void*)a, &expected_set);
+    set_add(G_INT(a), &expected_set);
     
-    unsigned int res = set_remove((void*)b, &set);
+    unsigned int res = set_remove(G_INT(b), &set);
     
     bool equal = false;
     set_equal(&equal, &set, &expected_set);
@@ -1109,7 +1111,7 @@ bool test_set_remove_empty_set(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    unsigned int res = set_remove((void*)a, &set);
+    unsigned int res = set_remove(G_INT(a), &set);
     
     bool equal = false;
     set_equal(&equal, &set, &expected_set);
@@ -1153,22 +1155,22 @@ bool test_set_union_normal(void)
     unsigned int c = 1;
     unsigned int d = 2;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
     
-    set_add((void*)c, &set_b);
-    set_add((void*)d, &set_b);
+    set_add(G_INT(c), &set_b);
+    set_add(G_INT(d), &set_b);
     
-    set_add((void*)c, &expected_set_b);
-    set_add((void*)d, &expected_set_b);
+    set_add(G_INT(c), &expected_set_b);
+    set_add(G_INT(d), &expected_set_b);
     
-    set_add((void*)a, &expected_set_c);
-    set_add((void*)b, &expected_set_c);
-    set_add((void*)c, &expected_set_c);
-    set_add((void*)d, &expected_set_c);
+    set_add(G_INT(a), &expected_set_c);
+    set_add(G_INT(b), &expected_set_c);
+    set_add(G_INT(c), &expected_set_c);
+    set_add(G_INT(d), &expected_set_c);
     
     unsigned int res = set_union(&set_a, &set_b, &set_c);
     
@@ -1278,14 +1280,14 @@ bool test_set_union_same_set(void)
     unsigned int a = 12;
     unsigned int b = 33;
         
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
     
-    set_add((void*)a, &expected_set_b);
-    set_add((void*)b, &expected_set_b);
+    set_add(G_INT(a), &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
     
     unsigned int res = set_union(&set_a, &set_a, &set_b);
     
@@ -1335,19 +1337,19 @@ bool test_set_intersection_normal(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
     
-    set_add((void*)a, &set_b);
-    set_add((void*)c, &set_b);
+    set_add(G_INT(a), &set_b);
+    set_add(G_INT(c), &set_b);
     
-    set_add((void*)a, &expected_set_b);
-    set_add((void*)c, &expected_set_b);
+    set_add(G_INT(a), &expected_set_b);
+    set_add(G_INT(c), &expected_set_b);
     
-    set_add((void*)a, &expected_set_c);
+    set_add(G_INT(a), &expected_set_c);
     
     unsigned int res = set_intersection(&set_a, &set_b, &set_c);
     
@@ -1457,14 +1459,14 @@ bool test_set_intersection_same_set(void)
     unsigned int a = 12;
     unsigned int b = 33;
         
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
     
-    set_add((void*)a, &expected_set_b);
-    set_add((void*)b, &expected_set_b);
+    set_add(G_INT(a), &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
     
     unsigned int res = set_intersection(&set_a, &set_a, &set_b);
     
@@ -1514,20 +1516,20 @@ bool test_set_difference_normal(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
-    set_add((void*)c, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
+    set_add(G_INT(c), &set_a);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
-    set_add((void*)c, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
+    set_add(G_INT(c), &expected_set_a);
     
-    set_add((void*)b, &set_b);
+    set_add(G_INT(b), &set_b);
     
-    set_add((void*)b, &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
     
-    set_add((void*)a, &expected_set_c);
-    set_add((void*)c, &expected_set_c);
+    set_add(G_INT(a), &expected_set_c);
+    set_add(G_INT(c), &expected_set_c);
     
     unsigned int res = set_difference(&set_a, &set_b, &set_c);
     
@@ -1637,11 +1639,11 @@ bool test_set_difference_same_set(void)
     unsigned int a = 12;
     unsigned int b = 33;
         
-    set_add((void*)a, &set_a);
-    set_add((void*)b, &set_a);
+    set_add(G_INT(a), &set_a);
+    set_add(G_INT(b), &set_a);
     
-    set_add((void*)a, &expected_set_a);
-    set_add((void*)b, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
+    set_add(G_INT(b), &expected_set_a);
     
     unsigned int res = set_difference(&set_a, &set_a, &set_b);
     
@@ -1690,15 +1692,15 @@ bool test_set_difference_disjoint_sets(void)
     unsigned int a = 12;
     unsigned int b = 33;
     
-    set_add((void*)a, &set_a);
+    set_add(G_INT(a), &set_a);
     
-    set_add((void*)a, &expected_set_a);
+    set_add(G_INT(a), &expected_set_a);
     
-    set_add((void*)b, &set_b);
+    set_add(G_INT(b), &set_b);
     
-    set_add((void*)b, &expected_set_b);
+    set_add(G_INT(b), &expected_set_b);
     
-    set_add((void*)a, &expected_set_c);
+    set_add(G_INT(a), &expected_set_c);
     
     unsigned int res = set_difference(&set_a, &set_b, &set_c);
     
@@ -1748,17 +1750,17 @@ bool test_set_enumerate_normal(void)
     unsigned int b = 33;
     unsigned int c = 1;
     
-    set_add((void*)a, &set);
-    set_add((void*)b, &set);
-    set_add((void*)c, &set);
+    set_add(G_INT(a), &set);
+    set_add(G_INT(b), &set);
+    set_add(G_INT(c), &set);
     
-    set_add((void*)a, &expected_set);
-    set_add((void*)b, &expected_set);
-    set_add((void*)c, &expected_set);
+    set_add(G_INT(a), &expected_set);
+    set_add(G_INT(b), &expected_set);
+    set_add(G_INT(c), &expected_set);
     
-    list_append((void*)a, &expected_list);
-    list_append((void*)b, &expected_list);
-    list_append((void*)c, &expected_list);
+    list_append(G_INT(a), &expected_list);
+    list_append(G_INT(b), &expected_list);
+    list_append(G_INT(c), &expected_list);
     
     unsigned int res = set_enumerate(&list, &set);
     
