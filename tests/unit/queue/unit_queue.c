@@ -6,8 +6,10 @@
  */
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "constants.h"
+#include "macros.h"
 #include "queue.h"
 #include "unit_queue.h"
 
@@ -53,7 +55,7 @@ bool test_queue_free_normal(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    queue_push((void*)a, &queue);
+    queue_push(G_INT(a), &queue);
     
     unsigned int res = queue_free(NULL, &queue);
     
@@ -111,11 +113,11 @@ bool test_queue_equal_normal(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    queue_push((void*)a, &queue_a);
-    queue_push((void*)b, &queue_a);
+    queue_push(G_INT(a), &queue_a);
+    queue_push(G_INT(b), &queue_a);
     
-    queue_push((void*)a, &queue_b);
-    queue_push((void*)b, &queue_b);
+    queue_push(G_INT(a), &queue_b);
+    queue_push(G_INT(b), &queue_b);
     
     bool equal = false;
     
@@ -160,11 +162,11 @@ bool test_queue_equal_unequal_queues(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    queue_push((void*)a, &queue_a);
-    queue_push((void*)b, &queue_a);
+    queue_push(G_INT(a), &queue_a);
+    queue_push(G_INT(b), &queue_a);
     
-    queue_push((void*)b, &queue_b);
-    queue_push((void*)a, &queue_b);
+    queue_push(G_INT(b), &queue_b);
+    queue_push(G_INT(a), &queue_b);
     
     bool equal = false;
     
@@ -192,8 +194,8 @@ bool test_queue_equal_same_queues(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    queue_push((void*)a, &queue_a);
-    queue_push((void*)b, &queue_a);
+    queue_push(G_INT(a), &queue_a);
+    queue_push(G_INT(b), &queue_a);
     
     bool equal = false;
     
@@ -224,11 +226,11 @@ bool test_queue_peek_normal(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    queue_push((void*)a, &queue);
-    queue_push((void*)b, &queue);
+    queue_push(G_INT(a), &queue);
+    queue_push(G_INT(b), &queue);
     
-    queue_push((void*)a, &expected_queue);
-    queue_push((void*)b, &expected_queue);
+    queue_push(G_INT(a), &expected_queue);
+    queue_push(G_INT(b), &expected_queue);
     
     unsigned int value = 0;
     
@@ -304,11 +306,11 @@ bool test_queue_length_normal(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    queue_push((void*)a, &queue);
-    queue_push((void*)b, &queue);
+    queue_push(G_INT(a), &queue);
+    queue_push(G_INT(b), &queue);
     
-    queue_push((void*)a, &expected_queue);
-    queue_push((void*)b, &expected_queue);
+    queue_push(G_INT(a), &expected_queue);
+    queue_push(G_INT(b), &expected_queue);
     
     unsigned int length = 0;
     
@@ -382,12 +384,12 @@ bool test_queue_push_normal(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    queue_push((void*)a, &expected_queue);
-    queue_push((void*)a, &expected_queue);
+    queue_push(G_INT(a), &expected_queue);
+    queue_push(G_INT(a), &expected_queue);
     
-    queue_push((void*)a, &queue);
+    queue_push(G_INT(a), &queue);
     
-    unsigned int res = queue_push((void*)a, &queue);
+    unsigned int res = queue_push(G_INT(a), &queue);
     
     bool equal = false;
     queue_equal(&equal, &queue, &expected_queue);
@@ -429,9 +431,9 @@ bool test_queue_push_empty_queue(void)
     
     unsigned int a = 12; /* arbitrary value to insert */
     
-    queue_push((void*)a, &expected_queue);
+    queue_push(G_INT(a), &expected_queue);
     
-    unsigned int res = queue_push((void*)a, &queue);
+    unsigned int res = queue_push(G_INT(a), &queue);
     
     bool equal = false;
     queue_equal(&equal, &queue, &expected_queue);
@@ -461,12 +463,12 @@ bool test_queue_pop_normal(void)
     unsigned int a = 12;
     unsigned int b = 3;
     
-    queue_push((void*)a, &queue);
-    queue_push((void*)b, &queue);
-    queue_push((void*)b, &queue);
+    queue_push(G_INT(a), &queue);
+    queue_push(G_INT(b), &queue);
+    queue_push(G_INT(b), &queue);
     
-    queue_push((void*)b, &expected_queue);
-    queue_push((void*)b, &expected_queue);
+    queue_push(G_INT(b), &expected_queue);
+    queue_push(G_INT(b), &expected_queue);
     
     unsigned int value = 0;
     
