@@ -6,8 +6,10 @@
  */
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "constants.h"
+#include "macros.h"
 #include "isort.h"
 #include "unit_isort.h"
 
@@ -39,15 +41,15 @@ bool test_isort_normal(void)
     unsigned int c = 3;
     unsigned int d = 4;
     
-    list_append((void*)b, &list);
-    list_append((void*)a, &list);
-    list_append((void*)d, &list);
-    list_append((void*)c, &list);
+    list_append(G_INT(b), &list);
+    list_append(G_INT(a), &list);
+    list_append(G_INT(d), &list);
+    list_append(G_INT(c), &list);
     
-    list_append((void*)a, &expected_list);
-    list_append((void*)b, &expected_list);
-    list_append((void*)c, &expected_list);
-    list_append((void*)d, &expected_list);
+    list_append(G_INT(a), &expected_list);
+    list_append(G_INT(b), &expected_list);
+    list_append(G_INT(c), &expected_list);
+    list_append(G_INT(d), &expected_list);
     
     unsigned int res = isort(&cmp_clbk, &list);
     
