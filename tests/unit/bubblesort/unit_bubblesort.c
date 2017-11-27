@@ -15,7 +15,7 @@
 
 bool cmp_clbk(void* a, void* b)
 {
-    if((unsigned int)a >= (unsigned int)b)
+    if((intptr_t)a >= (intptr_t)b)
     {
         return true;
     }
