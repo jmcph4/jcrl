@@ -6,7 +6,7 @@
 */
 #include <stdbool.h>
 
-#define UNIT_SET_NUM_TESTS 49
+#define UNIT_SET_NUM_TESTS 52
 
 /* Initialisation */
 bool test_set_init_normal(void);
@@ -43,6 +43,11 @@ bool test_set_superset_empty_sets(void);
 bool test_set_superset_of_empty_set(void);
 bool test_set_superset_empty_set_of(void);
 bool test_set_superset_same_set(void);
+
+/* Size */
+bool test_set_cardinality_normal(void);
+bool test_set_cardinality_null_params(void);
+bool test_set_cardinality_empty_set(void);
 
 /* Operations */
 bool test_set_add_normal(void);

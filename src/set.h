@@ -15,6 +15,9 @@ unsigned int set_free(void (handle_free)(void*), Set* set);
 /* Equality */
 unsigned int set_equal(bool* equal, Set* a, Set* b);
 
+/* Size */
+unsigned int set_cardinality(unsigned int* cardinality, Set* set);
+
 /* Membership */
 unsigned int set_in(bool* in, void* data, Set* set);
 unsigned int set_subset(bool* subset, Set* a, Set* b);

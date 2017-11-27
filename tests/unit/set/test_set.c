@@ -39,6 +39,9 @@ const char* tests[UNIT_SET_NUM_TESTS] = {
                                     "test_set_superset_of_empty_set",
                                     "test_set_superset_empty_set_of",
                                     "test_set_superset_same_set",
+                                    "test_set_cardinality_normal",
+                                    "test_set_cardinality_null_params",
+                                    "test_set_cardinality_empty_set",
                                     "test_set_add_normal",
                                     "test_set_add_null_params",
                                     "test_set_add_duplicates",
@@ -127,6 +130,14 @@ int main(void)
     results[t] = test_set_superset_empty_set_of();
     t++;
     results[t] = test_set_superset_same_set();
+    t++;
+
+    /* Size */
+    results[t] = test_set_cardinality_normal();
+    t++;
+    results[t] = test_set_cardinality_null_params();
+    t++;
+    results[t] = test_set_cardinality_empty_set();
     t++;
     
     /* Operations */

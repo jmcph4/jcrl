@@ -58,6 +58,24 @@ unsigned int set_equal(bool* equal, Set* a, Set* b)
     return JCRL_ERR_OK;
 }
 
+/* Size */
+unsigned int set_cardinality(unsigned int* cardinality, Set* set)
+{
+    if(cardinality == NULL || set == NULL)
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+
+    unsigned int res = multiset_cardinality(cardinality, set);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    return JCRL_ERR_OK;
+}
+
 /* Membership */
 unsigned int set_in(bool* in, void* data, Set* set)
 {

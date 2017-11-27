@@ -973,6 +973,92 @@ bool test_set_superset_same_set(void)
     return pass;
 }
 
+bool test_set_cardinality_normal(void)
+{
+    bool pass = false;
+    
+    Set set;
+    set_init(&set);
+    
+    Set expected_set;
+    set_init(&expected_set);
+    
+    unsigned int* a = calloc(1, sizeof(unsigned int));
+    unsigned int* b = calloc(1, sizeof(unsigned int));
+
+    /* arbitrary values to insert */
+    *a = 12;
+    *b = 33;
+    
+    set_add((void*)a, &set);
+    set_add((void*)b, &set);
+    
+    set_add((void*)a, &expected_set);
+    set_add((void*)b, &expected_set);
+    
+    unsigned int card = 0;
+    
+    unsigned int res = set_cardinality(&card, &set);
+    
+    bool equal = false;
+    set_equal(&equal, &set, &expected_set);
+    
+    set_free(NULL, &set);
+    set_free(NULL, &expected_set);
+    
+    if(res == JCRL_ERR_OK && equal && card == 2)
+    {
+        pass = true;
+    }
+    
+    free(a);
+    free(b);
+
+    return pass;
+}
+
+bool test_set_cardinality_null_params(void)
+{
+    bool pass = false;
+    
+    unsigned int res = set_cardinality(NULL, NULL);
+    
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
+bool test_set_cardinality_empty_set(void)
+{
+    bool pass = false;
+    
+    Set set;
+    set_init(&set);
+    
+    Set expected_set;
+    set_init(&expected_set);
+    
+    unsigned int card = 1; /* different from expected value */
+    
+    unsigned int res = set_cardinality(&card, &set);
+    
+    bool equal = false;
+    set_equal(&equal, &set, &expected_set);
+    
+    set_free(NULL, &set);
+    set_free(NULL, &expected_set);
+    
+    if(res == JCRL_ERR_OK && equal && card == 0)
+    {
+        pass = true;
+    }
+    
+    return pass;
+}
+
 /* Operations */
 bool test_set_add_normal(void)
 {
