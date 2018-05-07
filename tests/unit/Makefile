@@ -9,7 +9,8 @@ tmp:
 	cd queue; make
 	cd multiset; make
 	cd set; make
-	
+	cd digraph; make;
+
 	cd isort; make
 	cd bubblesort; make
 

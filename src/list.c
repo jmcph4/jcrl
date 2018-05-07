@@ -26,30 +26,39 @@ unsigned int list_free(void (handle_free)(void*), List* list)
         return JCRL_ERR_NULL_PARAM;
     }
     
-    struct _LNode* ptr = list->head;
-    struct _LNode* prev = NULL;
-  
-    for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
+    struct _LNode** elems = calloc(list->length, sizeof(struct _LNode*));
+
+    if(elems == NULL)
     {
-        if(ptr != list->head)
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+
+    unsigned int e = 0;
+
+    /* traverse list, copying pointers into array */
+    for(struct _LNode* ptr=list->head;ptr!=NULL;ptr=ptr->next)
+    {
+        elems[e] = ptr;
+        e++;
+    }
+
+    /* traverse array of elements, freeing as we go */
+    for(unsigned int i=0;i<e;i++)
+    {
+        if(handle_free != NULL)
         {
-            if(handle_free != NULL)
-            {
-                handle_free(ptr->data);
-            }
-            
-            free(prev);
-            prev = ptr;
+            handle_free(elems[i]->data);
         }
+
+        free(elems[i]);
     }
-    
-    if(handle_free != NULL)
-    {
-        handle_free(list->head->data);
-    }
-    
-    free(list->head);
+
+    free(elems); /* free array itself */
+
+    /* zero out fields */
     list->length = 0;
+    list->head = NULL;
+    list->tail = NULL;
     
     return JCRL_ERR_OK;
 }
