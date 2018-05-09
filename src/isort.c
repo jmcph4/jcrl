@@ -23,78 +23,66 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
     {
         return JCRL_ERR_OK;
     }
+
+    void* left = NULL;
+    void* current = NULL;
+
+    unsigned int i = 1;
     
-    void** previous = calloc(1, sizeof(void*));
-    
-    if(previous == NULL)
-    {
-        return JCRL_ERR_SYS_MEM_ALLOC;
-    }
-    
-    void** current = calloc(1, sizeof(void*));
-    
-    if(current == NULL)
-    {
-        free(previous);
-        return JCRL_ERR_SYS_MEM_ALLOC;
-    }
-    
-    for(unsigned int i=1;i<len;i++)
+    while(i < len)
     {
         unsigned int j = i;
-        
-        res = list_get(previous, j - 1, list);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            free(previous);
-            free(current);
-            return res;
-        }
-        
-        res = list_get(current, j, list);
+
+        res = list_get((void**)&left, j - 1, list);
         
         if(res != JCRL_ERR_OK)
         {
-            free(previous);
-            free(current);
             return res;
         }
-        
-        while(j > 0 && comparison(*previous, *current))
+
+        res = list_get((void**)&current, j, list);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        while(j > 0 && comparison(left, current))
         {
             res = list_swap(j, j - 1, list);
+
+            if(res != JCRL_ERR_OK)
+            {
+                return res;
+            }
+
+            res = list_get((void**)&left, j - 2, list);
+            
+            if(res != JCRL_ERR_OK)
+            {
+                if(res == JCRL_ERR_OUT_OF_BOUNDS)
+                {
+                    break;
+                }
+                else
+                {
+                    return res;
+                }
+            }
+            
+            res = list_get((void**)&current, j - 1, list);
+
             
             if(res != JCRL_ERR_OK)
             {
                 return res;
             }
-            
-            /* update our view of the list */
-            res = list_get(previous, j - 1, list);
-        
-            if(res != JCRL_ERR_OK)
-            {
-                free(previous);
-                free(current);
-                return res;
-            }
-        
-            res = list_get(current, j, list);
-        
-            if(res != JCRL_ERR_OK)
-            {
-                free(previous);
-                free(current);
-                return res;
-            }
-            
+
             j--;
         }
+
+        i++;
     }
-    
-    free(previous);
-    free(current);
     
     return JCRL_ERR_OK;
 }
