@@ -49,7 +49,9 @@ unsigned int queue_free(void (handle_free)(void*), Queue* queue)
     {
         return res;
     }
-    
+
+    free(queue->list);
+
     return JCRL_ERR_OK;
 }
 
