@@ -1796,6 +1796,7 @@ bool test_digraph_adjacent_via_nonadjacent(void)
     bool pass = false;
 
     Digraph d;
+    digraph_init(&d);
 
     /* arbitrary data for insertion */
     unsigned int a = 12;

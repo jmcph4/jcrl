@@ -15,19 +15,19 @@
 
 void init_table(unsigned int*** tab)
 {
-    if(tab == NULL) /* null guard */
-    {
-        return;
-    }
-    
-    *tab = calloc(2, sizeof(int*));
-
-    if(*tab == NULL) /* allocation check */
+    if(tab == NULL)
     {
         return;
     }
 
-    (*tab)[0] = calloc(2, sizeof(int));
+    *tab = calloc(1, sizeof(unsigned int**));
+
+    if(*tab == NULL)
+    {
+        return;
+    }
+
+    (*tab)[0] = calloc(1, sizeof(unsigned int*));
 
     if((*tab)[0] == NULL)
     {
@@ -35,124 +35,109 @@ void init_table(unsigned int*** tab)
     }
 }
 
-void free_table(unsigned int rows, unsigned int cols, unsigned int** tab)
+void free_table(size_t rows, size_t cols, unsigned int*** tab)
 {
-    if(tab == NULL) /* null guard */
+    if(tab == NULL)
     {
         return;
     }
 
-    if(rows == 0 || cols == 0) /* bounds check */
+    if(rows == 0 || cols == 0)
     {
         return;
     }
 
-    /* traverse table and free each row */
     for(unsigned int i=0;i<rows;i++)
     {
-        free(tab[i]);
+        free((*tab)[i]);
     }
+
+    free(*tab);
 }
 
-void add_row(unsigned int rows, unsigned int cols, unsigned int*** tab)
+void add_row(size_t rows, size_t cols, unsigned int*** tab)
 {
-    if(tab == NULL) /* null guard */
+    if(tab == NULL)
     {
         return;
     }
 
-    *tab = realloc(*tab, (rows + 1) * sizeof(int*));
+    if(rows == 0 || cols == 0)
+    {
+        return;
+    }
+
+    *tab = realloc(*tab, (rows + 1) * sizeof(unsigned int*));
 
     if(*tab == NULL)
     {
         return;
     }
 
-    unsigned int n = 1;
-
-    if(cols > 0)
-    {
-        n = cols;
-    }
-
-    for(unsigned int i=0;i<n;i++)
-    {
-        (*tab)[rows] = calloc(cols, sizeof(int));
-    }
+    (*tab)[rows] = calloc(cols, sizeof(unsigned int*));
 }
 
-void remove_row(unsigned int r, unsigned int rows, unsigned int cols,
-        unsigned int*** tab)
+void remove_row(size_t r, size_t rows, size_t cols, unsigned int*** tab)
 {
-    if(tab == NULL) /* null guard */
+    if(tab == NULL)
     {
         return;
     }
 
-    if(rows == 0 || cols == 0 || r >= rows) /* bounds check */
+    if(rows == 0 || cols == 0 || r >= rows)
     {
         return;
     }
 
-    if(r != (rows - 1))
+    for(unsigned int i=0;i<rows;i++)
     {
-        /*memmove((*tab)[r], (*tab)[r+1],
-                (rows - 1) * sizeof(enum _VertexConnection*));*/
-
-        for(unsigned int i=r;i<(rows-r);i++)
+        if(i >= r)
         {
-            (*tab)[i] = (*tab)[i+1];
+            /* shift columns down to the left by one */
+            for(unsigned int j=0;j<cols-1;j++)
+            {
+                (*tab)[i][j] = (*tab)[i][j+1];
+            }
         }
     }
 
     free((*tab)[rows-1]);
 }
 
-void add_col(unsigned int rows, unsigned int cols, unsigned int*** tab)
+void add_col(size_t rows, size_t cols, unsigned int*** tab)
 {
-    if(tab == NULL) /* null guard */
+    if(tab == NULL)
     {
         return;
     }
 
-    if(rows == 0 || cols == 0) /* bounds check */
+    if(rows == 0 || cols == 0)
     {
         return;
     }
 
-    /* traverse the table and add to each row */
     for(unsigned int i=0;i<rows;i++)
     {
-        (*tab)[i] = realloc((*tab)[i], (cols + 1) * sizeof(int));
+        (*tab)[i] = realloc((*tab)[i], (cols + 1) * sizeof(unsigned int*));
+        (*tab)[i][cols] = 0;
     }
 }
 
-void remove_col(unsigned int c, unsigned int rows, unsigned int cols,
-        unsigned int*** tab)
+void remove_col(size_t c, size_t rows, size_t cols, unsigned int*** tab)
 {
-    if(tab == NULL) /* null guard */
+    if(tab == NULL)
     {
         return;
     }
 
-    if(rows == 0 || cols == 0 || c >= cols) /* bounds check */
+    if(rows == 0 || cols == 0 || c >= cols)
     {
         return;
     }
 
-    /* traverse the table and left-shift each row */
     for(unsigned int i=0;i<rows;i++)
     {
-        if(c != cols - 1)
-        {
-            /* left shift row by copying each element to the left */
-            for(unsigned int j=c;j<(cols-c);j++)
-            {
-                (*tab)[i][j] = (*tab)[i][j+1];
-            }
-        }
-
-        (*tab)[i] = realloc((*tab)[i], (cols - 1) * sizeof(int));
+        (*tab)[i] = realloc((*tab)[i], (cols - 1) * sizeof(unsigned int*));
     }
 }
 
@@ -229,8 +214,8 @@ unsigned int digraph_free(void (handle_free)(void*), Digraph* digraph)
         return res;
     }
 
-    free_table(digraph->v, digraph->v, digraph->adjtab);
-    free_table(digraph->e, 2, digraph->edgetab);
+    free_table(digraph->v, digraph->v, &digraph->adjtab);
+    free_table(digraph->e, 2, &digraph->edgetab);
 
     return JCRL_ERR_OK;
 }
@@ -543,7 +528,7 @@ unsigned int digraph_connect(void* data, unsigned int a, unsigned int b,
     }
 
     /* add column to adjacency matrix */
-    add_col(digraph->v, digraph->e, &digraph->adjtab);
+    add_col(digraph->v, digraph->v, &digraph->adjtab);
 
     /* connect vertices in our adjacency matrix */
     digraph->adjtab[a][b]++;
