@@ -13,5 +13,5 @@ tmp:
 
 	cd isort; make
 	cd bubblesort; make
-
+	cd dfs; make
 
