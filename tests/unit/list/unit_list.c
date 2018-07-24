@@ -6,8 +6,10 @@
  */
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "constants.h"
+#include "macros.h"
 #include "list.h"
 #include "unit_list.h"
 
@@ -17,6 +19,12 @@ void trav_clbk(void* data, unsigned int pos)
     pos++; /* useless */
     char* new_ptr = (char*)data + pos; /* useless */
     new_ptr++; /* useless */
+}
+
+/* stub comparison function for testing list min/max */
+bool cmp(void* a, void* b)
+{
+    return ((uintptr_t)a <= (uintptr_t)b);
 }
 
 /* Initialisation */
@@ -1873,3 +1881,140 @@ bool test_list_count_not_found(void)
 
     return pass;
 }
+
+bool test_list_minmax_normal(void)
+{
+    bool pass = false;
+
+    List list;
+    list_init(&list);
+
+    /* arbitrary data for insertion */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    unsigned int d = 24;
+
+    /* populate list */
+    list_append(G_INT(a), &list);
+    list_append(G_INT(b), &list);
+    list_append(G_INT(c), &list);
+    list_append(G_INT(d), &list);
+
+    unsigned long actual = 0;
+    unsigned int res = list_minmax((void**)&actual, cmp, &list);
+
+    unsigned long expected = b;
+
+    list_free(NULL, &list);
+
+    if(res == JCRL_ERR_OK && actual == expected)
+    {
+        pass = true;
+    }
+
+    return pass;
+}
+
+bool test_list_minmax_null_params(void)
+{
+    bool pass = false;
+
+    unsigned int res = list_minmax(NULL, NULL, NULL);
+
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+
+    return pass;
+}
+
+bool test_list_minmax_empty(void)
+{
+    bool pass = false;
+
+    List list;
+    list_init(&list);
+
+    unsigned int actual = 0;
+    unsigned int res = list_minmax((void**)&actual, cmp, &list);
+
+    list_free(NULL, &list);
+
+    if(res == JCRL_ERR_IMPOSSIBLE && actual == 0)
+    {
+        pass = true;
+    }
+
+    return pass;
+}
+
+bool test_list_argminmax_normal(void)
+{
+    bool pass = false;
+
+    List list;
+    list_init(&list);
+
+    /* arbitrary data for insertion */
+    unsigned int a = 12;
+    unsigned int b = 33;
+    unsigned int c = 1;
+    unsigned int d = 24;
+
+    /* populate list */
+    list_append(G_INT(a), &list);
+    list_append(G_INT(b), &list);
+    list_append(G_INT(c), &list);
+    list_append(G_INT(d), &list);
+
+    unsigned int actual = 0;
+    unsigned int res = list_argminmax(&actual, cmp, &list);
+
+    unsigned int expected = 1;
+
+    list_free(NULL, &list);
+
+    if(res == JCRL_ERR_OK && actual == expected)
+    {
+        pass = true;
+    }
+
+    return pass;
+}
+
+bool test_list_argminmax_null_params(void)
+{
+    bool pass = false;
+
+    unsigned int res = list_argminmax(NULL, NULL, NULL);
+
+    if(res == JCRL_ERR_NULL_PARAM)
+    {
+        pass = true;
+    }
+
+    return pass;
+}
+
+bool test_list_argminmax_empty(void)
+{
+    bool pass = false;
+
+    List list;
+    list_init(&list);
+
+    unsigned int actual = 0;
+    unsigned int res = list_argminmax(&actual, cmp, &list);
+
+    list_free(NULL, &list);
+
+    if(res == JCRL_ERR_IMPOSSIBLE && actual == 0)
+    {
+        pass = true;
+    }
+
+    return pass;
+}
+

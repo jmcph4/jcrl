@@ -545,3 +545,65 @@ unsigned int list_count(unsigned int* count, void* data, List* list)
     
     return JCRL_ERR_OK;
 }
+
+unsigned int list_minmax(void** data, bool (comparison)(void*, void*),
+        List* list)
+{
+    if(data == NULL || comparison == NULL || list == NULL) /* null guard */
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+
+    if(list->length == 0) /* bounds check */
+    {
+        return JCRL_ERR_IMPOSSIBLE;
+    }
+
+    void* best = list->head->data;
+
+    for(struct _LNode* ptr=list->head;ptr!=NULL;ptr=ptr->next)
+    {
+        if(comparison(best, ptr->data))
+        {
+            best = ptr->data;
+        }
+    }
+
+    *data = best;
+
+    return JCRL_ERR_OK;
+}
+
+unsigned int list_argminmax(unsigned int* pos, bool (comparison)(void*, void*),
+        List* list)
+{
+    if(pos == NULL || comparison == NULL || list == NULL) /* null guard */
+    {
+        return JCRL_ERR_NULL_PARAM;
+    }
+
+    if(list->length == 0) /* bounds check */
+    {
+        return JCRL_ERR_IMPOSSIBLE;
+    }
+    
+    unsigned int p = 0;
+    unsigned int best = 0;
+    void* best_val = list->head->data;
+
+    for(struct _LNode* ptr=list->head;ptr!=NULL;ptr=ptr->next)
+    {
+        if(comparison(best_val, ptr->data))
+        {
+            best_val = ptr->data;
+            best = p;
+        }
+
+        p++;
+    }
+
+    *pos = best;
+
+    return JCRL_ERR_OK;
+}
+

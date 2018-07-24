@@ -67,7 +67,13 @@ const char* tests[UNIT_LIST_NUM_TESTS] = {
                                     "test_list_find_duplicates",
                                     "test_list_count_normal",
                                     "test_list_count_null_params",
-                                    "test_list_count_not_found"
+                                    "test_list_count_not_found",
+                                    "test_list_minmax_normal",
+                                    "test_list_minmax_null_params",
+                                    "test_list_minmax_empty",
+                                    "test_list_argminmax_normal",
+                                    "test_list_argminmax_null_params",
+                                    "test_list_argminmax_empty",
                                     };
 
 int main(void)
@@ -208,7 +214,21 @@ int main(void)
     t++;
     results[t] = test_list_count_not_found();
     t++;
-    
+
+    results[t] = test_list_minmax_normal();
+    t++;
+    results[t] = test_list_minmax_null_params();
+    t++;
+    results[t] = test_list_minmax_empty();
+    t++;
+   
+    results[t] = test_list_argminmax_normal();
+    t++;
+    results[t] = test_list_argminmax_null_params();
+    t++;
+    results[t] = test_list_argminmax_empty();
+    t++;
+
     /* check for test failure */
     for(unsigned int i=0;i<t;i++)
     {

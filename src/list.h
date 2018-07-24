@@ -47,5 +47,9 @@ unsigned int list_concatenate(List* a, List* b);
 unsigned int list_swap(unsigned int a, unsigned int b, List* list);
 unsigned int list_find(unsigned int* pos, void* data, List* list);
 unsigned int list_count(unsigned int* count, void* data, List* list);
+unsigned int list_minmax(void** data, bool (comparison)(void*, void*),
+        List* list);
+unsigned int list_argminmax(unsigned int* pos, bool (comparison)(void*, void*),
+        List* list);
 
 #endif /* LIST_H_ */

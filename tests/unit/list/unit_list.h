@@ -6,7 +6,7 @@
 */
 #include "list.h"
 
-#define UNIT_LIST_NUM_TESTS 56
+#define UNIT_LIST_NUM_TESTS 62
 
 /* Initialisation */
 bool test_list_init_normal(void);
@@ -84,3 +84,11 @@ bool test_list_find_duplicates(void);
 bool test_list_count_normal(void);
 bool test_list_count_null_params(void);
 bool test_list_count_not_found(void);
+
+bool test_list_minmax_normal(void);
+bool test_list_minmax_null_params(void);
+bool test_list_minmax_empty(void);
+
+bool test_list_argminmax_normal(void);
+bool test_list_argminmax_null_params(void);
+bool test_list_argminmax_empty(void);
