@@ -10,6 +10,7 @@ tmp:
 	cd multiset; make
 	cd set; make
 	cd digraph; make;
+	cd map; make;
 
 	cd isort; make
 	cd bubblesort; make
