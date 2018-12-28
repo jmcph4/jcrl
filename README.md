@@ -1,3 +1,4 @@
+![](https://img.shields.io/github/tag/jmcph4/jcrl.svg)
 # JCRL #
 ---
 

@@ -1,6 +1,11 @@
 #ifndef CONSTANTS_H_
 #define CONSTANTS_H_
 
+/* version information */
+#define JCRL_VERSION_MAJOR 0
+#define JCRL_VERSION_MINOR 33
+#define JCRL_vERSION_PATCH 0
+
 /* status codes */
 #define JCRL_ERR_OK 0
 #define JCRL_ERR_NULL_PARAM 1
