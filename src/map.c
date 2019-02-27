@@ -437,55 +437,114 @@ unsigned int map_set(void* key, void* value, Map* map)
         return res;
     }
 
-    /* allocate space for new pair */
-    List* pair = calloc(1, sizeof(List));
+    bool key_exists = false;
 
-    if(pair == NULL) /* allocation check */
-    {
-        return JCRL_ERR_SYS_MEM_ALLOC;
-    }
-
-    /* initialise new pair */
-    res = list_init(pair);
+    res = list_in(&key_exists, key, map->keys);
 
     if(res != JCRL_ERR_OK)
     {
         return res;
     }
 
-    /* insert key into new pair */
-    res = list_append(key, pair);
-
-    if(res != JCRL_ERR_OK)
+    /* check to see if we already have the key */
+    if(key_exists)
     {
-        return res;
+        void* curr_key = NULL; /* current key (from (k,v) pair */
+        List* curr_kv_pair = NULL; /* current (key,value) pair */
+        unsigned int bucket_len = 0; /* length of bucket */
+
+        /* get length of this bucket */
+        res = list_length(&bucket_len, bucket);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        for(unsigned int i=0;i<bucket_len;i++)
+        {
+            /* retrieve pair */
+            res = list_get((void**)&curr_kv_pair, i, bucket);
+
+            if(res != JCRL_ERR_OK)
+            {
+                return res;
+            }
+            
+            /* get key at this position in the bucket */
+            res = list_get((void**)&curr_key, 0, curr_kv_pair);
+
+            if(res != JCRL_ERR_OK)
+            {
+                return res;
+            }
+
+            if(curr_key == key) /* if we've found the key */
+            {
+                /* update value */
+                res = list_set(value, 1, curr_kv_pair);
+
+                if(res != JCRL_ERR_OK)
+                {
+                    return res;
+                }
+
+                break;
+            }
+        }
     }
-
-    /* insert value into new pair */
-    res = list_append(value, pair);
-
-    if(res != JCRL_ERR_OK)
+    else
     {
-        return res;
+        /* allocate space for new pair */
+        List* pair = calloc(1, sizeof(List));
+
+        if(pair == NULL) /* allocation check */
+        {
+            return JCRL_ERR_SYS_MEM_ALLOC;
+        }
+
+        /* initialise new pair */
+        res = list_init(pair);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        /* insert key into new pair */
+        res = list_append(key, pair);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        /* insert value into new pair */
+        res = list_append(value, pair);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        /* add new pair to end of bucket */
+        res = list_append(pair, bucket);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        /* add new key to list of keys for lookup */
+        res = list_append(key, map->keys);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        map->k++;
     }
-
-    /* add new pair to end of bucket */
-    res = list_append(pair, bucket);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
-
-    /* add new key to list of keys for lookup */
-    res = list_append(key, map->keys);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
-
-    map->k++;
 
     update(map);
 

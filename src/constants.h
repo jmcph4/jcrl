@@ -4,7 +4,7 @@
 /* version information */
 #define JCRL_VERSION_MAJOR 0
 #define JCRL_VERSION_MINOR 33
-#define JCRL_vERSION_PATCH 0
+#define JCRL_vERSION_PATCH 1
 
 /* status codes */
 #define JCRL_ERR_OK 0
