@@ -3,15 +3,15 @@
 
 #include <stdbool.h>
 
-#include "list.h"
+#include "map.h"
 #include "set.h"
 
 struct _Digraph
 {
     unsigned int v;             /* number of vertices */
     unsigned int e;             /* number of edges */
-    List* vertices;             /* vertex labels */
-    List* edges;                /* edge labels */
+    Map* vertices;             /* vertex labels */
+    Map* edges;                /* edge labels */
     unsigned int** adjtab;      /* adjacency matrix */
     unsigned int** edgetab;     /* edge table */
 };

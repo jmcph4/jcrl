@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #include "constants.h"
-#include "list.h"
+#include "map.h"
 #include "stack.h"
 #include "macros.h"
 #include "digraph.h"
@@ -156,14 +156,14 @@ unsigned int digraph_init(Digraph* digraph)
     digraph->e = 0;
     
     /* initialise vertices list */
-    digraph->vertices = calloc(1, sizeof(List));
+    digraph->vertices = calloc(1, sizeof(Map));
 
     if(digraph->vertices == NULL) /* allocation check */
     {
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
 
-    unsigned int res = list_init(digraph->vertices);
+    unsigned int res = map_init(digraph->vertices);
 
     if(res != JCRL_ERR_OK)
     {
@@ -171,14 +171,14 @@ unsigned int digraph_init(Digraph* digraph)
     }
 
     /* initialise edges list */
-    digraph->edges = calloc(1, sizeof(List));
+    digraph->edges = calloc(1, sizeof(Map));
 
     if(digraph->edges == NULL)
     {
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
 
-    res = list_init(digraph->edges);
+    res = map_init(digraph->edges);
 
     if(res != JCRL_ERR_OK)
     {
@@ -199,7 +199,7 @@ unsigned int digraph_free(void (handle_free)(void*), Digraph* digraph)
     }
 
     /* free vertices list */
-    unsigned int res = list_free(handle_free, digraph->vertices);
+    unsigned int res = map_free(handle_free, digraph->vertices);
 
     if(res != JCRL_ERR_OK)
     {
@@ -207,7 +207,7 @@ unsigned int digraph_free(void (handle_free)(void*), Digraph* digraph)
     }
 
     /* free edges list */
-    res = list_free(handle_free, digraph->edges);
+    res = map_free(handle_free, digraph->edges);
 
     if(res != JCRL_ERR_OK)
     {
@@ -254,7 +254,12 @@ unsigned int digraph_vertex_get(void** data, unsigned int vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    unsigned int res = list_get(data, vertex, digraph->vertices);
+    if(vertex >= digraph->v) /* bounds check */
+    {
+        return JCRL_ERR_OUT_OF_BOUNDS;
+    }
+    
+    unsigned int res = map_get(G_INT(vertex), data, digraph->vertices);
 
     if(res != JCRL_ERR_OK)
     {
@@ -272,7 +277,12 @@ unsigned int digraph_vertex_set(void* data, unsigned int vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    unsigned int res = list_set(data, vertex, digraph->vertices);
+    if(vertex >= digraph->v) /* bounds check */
+    {
+        return JCRL_ERR_OUT_OF_BOUNDS;
+    }
+
+    unsigned int res = map_set(G_INT(vertex), data, digraph->vertices);
 
     if(res != JCRL_ERR_OK)
     {
@@ -290,7 +300,12 @@ unsigned int digraph_edge_get(void** data, unsigned int edge, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    unsigned int res = list_get(data, edge, digraph->edges);
+    if(edge >= digraph->e) /* bounds check */
+    {
+        return JCRL_ERR_OUT_OF_BOUNDS;
+    }
+    
+    unsigned int res = map_get(G_INT(edge), data, digraph->edges);
 
     if(res != JCRL_ERR_OK)
     {
@@ -307,7 +322,12 @@ unsigned int digraph_edge_set(void* data, unsigned int edge, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    unsigned int res = list_set(data, edge, digraph->edges);
+    if(edge >= digraph->e) /* bounds check */
+    {
+        return JCRL_ERR_OUT_OF_BOUNDS;
+    }
+
+    unsigned int res = map_set(G_INT(edge), data, digraph->edges);
 
     if(res != JCRL_ERR_OK)
     {
@@ -325,7 +345,7 @@ unsigned int digraph_vertex_in(bool* in, void* data, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    unsigned int res = list_in(in, data, digraph->vertices);
+    unsigned int res = map_value_in(in, data, digraph->vertices);
 
     if(res != JCRL_ERR_OK)
     {
@@ -342,7 +362,7 @@ unsigned int digraph_edge_in(bool* in, void* data, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    unsigned int res = list_in(in, data, digraph->edges);
+    unsigned int res = map_value_in(in, data, digraph->edges);
 
     if(res != JCRL_ERR_OK)
     {
@@ -392,7 +412,7 @@ unsigned int digraph_equal(bool* equal, Digraph* a, Digraph* b)
     /* convert a's vertex labels to multiset */
     for(unsigned int i=0;i<a->v;i++)
     {
-        res = list_get((void**)&tmp, i, a->vertices);
+        res = map_get(G_INT(i), (void**)&tmp, a->vertices);
 
         if(res != JCRL_ERR_OK)
         {
@@ -410,7 +430,7 @@ unsigned int digraph_equal(bool* equal, Digraph* a, Digraph* b)
     /* convert b's vertex labels to multiset */
     for(unsigned int i=0;i<b->v;i++)
     {
-        res = list_get((void**)&tmp, i, b->vertices);
+        res = map_get(G_INT(i), (void**)&tmp, b->vertices);
 
         if(res != JCRL_ERR_OK)
         {
@@ -459,8 +479,11 @@ unsigned int digraph_vertex_insert(void* data, unsigned int* vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
+    digraph->v++; /* increment counter in digraph struct */
+    *vertex = digraph->v - 1; /* inform caller of their vertex number */
+
     /* append vertex to vertices list */
-    unsigned int res = list_append(data, digraph->vertices);
+    unsigned int res = map_set(G_INT(*vertex), data, digraph->vertices);
 
     if(res != JCRL_ERR_OK)
     {
@@ -470,9 +493,6 @@ unsigned int digraph_vertex_insert(void* data, unsigned int* vertex,
     /* expand adjacency matrix */
     add_row(digraph->v, digraph->v, &digraph->adjtab);
     add_col(digraph->v, digraph->v, &digraph->adjtab);
-
-    digraph->v++; /* increment counter in digraph struct */
-    *vertex = digraph->v - 1; /* inform caller of their vertex number */
 
     return JCRL_ERR_OK;
 }
@@ -490,7 +510,7 @@ unsigned int digraph_vertex_remove(unsigned int vertex, Digraph* digraph)
     }
 
     /* remove vertex label from vertices list */
-    unsigned int res = list_remove(vertex, digraph->vertices);
+    unsigned int res = map_remove(G_INT(vertex), digraph->vertices);
 
     if(res != JCRL_ERR_OK)
     {
@@ -520,7 +540,7 @@ unsigned int digraph_connect(void* data, unsigned int a, unsigned int b,
     }
 
     /* append edge label to list of edge labels */
-    unsigned int res = list_append(data, digraph->edges);
+    unsigned int res = map_set(G_INT(digraph->e), data, digraph->edges);
 
     if(res != JCRL_ERR_OK)
     {
@@ -558,7 +578,7 @@ unsigned int digraph_disconnect(unsigned int edge, Digraph* digraph)
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
 
-    unsigned int res = list_remove(edge, digraph->edges);
+    unsigned int res = map_remove(G_INT(edge), digraph->edges);
 
     if(res != JCRL_ERR_OK)
     {
@@ -849,34 +869,39 @@ unsigned int digraph_find_vertices(Set* vertices, void* data, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    bool list_contains_vertex = false;
-    unsigned int res = list_in(&list_contains_vertex, data, digraph->vertices);
+    bool map_contains_vertex = false;
+    unsigned int res = map_value_in(&map_contains_vertex, data,
+            digraph->vertices);
    
     if(res != JCRL_ERR_OK)
     {
         return res;
     }
 
-    if(!list_contains_vertex)
+    if(!map_contains_vertex)
     {
         return JCRL_ERR_NOT_FOUND;
     }
 
-    void* val = NULL;
+    void* curr_label = NULL;
 
-    /* traverse vertex label list looking for matches */
     for(unsigned int i=0;i<digraph->v;i++)
     {
-        res = list_get(&val, i, digraph->vertices);
+        res = map_get(G_INT(i), &curr_label, digraph->vertices);
 
         if(res != JCRL_ERR_OK)
         {
             return res;
         }
 
-        if(val == data)
+        if(curr_label == data)
         {
             res = set_add(G_INT(i), vertices);
+
+            if(res != JCRL_ERR_OK)
+            {
+                return res;
+            }
         }
     }
 
@@ -890,32 +915,31 @@ unsigned int digraph_find_edges(Set* edges, void* data, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    bool list_contains_edge = false;
-    unsigned int res = list_in(&list_contains_edge, data, digraph->edges);
+    bool map_contains_edge = false;
+    unsigned int res = map_value_in(&map_contains_edge, data, digraph->edges);
 
     if(res != JCRL_ERR_OK)
     {
         return res;
     }
 
-    if(!list_contains_edge)
+    if(!map_contains_edge)
     {
         return JCRL_ERR_NOT_FOUND;
     }
 
-    void* val = NULL;
+    void* curr_label = NULL;
 
-    /* travserse edge label list looking for matches */
     for(unsigned int i=0;i<digraph->e;i++)
     {
-        res = list_get(&val, i, digraph->edges);
+        res = map_get(G_INT(i), &curr_label, digraph->edges);
 
         if(res != JCRL_ERR_OK)
         {
             return res;
         }
 
-        if(val == data)
+        if(curr_label == data)
         {
             res = set_add(G_INT(i), edges);
 
