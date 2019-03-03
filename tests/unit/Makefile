@@ -11,6 +11,7 @@ tmp:
 	cd set; make
 	cd digraph; make;
 	cd map; make;
+	cd graph; make;
 
 	cd isort; make
 	cd bubblesort; make

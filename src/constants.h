@@ -3,7 +3,7 @@
 
 /* version information */
 #define JCRL_VERSION_MAJOR 0
-#define JCRL_VERSION_MINOR 34
+#define JCRL_VERSION_MINOR 35
 #define JCRL_VERSION_PATCH 0
 
 /* status codes */
