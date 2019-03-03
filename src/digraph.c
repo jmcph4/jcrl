@@ -618,7 +618,7 @@ unsigned int digraph_disconnect(unsigned int edge, Digraph* digraph)
     
     List* edge_pair = NULL;
 
-    res = list_get((void**)&edge_pair, edge, digraph->adjtab);
+    res = list_get((void**)&edge_pair, edge, digraph->edgetab);
 
     if(res != JCRL_ERR_OK)
     {
