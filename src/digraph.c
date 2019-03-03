@@ -9,140 +9,6 @@
 #include "macros.h"
 #include "digraph.h"
 
-/*****************************************************************************/
-/******************PRIVATE ADJACENCY MATRIX SUBIMPLEMENTATION*****************/
-/*****************************************************************************/
-
-void init_table(unsigned int*** tab)
-{
-    if(tab == NULL)
-    {
-        return;
-    }
-
-    *tab = calloc(1, sizeof(unsigned int**));
-
-    if(*tab == NULL)
-    {
-        return;
-    }
-
-    (*tab)[0] = calloc(1, sizeof(unsigned int*));
-
-    if((*tab)[0] == NULL)
-    {
-        return;
-    }
-}
-
-void free_table(size_t rows, size_t cols, unsigned int*** tab)
-{
-    if(tab == NULL)
-    {
-        return;
-    }
-
-    if(rows == 0 || cols == 0)
-    {
-        return;
-    }
-
-    for(unsigned int i=0;i<rows;i++)
-    {
-        free((*tab)[i]);
-    }
-
-    free(*tab);
-}
-
-void add_row(size_t rows, size_t cols, unsigned int*** tab)
-{
-    if(tab == NULL)
-    {
-        return;
-    }
-
-    if(rows == 0 || cols == 0)
-    {
-        return;
-    }
-
-    *tab = realloc(*tab, (rows + 1) * sizeof(unsigned int*));
-
-    if(*tab == NULL)
-    {
-        return;
-    }
-
-    (*tab)[rows] = calloc(cols, sizeof(unsigned int*));
-}
-
-void remove_row(size_t r, size_t rows, size_t cols, unsigned int*** tab)
-{
-    if(tab == NULL)
-    {
-        return;
-    }
-
-    if(rows == 0 || cols == 0 || r >= rows)
-    {
-        return;
-    }
-
-    for(unsigned int i=0;i<rows;i++)
-    {
-        if(i >= r)
-        {
-            /* shift columns down to the left by one */
-            for(unsigned int j=0;j<cols-1;j++)
-            {
-                (*tab)[i][j] = (*tab)[i][j+1];
-            }
-        }
-    }
-
-    free((*tab)[rows-1]);
-}
-
-void add_col(size_t rows, size_t cols, unsigned int*** tab)
-{
-    if(tab == NULL)
-    {
-        return;
-    }
-
-    if(rows == 0 || cols == 0)
-    {
-        return;
-    }
-
-    for(unsigned int i=0;i<rows;i++)
-    {
-        (*tab)[i] = realloc((*tab)[i], (cols + 1) * sizeof(unsigned int*));
-        (*tab)[i][cols] = 0;
-    }
-}
-
-void remove_col(size_t c, size_t rows, size_t cols, unsigned int*** tab)
-{
-    if(tab == NULL)
-    {
-        return;
-    }
-
-    if(rows == 0 || cols == 0 || c >= cols)
-    {
-        return;
-    }
-
-    for(unsigned int i=0;i<rows;i++)
-    {
-        (*tab)[i] = realloc((*tab)[i], (cols - 1) * sizeof(unsigned int*));
-    }
-}
-
-/*****************************************************************************/
-
 /* Initialisation */
 unsigned int digraph_init(Digraph* digraph)
 {
@@ -185,8 +51,33 @@ unsigned int digraph_init(Digraph* digraph)
         return res;
     }
 
-    init_table(&digraph->adjtab); /* initialise adjacency matrix */
-    init_table(&digraph->edgetab); /* initialise edge table */
+    digraph->adjtab = calloc(1, sizeof(List));
+
+    if(digraph->adjtab == NULL) /* allocation check */
+    {
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+
+    res = list_init(digraph->adjtab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    digraph->edgetab = calloc(1, sizeof(List));
+
+    if(digraph->edgetab == NULL) /* allocation check */
+    {
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+
+    res = list_init(digraph->edgetab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
 
     return JCRL_ERR_OK;
 }
@@ -208,14 +99,11 @@ unsigned int digraph_free(void (handle_free)(void*), Digraph* digraph)
 
     /* free edges list */
     res = map_free(handle_free, digraph->edges);
-
+    return res;
     if(res != JCRL_ERR_OK)
     {
         return res;
     }
-
-    free_table(digraph->v, digraph->v, &digraph->adjtab);
-    free_table(digraph->e, 2, &digraph->edgetab);
 
     return JCRL_ERR_OK;
 }
@@ -254,7 +142,7 @@ unsigned int digraph_vertex_get(void** data, unsigned int vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(vertex >= digraph->v) /* bounds check */
+    if(vertex != 0 && vertex >= digraph->v) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
@@ -277,7 +165,7 @@ unsigned int digraph_vertex_set(void* data, unsigned int vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(vertex >= digraph->v) /* bounds check */
+    if(vertex != 0 && vertex >= digraph->v) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
@@ -300,7 +188,7 @@ unsigned int digraph_edge_get(void** data, unsigned int edge, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(edge >= digraph->e) /* bounds check */
+    if(edge != 0 && edge >= digraph->e) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
@@ -322,7 +210,7 @@ unsigned int digraph_edge_set(void* data, unsigned int edge, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(edge >= digraph->e) /* bounds check */
+    if(edge != 0 && edge >= digraph->e) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
@@ -479,20 +367,61 @@ unsigned int digraph_vertex_insert(void* data, unsigned int* vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    digraph->v++; /* increment counter in digraph struct */
-    *vertex = digraph->v - 1; /* inform caller of their vertex number */
-
     /* append vertex to vertices list */
-    unsigned int res = map_set(G_INT(*vertex), data, digraph->vertices);
+    unsigned int res = map_set(G_INT(digraph->v), data, digraph->vertices);
 
     if(res != JCRL_ERR_OK)
     {
         return res;
     }
 
-    /* expand adjacency matrix */
-    add_row(digraph->v, digraph->v, &digraph->adjtab);
-    add_col(digraph->v, digraph->v, &digraph->adjtab);
+    List* curr_adjtab_row = NULL;
+
+    /* expand existing adjacency table entries */
+    for(unsigned int i=0;i<digraph->v;i++)
+    {
+        res = list_get((void**)&curr_adjtab_row, i, digraph->adjtab);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        res = list_append(G_INT(0), curr_adjtab_row);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+    }
+
+    /* add new (already-expanded entry) */
+    List* new_adjtab_row = calloc(1, sizeof(List));
+
+    if(new_adjtab_row == NULL) /* allocation check */
+    {
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+
+    for(unsigned int i=0;i<=digraph->v;i++)
+    {
+        res = list_append(G_INT(0), new_adjtab_row);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+    }
+
+    res = list_append(new_adjtab_row, digraph->adjtab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    digraph->v++; /* increment counter in digraph struct */
+    *vertex = digraph->v - 1; /* inform caller of their vertex number */
 
     return JCRL_ERR_OK;
 }
@@ -504,7 +433,7 @@ unsigned int digraph_vertex_remove(unsigned int vertex, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(vertex >= digraph->v) /* bounds check */
+    if(vertex != 0 && vertex >= digraph->v) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
@@ -514,12 +443,42 @@ unsigned int digraph_vertex_remove(unsigned int vertex, Digraph* digraph)
 
     if(res != JCRL_ERR_OK)
     {
-        return res;
+        if(res == JCRL_ERR_NOT_FOUND && digraph->v == 0)
+        {
+            return JCRL_ERR_OUT_OF_BOUNDS;
+        }
+        else
+        {
+            return res;
+        }
     }
 
     /* contract adjacency matrix */
-    remove_row(vertex, digraph->v, digraph->v, &digraph->adjtab);
-    remove_col(vertex, digraph->v, digraph->v, &digraph->adjtab);
+    res = list_remove(vertex, digraph->adjtab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    List* curr_adjtab_row = NULL;
+
+    for(unsigned int i=0;i<digraph->v-1;i++)
+    {
+        res = list_get((void**)&curr_adjtab_row, i, digraph->adjtab);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        res = list_remove(vertex, curr_adjtab_row);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+    }
 
     digraph->v--; /* decrement our vertex counter */
 
@@ -534,7 +493,8 @@ unsigned int digraph_connect(void* data, unsigned int a, unsigned int b,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(a >= digraph->v || b >= digraph->v) /* bounds check */
+    /* bounds check */
+    if((a != 0 && a >= digraph->v) || (b != 0 && b >= digraph->v))
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
@@ -547,18 +507,82 @@ unsigned int digraph_connect(void* data, unsigned int a, unsigned int b,
         return res;
     }
 
-    /* add column to adjacency matrix */
-    add_col(digraph->v, digraph->v, &digraph->adjtab);
+    /* expand adjacency matrix */
+    List* new_adjtab_col = calloc(1, sizeof(List));
+
+    if(new_adjtab_col == NULL) /* allocation check */
+    {
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+
+    res = list_init(new_adjtab_col);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
 
     /* connect vertices in our adjacency matrix */
-    digraph->adjtab[a][b]++;
+    List* adjtab_entry = NULL;
 
-    /* add row to edge table */
-    add_row(digraph->e, 2, &digraph->edgetab);
+    res = list_get((void**)&adjtab_entry, a, digraph->adjtab);
 
-    /* add vertex pair to edge table */
-    digraph->edgetab[digraph->e][0] = a;
-    digraph->edgetab[digraph->e][1] = b;
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    uintptr_t degree = 0;
+
+    res = list_get((void**)&degree, b, adjtab_entry);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
+    res = list_set(G_INT(degree + 1), b, adjtab_entry);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    List* edge_pair = calloc(1, sizeof(List));
+
+    if(edge_pair == NULL)
+    {
+        return JCRL_ERR_SYS_MEM_ALLOC;
+    }
+
+    res = list_init(edge_pair);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    /* set up new edge pair entry */
+    res = list_insert(G_INT(a), 0, edge_pair);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    res = list_insert(G_INT(b), 1, edge_pair);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    res = list_append(edge_pair, digraph->edgetab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
 
     digraph->e++; /* increment our edge counter */
     *edge = digraph->e - 1; /* inform caller of their edge number */
@@ -573,7 +597,7 @@ unsigned int digraph_disconnect(unsigned int edge, Digraph* digraph)
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(edge >= digraph->e) /* bounds check */
+    if(edge != 0 && edge >= digraph->e) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
@@ -582,16 +606,57 @@ unsigned int digraph_disconnect(unsigned int edge, Digraph* digraph)
 
     if(res != JCRL_ERR_OK)
     {
+        if(res == JCRL_ERR_NOT_FOUND && digraph->e == 0)
+        {
+            return JCRL_ERR_OUT_OF_BOUNDS;
+        }
+        else
+        {
+            return res;
+        }
+    }
+    
+    List* edge_pair = NULL;
+
+    res = list_get((void**)&edge_pair, edge, digraph->adjtab);
+
+    if(res != JCRL_ERR_OK)
+    {
         return res;
     }
 
-    unsigned int target = digraph->edgetab[edge][1];
+    uintptr_t target = 0;
 
-    /* disconnect vertices in our adjacency matrix */
-    digraph->adjtab[edge][target]--;
+    res = list_get((void**)&target, 1, edge_pair);
 
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    uintptr_t degree = 0;
+    
+    res = list_get((void**)&degree, target, edge_pair);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    res = list_set(G_INT(degree - 1), target, edge_pair);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
     /* remove entry from edge table */
-    remove_row(edge, digraph->e, 2, &digraph->edgetab);
+    res = list_remove(edge, digraph->edgetab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
 
     digraph->e--; /* decrement our edge counter */
 
@@ -606,16 +671,32 @@ unsigned int digraph_in_neighbours(Set* neighbours, unsigned int vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(vertex >= digraph->v) /* bounds check */
+    if(vertex != 0 && vertex >= digraph->v) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
 
     unsigned int res = JCRL_ERR_OK;
+    uintptr_t degree = 0;
+    List* adjtab_entry = NULL;
 
     for(unsigned int i=0;i<digraph->v;i++)
     {
-        if(digraph->adjtab[i][vertex] > 0)
+        res = list_get((void**)&adjtab_entry, i, digraph->adjtab);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        res = list_get((void**)&degree, vertex, adjtab_entry);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        if(degree > 0)
         {
             res = set_add(G_INT(i), neighbours);
 
@@ -637,16 +718,32 @@ unsigned int digraph_out_neighbours(Set* neighbours, unsigned int vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(vertex >= digraph->v) /* bounds check */
+    if(vertex != 0 && vertex >= digraph->v) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
 
     unsigned int res = JCRL_ERR_OK;
+    uintptr_t degree = 0;
+    List* adjtab_entry = NULL;
+
+    res = list_get((void**)&adjtab_entry, vertex, digraph->adjtab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
 
     for(unsigned int i=0;i<digraph->v;i++)
     {
-        if(digraph->adjtab[vertex][i] > 0)
+        res = list_get((void**)&degree, i, adjtab_entry);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        if(degree > 0)
         {
             res = set_add(G_INT(i), neighbours);
 
@@ -668,13 +765,32 @@ unsigned int digraph_adjacent(bool* adjacent, unsigned int a, unsigned int b,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(a >= digraph->v || b >= digraph->v) /* bounds check */
+    /* bounds check */
+    if((a != 0 && a >= digraph->v) || (b != 0 && b >= digraph->v))
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
 
+    List* row = NULL;
+
+    unsigned int res = list_get((void**)&row, a, digraph->adjtab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    uintptr_t degree = 0;
+
+    res = list_get((void**)&degree, b, row);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
     /* perform lookup against adjacency matrix */
-    if(digraph->adjtab[a][b])
+    if(degree != 0)
     {
         *adjacent = true;
     }
@@ -707,14 +823,35 @@ unsigned int digraph_adjacent_via(Set* edges, unsigned int a,
         return JCRL_ERR_IMPOSSIBLE;
     }
 
-    unsigned int* current_edge = NULL;
-
+    uintptr_t endpoint_a = 0;
+    uintptr_t endpoint_b = 0;
+    List* current_edge = NULL;
+    
     /* search each column for matching pairs */
     for(unsigned int i=0;i<digraph->e;i++)
     {
-        current_edge = digraph->edgetab[i];
+        res = list_get((void**)&current_edge, i, digraph->edgetab);
 
-        if(current_edge[0] == a && current_edge[1] == b)
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        res = list_get((void**)&endpoint_a, 0, current_edge);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        res = list_get((void**)&endpoint_b, 1, current_edge);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        if(endpoint_a == a && endpoint_b == b)
         {
             /* add edge number to set of adjacent edges */
             res = set_add(G_INT(i), edges);
@@ -737,14 +874,39 @@ unsigned int digraph_incident(bool* incident, unsigned int edge,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(edge >= digraph->e || vertex >= digraph->v) /* bounds check */
+    /* bounds check */
+    if((edge != 0 && edge >= digraph->e) ||
+            (vertex != 0 && vertex >= digraph->v))
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
     
+    List* row = NULL;
+
+    unsigned int res = list_get((void**)&row, edge, digraph->edgetab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
     /* endpoints */
-    unsigned int a = digraph->edgetab[edge][0];
-    unsigned int b = digraph->edgetab[edge][1];
+    uintptr_t a = 0;
+    uintptr_t b = 0;
+
+    res = list_get((void**)&a, 0, row);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    res = list_get((void**)&b, 1, row);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
 
     if(vertex == a || vertex == b)
     {
@@ -766,15 +928,35 @@ unsigned int digraph_endpoints(unsigned int* a, unsigned int* b,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(edge >= digraph->e) /* bounds check */
+    if(edge != 0 && edge >= digraph->e) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
 
-    /* lookup endpoints in edge table */
-    *a = digraph->edgetab[edge][0];
-    *b = digraph->edgetab[edge][1];
+    List* row = NULL;
 
+    unsigned int res = list_get((void**)&row, edge, digraph->edgetab);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    /* lookup endpoints in edge table */
+    res = list_get((void**)a, 0, row);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+
+    res = list_get((void**)b, 1, row);
+
+    if(res != JCRL_ERR_OK)
+    {
+        return res;
+    }
+    
     return JCRL_ERR_OK;
 }
 
@@ -786,17 +968,34 @@ unsigned int digraph_in_degree(unsigned int* in_degree, unsigned int vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(vertex >= digraph->v) /* bounds check */
+    if(vertex !=0 && vertex >= digraph->v) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
 
+    unsigned int res = JCRL_ERR_OK;
     unsigned int col_sum = 0;
+    List* curr_row = NULL;
+    uintptr_t curr_in_degree = 0;
 
     /* sum column of adjacency matrix */
     for(unsigned int i=0;i<digraph->v;i++)
     {
-        col_sum += digraph->adjtab[i][vertex];
+        res = list_get((void**)&curr_row, i, digraph->adjtab);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        res = list_get((void**)&curr_in_degree, vertex, curr_row);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        col_sum += curr_in_degree;
     }
 
     *in_degree = col_sum; /* return value */
@@ -812,17 +1011,33 @@ unsigned int digraph_out_degree(unsigned int* out_degree, unsigned int vertex,
         return JCRL_ERR_NULL_PARAM;
     }
 
-    if(vertex >= digraph->v) /* bounds check */
+    if(vertex != 0 && vertex >= digraph->v) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
 
     unsigned int row_sum = 0;
+    uintptr_t curr_out_degree = 0;
+    List* row = NULL;
 
-    /* sum row of adjacency matrix */
+    unsigned int res = list_get((void**)&row, vertex, digraph->adjtab);
+
+    if(res != JCRL_ERR_OK)
+    {
+       return res;
+    }
+    
+    /* sum column of adjacency matrix */
     for(unsigned int i=0;i<digraph->v;i++)
     {
-        row_sum += digraph->adjtab[vertex][i];
+        res = list_get((void**)&curr_out_degree, i, row);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        row_sum += curr_out_degree;
     }
 
     *out_degree = row_sum; /* return value */
@@ -838,16 +1053,45 @@ unsigned int digraph_incident_edges(Set* edges, unsigned int vertex,
         return JCRL_ERR_NULL_PARAM;
     }
   
-    if(vertex >= digraph->v) /* bounds check */
+    if(vertex != 0 && vertex >= digraph->v) /* bounds check */
     {
         return JCRL_ERR_OUT_OF_BOUNDS;
     }
+
+    uintptr_t endpoint_a = 0;
+    uintptr_t endpoint_b = 0;
+    List* curr_edge_pair = NULL;
 
     unsigned int res = JCRL_ERR_OK;
 
     for(unsigned int i=0;i<digraph->e;i++)
     {
-        if(digraph->edgetab[i][0] == vertex || digraph->edgetab[i][1] == vertex)
+        /* get current edge table entry */
+        res = list_get((void**)&curr_edge_pair, i, digraph->edgetab);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        /* extract first endpoint */
+        res = list_get((void**)&endpoint_a, 0, curr_edge_pair);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+
+        /* extract second endpoint */
+        res = list_get((void**)&endpoint_b, 1, curr_edge_pair);
+
+        if(res != JCRL_ERR_OK)
+        {
+            return res;
+        }
+       
+        /* check for match */ 
+        if(endpoint_a == vertex || endpoint_b == vertex)
         {
             res = set_add(G_INT(i), edges);
 

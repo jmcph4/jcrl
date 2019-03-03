@@ -8,12 +8,12 @@
 
 struct _Digraph
 {
-    unsigned int v;             /* number of vertices */
-    unsigned int e;             /* number of edges */
-    Map* vertices;             /* vertex labels */
-    Map* edges;                /* edge labels */
-    unsigned int** adjtab;      /* adjacency matrix */
-    unsigned int** edgetab;     /* edge table */
+    unsigned int v;                 /* number of vertices */
+    unsigned int e;                 /* number of edges */
+    Map* vertices;                  /* vertex labels */
+    Map* edges;                     /* edge labels */
+    List* adjtab;                   /* adjacency matrix */
+    List* edgetab;                  /* edge table */
 };
 
 typedef struct _Digraph Digraph;
