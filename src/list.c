@@ -4,6 +4,7 @@
 
 #include "constants.h"
 #include "list.h"
+#include "macros.h"
 
 unsigned int list_init(List* list)
 {
@@ -110,8 +111,7 @@ unsigned int list_insert(void* data, unsigned int pos, List* list)
             list->head->next->prev = new_node;
         }
         
-        list->head = new_node;
-        
+        list->head = new_node;        
         list->length++;
             
         return JCRL_ERR_OK;
@@ -229,8 +229,8 @@ unsigned int list_traverse(unsigned int reverse,
     
         for(ptr=list->head;ptr!=NULL;ptr=ptr->next)
         {
-        callback(ptr->data, i);
-        i++;
+            callback(ptr->data, i);
+            i++;
         }
     }
     else if(reverse == 1)
@@ -239,8 +239,8 @@ unsigned int list_traverse(unsigned int reverse,
         
         for(ptr=list->tail;ptr!=NULL;ptr=ptr->prev)
         {
-        callback(ptr->data, i);
-        i++;
+            callback(ptr->data, i);
+            i++;
         }
     }
     
@@ -266,8 +266,7 @@ unsigned int list_get(void** data, unsigned int pos, List* list)
     {
         if(i == pos)
         {
-            *data = ptr->data;
-        
+            *data = ptr->data; 
             break;
         }
         
@@ -296,7 +295,7 @@ unsigned int list_set(void* data, unsigned int pos, List* list)
     {
         if(i == pos)
         {
-        ptr->data = data;
+            ptr->data = data;
         }
         
         i++;
@@ -403,11 +402,7 @@ unsigned int list_concatenate(List* a, List* b)
     for(ptr=b->head;ptr!=NULL;ptr=ptr->next)
     {
         res = list_append(ptr->data, a);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
     
     return JCRL_ERR_OK;
@@ -491,12 +486,8 @@ unsigned int list_find(unsigned int* pos, void* data, List* list)
     bool in = false;
     
     unsigned int res = list_in(&in, data, list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
-    
+    PASS_UP_ON_FAIL(res);
+
     if(in)
     {
         unsigned int i = 0;

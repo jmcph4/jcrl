@@ -29,12 +29,7 @@ unsigned int digraph_init(Digraph* digraph)
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
 
-    unsigned int res = map_init(digraph->vertices);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    unsigned int res = map_init(digraph->vertices);    PASS_UP_ON_FAIL(res);
 
     /* initialise edges list */
     digraph->edges = calloc(1, sizeof(Map));
@@ -44,12 +39,7 @@ unsigned int digraph_init(Digraph* digraph)
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
 
-    res = map_init(digraph->edges);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    res = map_init(digraph->edges);    PASS_UP_ON_FAIL(res);
 
     digraph->adjtab = calloc(1, sizeof(List));
 
@@ -59,11 +49,7 @@ unsigned int digraph_init(Digraph* digraph)
     }
 
     res = list_init(digraph->adjtab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     digraph->edgetab = calloc(1, sizeof(List));
 
@@ -73,11 +59,7 @@ unsigned int digraph_init(Digraph* digraph)
     }
 
     res = list_init(digraph->edgetab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -91,19 +73,11 @@ unsigned int digraph_free(void (handle_free)(void*), Digraph* digraph)
 
     /* free vertices list */
     unsigned int res = map_free(handle_free, digraph->vertices);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* free edges list */
     res = map_free(handle_free, digraph->edges);
-    return res;
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    return res;    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -148,11 +122,7 @@ unsigned int digraph_vertex_get(void** data, unsigned int vertex,
     }
     
     unsigned int res = map_get(G_INT(vertex), data, digraph->vertices);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -171,11 +141,7 @@ unsigned int digraph_vertex_set(void* data, unsigned int vertex,
     }
 
     unsigned int res = map_set(G_INT(vertex), data, digraph->vertices);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -194,11 +160,7 @@ unsigned int digraph_edge_get(void** data, unsigned int edge, Digraph* digraph)
     }
     
     unsigned int res = map_get(G_INT(edge), data, digraph->edges);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -216,11 +178,7 @@ unsigned int digraph_edge_set(void* data, unsigned int edge, Digraph* digraph)
     }
 
     unsigned int res = map_set(G_INT(edge), data, digraph->edges);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -234,11 +192,7 @@ unsigned int digraph_vertex_in(bool* in, void* data, Digraph* digraph)
     }
 
     unsigned int res = map_value_in(in, data, digraph->vertices);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -251,11 +205,7 @@ unsigned int digraph_edge_in(bool* in, void* data, Digraph* digraph)
     }
 
     unsigned int res = map_value_in(in, data, digraph->edges);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -280,20 +230,12 @@ unsigned int digraph_equal(bool* equal, Digraph* a, Digraph* b)
     Multiset multiset_a;
 
     res = multiset_init(&multiset_a);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     Multiset multiset_b;
     
     res = multiset_init(&multiset_b);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     void* tmp = NULL;
 
@@ -301,59 +243,31 @@ unsigned int digraph_equal(bool* equal, Digraph* a, Digraph* b)
     for(unsigned int i=0;i<a->v;i++)
     {
         res = map_get(G_INT(i), (void**)&tmp, a->vertices);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = multiset_add(G_INT(tmp), &multiset_a);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
 
     /* convert b's vertex labels to multiset */
     for(unsigned int i=0;i<b->v;i++)
     {
         res = map_get(G_INT(i), (void**)&tmp, b->vertices);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = multiset_add(G_INT(tmp), &multiset_b);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
 
     /* test for multiset equality */
     res = multiset_equal(equal, &multiset_a, &multiset_b);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = multiset_free(NULL, &multiset_a);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
  
     res = multiset_free(NULL, &multiset_b);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -369,11 +283,7 @@ unsigned int digraph_vertex_insert(void* data, unsigned int* vertex,
 
     /* append vertex to vertices list */
     unsigned int res = map_set(G_INT(digraph->v), data, digraph->vertices);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     List* curr_adjtab_row = NULL;
 
@@ -381,18 +291,10 @@ unsigned int digraph_vertex_insert(void* data, unsigned int* vertex,
     for(unsigned int i=0;i<digraph->v;i++)
     {
         res = list_get((void**)&curr_adjtab_row, i, digraph->adjtab);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = list_append(G_INT(0), curr_adjtab_row);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
 
     /* add new (already-expanded entry) */
@@ -406,19 +308,11 @@ unsigned int digraph_vertex_insert(void* data, unsigned int* vertex,
     for(unsigned int i=0;i<=digraph->v;i++)
     {
         res = list_append(G_INT(0), new_adjtab_row);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
 
     res = list_append(new_adjtab_row, digraph->adjtab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     digraph->v++; /* increment counter in digraph struct */
     *vertex = digraph->v - 1; /* inform caller of their vertex number */
@@ -455,29 +349,17 @@ unsigned int digraph_vertex_remove(unsigned int vertex, Digraph* digraph)
 
     /* contract adjacency matrix */
     res = list_remove(vertex, digraph->adjtab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     List* curr_adjtab_row = NULL;
 
     for(unsigned int i=0;i<digraph->v-1;i++)
     {
         res = list_get((void**)&curr_adjtab_row, i, digraph->adjtab);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = list_remove(vertex, curr_adjtab_row);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
 
     digraph->v--; /* decrement our vertex counter */
@@ -501,11 +383,7 @@ unsigned int digraph_connect(void* data, unsigned int a, unsigned int b,
 
     /* append edge label to list of edge labels */
     unsigned int res = map_set(G_INT(digraph->e), data, digraph->edges);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* expand adjacency matrix */
     List* new_adjtab_col = calloc(1, sizeof(List));
@@ -516,37 +394,21 @@ unsigned int digraph_connect(void* data, unsigned int a, unsigned int b,
     }
 
     res = list_init(new_adjtab_col);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* connect vertices in our adjacency matrix */
     List* adjtab_entry = NULL;
 
     res = list_get((void**)&adjtab_entry, a, digraph->adjtab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     uintptr_t degree = 0;
 
     res = list_get((void**)&degree, b, adjtab_entry);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     res = list_set(G_INT(degree + 1), b, adjtab_entry);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     List* edge_pair = calloc(1, sizeof(List));
 
@@ -556,33 +418,17 @@ unsigned int digraph_connect(void* data, unsigned int a, unsigned int b,
     }
 
     res = list_init(edge_pair);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* set up new edge pair entry */
     res = list_insert(G_INT(a), 0, edge_pair);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = list_insert(G_INT(b), 1, edge_pair);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = list_append(edge_pair, digraph->edgetab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     digraph->e++; /* increment our edge counter */
     *edge = digraph->e - 1; /* inform caller of their edge number */
@@ -619,44 +465,24 @@ unsigned int digraph_disconnect(unsigned int edge, Digraph* digraph)
     List* edge_pair = NULL;
 
     res = list_get((void**)&edge_pair, edge, digraph->edgetab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     uintptr_t target = 0;
 
     res = list_get((void**)&target, 1, edge_pair);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     uintptr_t degree = 0;
     
     res = list_get((void**)&degree, target, edge_pair);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = list_set(G_INT(degree - 1), target, edge_pair);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     /* remove entry from edge table */
     res = list_remove(edge, digraph->edgetab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     digraph->e--; /* decrement our edge counter */
 
@@ -683,27 +509,15 @@ unsigned int digraph_in_neighbours(Set* neighbours, unsigned int vertex,
     for(unsigned int i=0;i<digraph->v;i++)
     {
         res = list_get((void**)&adjtab_entry, i, digraph->adjtab);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = list_get((void**)&degree, vertex, adjtab_entry);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         if(degree > 0)
         {
             res = set_add(G_INT(i), neighbours);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
         }
     }
 
@@ -728,29 +542,17 @@ unsigned int digraph_out_neighbours(Set* neighbours, unsigned int vertex,
     List* adjtab_entry = NULL;
 
     res = list_get((void**)&adjtab_entry, vertex, digraph->adjtab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     for(unsigned int i=0;i<digraph->v;i++)
     {
         res = list_get((void**)&degree, i, adjtab_entry);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         if(degree > 0)
         {
             res = set_add(G_INT(i), neighbours);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
         }
     }
 
@@ -774,20 +576,12 @@ unsigned int digraph_adjacent(bool* adjacent, unsigned int a, unsigned int b,
     List* row = NULL;
 
     unsigned int res = list_get((void**)&row, a, digraph->adjtab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     uintptr_t degree = 0;
 
     res = list_get((void**)&degree, b, row);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* perform lookup against adjacency matrix */
     if(degree != 0)
@@ -812,11 +606,7 @@ unsigned int digraph_adjacent_via(Set* edges, unsigned int a,
 
     bool adjacent = false;
     unsigned int res = digraph_adjacent(&adjacent, a, b, digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     if(!adjacent) /* if vertices aren't adjacent, don't bother */
     {
@@ -831,35 +621,19 @@ unsigned int digraph_adjacent_via(Set* edges, unsigned int a,
     for(unsigned int i=0;i<digraph->e;i++)
     {
         res = list_get((void**)&current_edge, i, digraph->edgetab);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = list_get((void**)&endpoint_a, 0, current_edge);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = list_get((void**)&endpoint_b, 1, current_edge);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         if(endpoint_a == a && endpoint_b == b)
         {
             /* add edge number to set of adjacent edges */
             res = set_add(G_INT(i), edges);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
         }
     }
 
@@ -884,29 +658,17 @@ unsigned int digraph_incident(bool* incident, unsigned int edge,
     List* row = NULL;
 
     unsigned int res = list_get((void**)&row, edge, digraph->edgetab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* endpoints */
     uintptr_t a = 0;
     uintptr_t b = 0;
 
     res = list_get((void**)&a, 0, row);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = list_get((void**)&b, 1, row);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     if(vertex == a || vertex == b)
     {
@@ -936,26 +698,14 @@ unsigned int digraph_endpoints(unsigned int* a, unsigned int* b,
     List* row = NULL;
 
     unsigned int res = list_get((void**)&row, edge, digraph->edgetab);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* lookup endpoints in edge table */
     res = list_get((void**)a, 0, row);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = list_get((void**)b, 1, row);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     return JCRL_ERR_OK;
 }
@@ -982,18 +732,10 @@ unsigned int digraph_in_degree(unsigned int* in_degree, unsigned int vertex,
     for(unsigned int i=0;i<digraph->v;i++)
     {
         res = list_get((void**)&curr_row, i, digraph->adjtab);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = list_get((void**)&curr_in_degree, vertex, curr_row);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         col_sum += curr_in_degree;
     }
@@ -1031,11 +773,7 @@ unsigned int digraph_out_degree(unsigned int* out_degree, unsigned int vertex,
     for(unsigned int i=0;i<digraph->v;i++)
     {
         res = list_get((void**)&curr_out_degree, i, row);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         row_sum += curr_out_degree;
     }
@@ -1068,37 +806,21 @@ unsigned int digraph_incident_edges(Set* edges, unsigned int vertex,
     {
         /* get current edge table entry */
         res = list_get((void**)&curr_edge_pair, i, digraph->edgetab);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* extract first endpoint */
         res = list_get((void**)&endpoint_a, 0, curr_edge_pair);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* extract second endpoint */
         res = list_get((void**)&endpoint_b, 1, curr_edge_pair);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
        
         /* check for match */ 
         if(endpoint_a == vertex || endpoint_b == vertex)
         {
             res = set_add(G_INT(i), edges);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
         }
     }
     
@@ -1116,11 +838,7 @@ unsigned int digraph_find_vertices(Set* vertices, void* data, Digraph* digraph)
     bool map_contains_vertex = false;
     unsigned int res = map_value_in(&map_contains_vertex, data,
             digraph->vertices);
-   
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+       PASS_UP_ON_FAIL(res);
 
     if(!map_contains_vertex)
     {
@@ -1132,20 +850,12 @@ unsigned int digraph_find_vertices(Set* vertices, void* data, Digraph* digraph)
     for(unsigned int i=0;i<digraph->v;i++)
     {
         res = map_get(G_INT(i), &curr_label, digraph->vertices);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         if(curr_label == data)
         {
             res = set_add(G_INT(i), vertices);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
         }
     }
 
@@ -1161,11 +871,7 @@ unsigned int digraph_find_edges(Set* edges, void* data, Digraph* digraph)
 
     bool map_contains_edge = false;
     unsigned int res = map_value_in(&map_contains_edge, data, digraph->edges);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     if(!map_contains_edge)
     {
@@ -1177,20 +883,12 @@ unsigned int digraph_find_edges(Set* edges, void* data, Digraph* digraph)
     for(unsigned int i=0;i<digraph->e;i++)
     {
         res = map_get(G_INT(i), &curr_label, digraph->edges);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         if(curr_label == data)
         {
             res = set_add(G_INT(i), edges);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
         }
     }
 

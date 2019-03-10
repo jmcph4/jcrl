@@ -4,6 +4,7 @@
 #include "constants.h"
 #include "multiset.h"
 #include "list.h"
+#include "macros.h"
 
 unsigned int max(unsigned int a, unsigned int b)
 {
@@ -46,10 +47,7 @@ unsigned int multiset_init(Multiset* multiset)
     
     unsigned int res = list_init(multiset->data);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     multiset->size = 0;
     
@@ -65,10 +63,7 @@ unsigned int multiset_free(void (handle_free)(void*), Multiset* multiset)
     
     unsigned int res = list_free(handle_free, multiset->data);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     free(multiset->data);
     
@@ -86,10 +81,7 @@ unsigned int multiset_init_list(List* list, Multiset* multiset)
     
     unsigned int res =  multiset_init(multiset);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     struct _LNode* ptr = list->head;
     
@@ -97,10 +89,7 @@ unsigned int multiset_init_list(List* list, Multiset* multiset)
     {
         res = multiset_add(ptr->data, multiset);
         
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
     
     return JCRL_ERR_OK;
@@ -116,10 +105,7 @@ unsigned int multiset_add(void* data, Multiset* multiset)
     
     unsigned int res = list_append(data, multiset->data);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     multiset->size++;
     
@@ -137,17 +123,11 @@ unsigned int multiset_remove(void* data, Multiset* multiset)
     
     unsigned int res = list_find(&pos, data, multiset->data);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     res = list_remove(pos, multiset->data);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     multiset->size--;
     
@@ -175,10 +155,7 @@ unsigned int multiset_union(Multiset* a, Multiset* b, Multiset* c)
     {
         res = multiset_in(&already_in, ptr_a->data, c);
         
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
         
         if(!already_in)
         {
@@ -200,47 +177,28 @@ unsigned int multiset_union(Multiset* a, Multiset* b, Multiset* c)
             {
                 res = multiset_add(ptr_a->data, c);
                 
-                if(res != JCRL_ERR_OK)
-                {
-                    return res;
-                }
+                PASS_UP_ON_FAIL(res);
             }
         }
     }
     
     for(ptr_b=b->data->head;ptr_b!=NULL;ptr_b=ptr_b->next)
     {
-        res = multiset_in(&already_in, ptr_b->data, c);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        res = multiset_in(&already_in, ptr_b->data, c); 
+        PASS_UP_ON_FAIL(res);
         
         if(!already_in)
         {
             res = multiset_multiplicity(&mult_a, ptr_b->data, a);
-        
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
-            
+            PASS_UP_ON_FAIL(res);
+           
             res = multiset_multiplicity(&mult_b, ptr_b->data, b);
-            
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res); 
             
             for(unsigned int i=0;i<max(mult_a, mult_b);i++)
             {
                 res = multiset_add(ptr_b->data, c);
-                
-                if(res != JCRL_ERR_OK)
-                {
-                    return res;
-                }
+                PASS_UP_ON_FAIL(res);
             }
         }
     }
@@ -267,37 +225,21 @@ unsigned int multiset_intersection(Multiset* a, Multiset* b, Multiset* c)
     
     for(ptr_a=a->data->head;ptr_a!=NULL;ptr_a=ptr_a->next)
     {
-        res = multiset_in(&already_in, ptr_a->data, c);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        res = multiset_in(&already_in, ptr_a->data, c); 
+        PASS_UP_ON_FAIL(res);
         
         if(!already_in)
         {
             res = multiset_multiplicity(&mult_a, ptr_a->data, a);
-        
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
             
             res = multiset_multiplicity(&mult_b, ptr_a->data, b);
-            
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res); 
             
             for(unsigned int i=0;i<min(mult_a, mult_b);i++)
             {
                 res = multiset_add(ptr_a->data, c);
-                
-                if(res != JCRL_ERR_OK)
-                {
-                    return res;
-                }
+                PASS_UP_ON_FAIL(res);
             }
         }
     }
@@ -305,36 +247,20 @@ unsigned int multiset_intersection(Multiset* a, Multiset* b, Multiset* c)
     for(ptr_b=b->data->head;ptr_b!=NULL;ptr_b=ptr_b->next)
     {
         res = multiset_in(&already_in, ptr_b->data, c);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
         
         if(!already_in)
         {
             res = multiset_multiplicity(&mult_a, ptr_b->data, a);
-        
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
-            
+            PASS_UP_ON_FAIL(res);
+
             res = multiset_multiplicity(&mult_b, ptr_b->data, b);
-            
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res); 
             
             for(unsigned int i=0;i<min(mult_a, mult_b);i++)
             {
-                res = multiset_add(ptr_b->data, c);
-                
-                if(res != JCRL_ERR_OK)
-                {
-                    return res;
-                }
+                res = multiset_add(ptr_b->data, c);    
+                PASS_UP_ON_FAIL(res);
             }
         }
     }
@@ -358,10 +284,7 @@ unsigned int multiset_difference(Multiset* a, Multiset* b, Multiset* c)
     {
         res = multiset_add(ptr->data, c);
         
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
     
     ptr = b->data->head;
@@ -392,22 +315,14 @@ unsigned int multiset_sum(Multiset* a, Multiset* b, Multiset* c)
     
     for(ptr=a->data->head;ptr!=NULL;ptr=ptr->next)
     {
-        res = multiset_add(ptr->data, c);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        res = multiset_add(ptr->data, c); 
+        PASS_UP_ON_FAIL(res);
     }
     
     for(ptr=b->data->head;ptr!=NULL;ptr=ptr->next)
     {
         res = multiset_add(ptr->data, c);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
     
     return JCRL_ERR_OK;
@@ -434,11 +349,7 @@ unsigned int multiset_multiplicity(unsigned int* multiplicity, void* data, Multi
     }
     
     unsigned int res = list_count(multiplicity, data, multiset->data);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     return JCRL_ERR_OK;
 }
@@ -452,11 +363,7 @@ unsigned int multiset_in(bool* in, void* data, Multiset* multiset)
     }
     
     unsigned int res = list_in(in, data, multiset->data);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     return JCRL_ERR_OK;
 }
@@ -481,18 +388,10 @@ unsigned int multiset_subset(bool* subset, Multiset* a, Multiset* b)
     unsigned int card_b = 0;
     
     res = multiset_cardinality(&card_a, a);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     res = multiset_cardinality(&card_b, b);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     if(card_b > card_a) /* b is once again "bigger" than a */
     {
@@ -509,18 +408,10 @@ unsigned int multiset_subset(bool* subset, Multiset* a, Multiset* b)
     for(ptr_b=b->data->head;ptr_b!=NULL;ptr_b=ptr_b->next)
     {
         res = multiset_multiplicity(&mult_a, ptr_b->data, a);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
         
         res = multiset_multiplicity(&mult_b, ptr_b->data, b);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
         
         if(mult_b <= mult_a)
         {
@@ -547,11 +438,7 @@ unsigned int multiset_superset(bool* superset, Multiset* a, Multiset* b)
     
     /* is a a subset of b? */
     unsigned int res = multiset_subset(&subset, b, a);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     *superset = subset;
     
@@ -590,11 +477,7 @@ unsigned int multiset_equal(bool* equal, Multiset* a, Multiset* b)
     for(ptr=a->data->head;ptr!=NULL;ptr=ptr->next)
     {
         res = multiset_in(&in_b, ptr->data, b);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
         
         if(!in_b)
         {
@@ -602,18 +485,10 @@ unsigned int multiset_equal(bool* equal, Multiset* a, Multiset* b)
         }
         
         res = multiset_multiplicity(&mult_a, ptr->data, a);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
         
         res = multiset_multiplicity(&mult_b, ptr->data, b);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
         
         if(mult_a != mult_b)
         {
@@ -646,11 +521,7 @@ unsigned int multiset_enumerate(List* list, Multiset* multiset)
     for(ptr=multiset->data->head;ptr!=NULL;ptr=ptr->next)
     {
         res = list_append(ptr->data, list);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
     
     return JCRL_ERR_OK;

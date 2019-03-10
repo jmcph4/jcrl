@@ -3,6 +3,7 @@
 #include "constants.h"
 #include "stack.h"
 #include "list.h"
+#include "macros.h"
 
 /* Initialisation */
 unsigned int stack_init(Stack* stack)
@@ -21,11 +22,7 @@ unsigned int stack_init(Stack* stack)
     }
   
     unsigned int res = list_init(stack->list);
-  
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     return JCRL_ERR_OK;
 }
@@ -38,11 +35,7 @@ unsigned int stack_free(void (handle_free)(void*), Stack* stack)
     }
     
     unsigned int res = list_free(handle_free, stack->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     free(stack->list);
     
@@ -64,27 +57,16 @@ unsigned int stack_equal(bool* equal, Stack* a, Stack* b)
     unsigned int depth_b = 0;
     
     unsigned int res = stack_depth(&depth_a, a);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     res = stack_depth(&depth_b, b);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     bool lists_equal = false;
         
     res = list_equal(&lists_equal, a->list, b->list);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     if(depth_a == depth_b && lists_equal)
     {
@@ -107,11 +89,7 @@ unsigned int stack_peek(void* data, Stack* stack)
     }
     
     unsigned int res = list_get(data, 0, stack->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     return JCRL_ERR_OK;
 }
@@ -137,11 +115,7 @@ unsigned int stack_push(void* data, Stack* stack)
     }
     
     unsigned int res = list_insert(data, 0, stack->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     stack->depth++;
     
@@ -161,18 +135,10 @@ unsigned int stack_pop(void* data, Stack* stack)
     }
     
     unsigned int res = list_get(data, 0, stack->list);
+    PASS_UP_ON_FAIL(res);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
-    
-    res = list_remove(0, stack->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    res = list_remove(0, stack->list); 
+    PASS_UP_ON_FAIL(res);
     
     stack->depth--;
     

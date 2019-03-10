@@ -3,6 +3,7 @@
 #include "constants.h"
 #include "list.h"
 #include "queue.h"
+#include "macros.h"
 
 /* Initialisation */
 unsigned int queue_init(Queue* queue)
@@ -22,12 +23,8 @@ unsigned int queue_init(Queue* queue)
         return JCRL_ERR_SYS_MEM_ALLOC;
     }
   
-    res = list_init(queue->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    res = list_init(queue->list); 
+    PASS_UP_ON_FAIL(res);
     
     return JCRL_ERR_OK;
 }
@@ -43,12 +40,8 @@ unsigned int queue_free(void (handle_free)(void*), Queue* queue)
     
     queue->length = 0;
     
-    res = list_free(handle_free, queue->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    res = list_free(handle_free, queue->list); 
+    PASS_UP_ON_FAIL(res);
 
     free(queue->list);
 
@@ -69,29 +62,17 @@ unsigned int queue_equal(bool* equal, Queue* a, Queue* b)
     unsigned int length_b = 0;
     
     unsigned int res = queue_length(&length_a, a);
+    PASS_UP_ON_FAIL(res);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
-    
-    res = queue_length(&length_b, b);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    res = queue_length(&length_b, b); 
+    PASS_UP_ON_FAIL(res);
     
     if(length_a == length_b)
     {
         bool lists_equal = false;
-        res = list_equal(&lists_equal, a->list, b->list);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
-        
+        res = list_equal(&lists_equal, a->list, b->list); 
+        PASS_UP_ON_FAIL(res);
+
         if(lists_equal)
         {
             *equal = true;
@@ -112,18 +93,10 @@ unsigned int queue_peek(void* data, Queue* queue)
     unsigned int length = 0;
     
     unsigned int res = queue_length(&length, queue);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
-    
+    PASS_UP_ON_FAIL(res);
+
     res = list_get(data, length - 1, queue->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     return JCRL_ERR_OK;
 }
@@ -151,11 +124,7 @@ unsigned int queue_push(void* data, Queue* queue)
     unsigned int res = 0;
     
     res = list_insert(data, 0, queue->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     queue->length++;
     
@@ -183,25 +152,13 @@ unsigned int queue_pop(void* data, Queue* queue)
     }
     
     res = list_length(len, queue->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     res = list_get(data, *len-1, queue->list);
+    PASS_UP_ON_FAIL(res);
     
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
-    
-    res = list_remove(*len-1, queue->list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    res = list_remove(*len-1, queue->list); 
+    PASS_UP_ON_FAIL(res);
     
     queue->length--;
     

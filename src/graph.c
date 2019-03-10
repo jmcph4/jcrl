@@ -6,6 +6,7 @@
 #include "digraph.h"
 #include "set.h"
 #include "graph.h"
+#include "macros.h"
 
 void remove_odd(Set* set)
 {
@@ -46,11 +47,7 @@ unsigned int graph_init(Graph* graph)
     }
 
     unsigned int res = digraph_init(graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     graph->e = 0;
 
@@ -65,11 +62,7 @@ unsigned int graph_free(void (handle_free)(void*), Graph* graph)
     }
 
     unsigned int res = digraph_free(handle_free, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -83,11 +76,7 @@ unsigned int graph_vertex_get(void** data, unsigned int vertex, Graph* graph)
     }
 
     unsigned int res = digraph_vertex_get(data, vertex, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -100,11 +89,7 @@ unsigned int graph_vertex_set(void* data, unsigned int vertex, Graph* graph)
     }
 
     unsigned int res = digraph_vertex_set(data, vertex, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -122,11 +107,7 @@ unsigned int graph_edge_get(void** data, unsigned int edge, Graph* graph)
     }
 
     unsigned int res = digraph_edge_get(data, edge, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -144,11 +125,7 @@ unsigned int graph_edge_set(void* data, unsigned int edge, Graph* graph)
     }
     
     unsigned int res = digraph_edge_set(data, edge, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -162,11 +139,7 @@ unsigned int graph_vertex_in(bool* in, void* data, Graph* graph)
     }
 
     unsigned int res = digraph_vertex_in(in, data, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -179,11 +152,7 @@ unsigned int graph_edge_in(bool* in, void* data, Graph* graph)
     }
 
     unsigned int res = digraph_edge_in(in, data, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -197,11 +166,7 @@ unsigned int graph_equal(bool* equal, Graph* a, Graph* b)
     }
 
     unsigned int res = digraph_equal(equal, a->digraph, b->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -215,11 +180,7 @@ unsigned int graph_order(unsigned int* order, Graph* graph)
     }
 
     unsigned int res = digraph_order(order, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -245,11 +206,7 @@ unsigned int graph_vertex_insert(void* data, unsigned int* vertex, Graph* graph)
     }
 
     unsigned int res = digraph_vertex_insert(data, vertex, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -262,11 +219,7 @@ unsigned int graph_vertex_remove(unsigned int vertex, Graph* graph)
     }
 
     unsigned int res = digraph_vertex_remove(vertex, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -281,21 +234,13 @@ unsigned int graph_connect(void* data, unsigned int a, unsigned int b,
 
     /* a -> b */
     unsigned int res = digraph_connect(data, a, b, edge, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     unsigned int reported_edge = *edge;
 
     /* b -> a */
     res = digraph_connect(data, b, a, edge, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     graph->e = graph->digraph->e / 2;
 
@@ -318,19 +263,11 @@ unsigned int graph_disconnect(unsigned int edge, Graph* graph)
 
     /* b -> a */
     unsigned int res = digraph_disconnect(edge + 1, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* a -> b */
     res = digraph_disconnect(edge, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     graph->e = graph->digraph->e / 2;
 
@@ -350,59 +287,31 @@ unsigned int graph_neighbours(Set* neighbours, unsigned int vertex,
 
     /* initialise inbound neighbours set */
     unsigned int res = set_init(&in_neighbours);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* initialise outbound neighbours set */
     res = set_init(&out_neighbours);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* inbound neighbours */
     res = digraph_in_neighbours(&in_neighbours, vertex, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* outbound neighbours */
     res = digraph_out_neighbours(&out_neighbours, vertex, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
    
     /* combine */
     res = set_union(&in_neighbours, &out_neighbours, neighbours);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
    
     /* free inbound neighbours set */
     res = set_free(NULL, &in_neighbours);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* free outbound neighbours set */
     res = set_free(NULL, &out_neighbours);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -419,18 +328,10 @@ unsigned int graph_adjacent(bool* adjacent, unsigned int a, unsigned int b,
     bool b_a_adjacent = false;
 
     unsigned int res = digraph_adjacent(&a_b_adjacent, a, b, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = digraph_adjacent(&b_a_adjacent, b, a, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     *adjacent = a_b_adjacent || b_a_adjacent;
 
@@ -446,11 +347,7 @@ unsigned int graph_adjacent_via(Set* edges, unsigned int a,
     }
 
     unsigned int res = digraph_adjacent_via(edges, a, b, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     remove_odd(edges);
 
@@ -489,11 +386,7 @@ unsigned int graph_endpoints(unsigned int* a, unsigned int* b,
     }
 
     unsigned int res = digraph_endpoints(a, b, (edge) ? edge - 1 : edge, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -509,43 +402,23 @@ unsigned int graph_degree(unsigned int* degree, unsigned int vertex,
     Set edges;
 
     unsigned int res = set_init(&edges);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = digraph_incident_edges(&edges, vertex, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     List edges_list;
 
     res = list_init(&edges_list);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = set_enumerate(&edges_list, &edges);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     unsigned int num_incident_edges = 0;
 
     res = set_cardinality(&num_incident_edges, &edges);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     *degree = num_incident_edges / 2;
 
@@ -561,11 +434,7 @@ unsigned int graph_incident_edges(Set* edges, unsigned int vertex,
     }
 
     unsigned int res = digraph_incident_edges(edges, vertex, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     remove_odd(edges);
 
@@ -581,11 +450,7 @@ unsigned int graph_find_vertices(Set* vertices, void* data, Graph* graph)
     }
 
     unsigned int res = digraph_find_vertices(vertices, data, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     return JCRL_ERR_OK;
 }
@@ -598,11 +463,7 @@ unsigned int graph_find_edges(Set* edges, void* data, Graph* graph)
     }
 
     unsigned int res = digraph_find_edges(edges, data, graph->digraph);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
    
     remove_odd(edges); /* filter dual edges */
 

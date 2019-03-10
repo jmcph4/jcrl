@@ -5,6 +5,7 @@
 #include "constants.h"
 #include "list.h"
 #include "map.h"
+#include "macros.h"
 
 uint64_t hash(void* data) 
 {
@@ -136,11 +137,7 @@ unsigned int map_init(Map* map)
     
     /* initialise keys list */
     unsigned int res = list_init(map->keys);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* allocate space for buckets list */
     map->buckets = calloc(1, sizeof(List));
@@ -152,11 +149,7 @@ unsigned int map_init(Map* map)
     
     /* initialise buckets list */
     res = list_init(map->buckets);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
     
     /* initialise each bucket */
     for(unsigned int i=0;i<map->n;i++)
@@ -169,19 +162,11 @@ unsigned int map_init(Map* map)
         }
 
         res = list_init(bucket);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* add initialised (empty) bucket to buckets */
         res = list_append(bucket, map->buckets);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
 
     return JCRL_ERR_OK;
@@ -202,20 +187,12 @@ unsigned int map_free(void (handle_free)(void*), Map* map)
 
         /* get bucket from buckets list */
         res = list_get((void**)&bucket, i, map->buckets);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
        
         unsigned int bucket_len = 0;
 
         res = list_length(&bucket_len, bucket);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         List* pair = NULL;
 
@@ -223,41 +200,21 @@ unsigned int map_free(void (handle_free)(void*), Map* map)
         for(unsigned int j=0;j<bucket_len;j++)
         {
             res = list_get((void**)&pair, j, bucket);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
 
             res = list_free(handle_free, pair);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
         }
 
         res = list_free(handle_free, bucket);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
 
     res = list_free(NULL, map->buckets);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     res = list_free(NULL, map->keys);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     map->k = 0;
     map->n = 0;
@@ -308,19 +265,11 @@ unsigned int map_value_in(bool* in, void* value, Map* map)
     {
         /* get current key to search */
         res = list_get(&curr_key, i, map->keys);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
         
         /* retrieve value from map */
         res = map_get(curr_key, &curr_val, map);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* test for value equality */
         if(curr_val == value)
@@ -345,11 +294,7 @@ unsigned int map_get(void* key, void** value, Map* map)
 
     /* check if we have key */
     unsigned int res = map_key_in(&have_key, key, map);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* if we don't have key, HALT */
     if(!have_key)
@@ -364,22 +309,14 @@ unsigned int map_get(void* key, void** value, Map* map)
     List* bucket = NULL;
 
     /* lookup bucket */
-    res = list_get((void**)&bucket, offset, map->buckets);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    res = list_get((void**)&bucket, offset, map->buckets); 
+    PASS_UP_ON_FAIL(res);
 
     unsigned int bucket_len = 0;
 
     /* get number of elements in bucket */
     res = list_length(&bucket_len, bucket);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     List* curr_pair = NULL;
     List* curr_key = NULL;
@@ -389,19 +326,11 @@ unsigned int map_get(void* key, void** value, Map* map)
     {
         /* extract pair */
         res = list_get((void**)&curr_pair, i, bucket);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
         
         /* get key from pair */
         res = list_get((void**)&curr_key, 0, curr_pair);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* get value from pair */
         res = list_get((void**)&curr_value, 1, curr_pair);
@@ -431,20 +360,12 @@ unsigned int map_set(void* key, void* value, Map* map)
 
     /* lookup bucket */
     unsigned int res = list_get((void**)(void**)&bucket, offset, map->buckets);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     bool key_exists = false;
 
     res = list_in(&key_exists, key, map->keys);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* check to see if we already have the key */
     if(key_exists)
@@ -455,39 +376,23 @@ unsigned int map_set(void* key, void* value, Map* map)
 
         /* get length of this bucket */
         res = list_length(&bucket_len, bucket);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         for(unsigned int i=0;i<bucket_len;i++)
         {
             /* retrieve pair */
             res = list_get((void**)&curr_kv_pair, i, bucket);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
             
             /* get key at this position in the bucket */
             res = list_get((void**)&curr_key, 0, curr_kv_pair);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
 
             if(curr_key == key) /* if we've found the key */
             {
                 /* update value */
                 res = list_set(value, 1, curr_kv_pair);
-
-                if(res != JCRL_ERR_OK)
-                {
-                    return res;
-                }
+                PASS_UP_ON_FAIL(res);
 
                 break;
             }
@@ -505,43 +410,23 @@ unsigned int map_set(void* key, void* value, Map* map)
 
         /* initialise new pair */
         res = list_init(pair);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* insert key into new pair */
         res = list_append(key, pair);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* insert value into new pair */
         res = list_append(value, pair);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* add new pair to end of bucket */
         res = list_append(pair, bucket);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* add new key to list of keys for lookup */
         res = list_append(key, map->keys);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         map->k++;
     }
@@ -564,11 +449,7 @@ unsigned int map_remove(void* key, Map* map)
 
     /* check if we have the key first */
     res = map_key_in(&have_key, key, map);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     if(!have_key)
     {
@@ -585,11 +466,7 @@ unsigned int map_remove(void* key, Map* map)
     for(unsigned int i=0;i<map->k;i++)
     {
         res = list_get(&curr_key, i, map->keys);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         if(key == curr_key)
         {
@@ -600,11 +477,7 @@ unsigned int map_remove(void* key, Map* map)
 
     /* remove key from key list */
     res = list_remove(key_pos, map->keys);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     /* hash and compress */
     uint64_t hash_code = hash(curr_key);
@@ -614,56 +487,33 @@ unsigned int map_remove(void* key, Map* map)
 
     /* lookup bucket */
     res = list_get((void**)&bucket, offset, map->buckets);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     unsigned int bucket_len = 0;
 
     res = list_length(&bucket_len, bucket);
-
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    PASS_UP_ON_FAIL(res);
 
     for(unsigned int i=0;i<bucket_len;i++)
     {
         /* get pair from bucket */
         res = list_get((void**)&curr_pair, i, bucket);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* extract key from pair */
         res = list_get(&curr_key, 0, curr_pair);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         /* extract value from pair */
         res = list_get(&curr_val, 1, curr_pair);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         if(key == curr_key) /* found pair */
         {
             /* free pair */
             res = list_free(NULL, curr_pair);
 
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
 
             /* remember position of pair in bucket */
             key_pos = i;
@@ -700,18 +550,10 @@ unsigned int map_clear(Map* map)
     while(map->k > 0)
     {
         res = list_get(&curr_key, 0, map->keys);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = map_remove(curr_key, map);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
     }
 
     return JCRL_ERR_OK;

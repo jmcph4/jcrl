@@ -2,6 +2,7 @@
 
 #include "constants.h"
 #include "isort.h"
+#include "macros.h"
 
 unsigned int isort(bool (comparison)(void*, void*), List* list)
 {
@@ -12,12 +13,8 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
     
     unsigned int len = 0;
     
-    unsigned int res = list_length(&len, list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    unsigned int res = list_length(&len, list); 
+    PASS_UP_ON_FAIL(res);
     
     if(len == 0 || len == 1) /* trivial cases */
     {
@@ -34,27 +31,15 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
         unsigned int j = i;
 
         res = list_get((void**)&left, j - 1, list);
-        
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         res = list_get((void**)&current, j, list);
-
-        if(res != JCRL_ERR_OK)
-        {
-            return res;
-        }
+        PASS_UP_ON_FAIL(res);
 
         while(j > 0 && comparison(left, current))
         {
             res = list_swap(j, j - 1, list);
-
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            PASS_UP_ON_FAIL(res);
 
             res = list_get((void**)&left, j - 2, list);
             
@@ -70,13 +55,8 @@ unsigned int isort(bool (comparison)(void*, void*), List* list)
                 }
             }
             
-            res = list_get((void**)&current, j - 1, list);
-
-            
-            if(res != JCRL_ERR_OK)
-            {
-                return res;
-            }
+            res = list_get((void**)&current, j - 1, list);            
+            PASS_UP_ON_FAIL(res);
 
             j--;
         }

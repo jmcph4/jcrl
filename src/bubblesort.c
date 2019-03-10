@@ -4,6 +4,7 @@
 #include "constants.h"
 #include "list.h"
 #include "bubblesort.h"
+#include "macros.h"
 
 unsigned int bubblesort(bool (comparison(void*, void*)), List* list)
 {
@@ -14,12 +15,8 @@ unsigned int bubblesort(bool (comparison(void*, void*)), List* list)
     
     unsigned int length = 0;
     
-    unsigned int res = list_length(&length, list);
-    
-    if(res != JCRL_ERR_OK)
-    {
-        return res;
-    }
+    unsigned int res = list_length(&length, list);    
+    PASS_UP_ON_FAIL(res);
 
     if(length == 0 || length == 1) /* trivial cases */
     {
