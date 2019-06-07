@@ -64,6 +64,8 @@ unsigned int graph_free(void (handle_free)(void*), Graph* graph)
     unsigned int res = digraph_free(handle_free, graph->digraph);
     PASS_UP_ON_FAIL(res);
 
+    free(graph->digraph);
+
     return JCRL_ERR_OK;
 }
 
