@@ -14,7 +14,7 @@ uint64_t hash(void* data)
         return 0;
     }
 
-    uint64_t h = (uint64_t)data;
+    uint64_t h = (uintptr_t)data;
     uint64_t res = (h >> 20) ^ (h >> 12);
 
     return res ^ (res >> 7) ^ (res >> 4);

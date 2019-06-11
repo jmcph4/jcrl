@@ -22,7 +22,7 @@ void remove_odd(Set* set)
 
     for(struct _LNode* ptr=list.head;ptr!=NULL;ptr=ptr->next)
     {
-        if((uintmax_t)(ptr->data) % 2 != 0)
+        if((uintptr_t)(ptr->data) % 2 != 0)
         {
             set_remove(ptr->data, set);
         }
