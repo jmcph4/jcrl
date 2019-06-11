@@ -43,6 +43,9 @@ void restructure(Map* map)
     void* curr_key = NULL;
     void* curr_val = NULL;
 
+    /* this loop will iterate over every key currently stored in the hash table
+	and copies both the key and its associated value into our two temporary
+	lists */
     for(unsigned int i=0;i<map->k;i++)
     {
         /* get key */
@@ -181,6 +184,7 @@ unsigned int map_free(void (handle_free)(void*), Map* map)
 
     unsigned int res = JCRL_ERR_OK;
 
+    /* iterate over entire list of buckets */
     for(unsigned int i=0;i<map->n;i++)
     {
         List* bucket = NULL;
