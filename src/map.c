@@ -208,6 +208,8 @@ unsigned int map_free(void (handle_free)(void*), Map* map)
 
             res = list_free(handle_free, pair);
             PASS_UP_ON_FAIL(res);
+
+            free(pair);
         }
 
         res = list_free(handle_free, bucket);
@@ -221,6 +223,9 @@ unsigned int map_free(void (handle_free)(void*), Map* map)
 
     res = list_free(NULL, map->keys);
     PASS_UP_ON_FAIL(res);
+
+    free(map->keys);
+    free(map->buckets);
 
     map->k = 0;
     map->n = 0;
